@@ -1,6 +1,6 @@
-env_global_name: str = 'PROJECTNAME_HOME'
+env_global_name: str = 'LACUS_HOME'
 
-from .exceptions import ProjectNameException  # noqa
+from .exceptions import LacusException  # noqa
 
 # NOTE: the imports below are there to avoid too long paths when importing the
 # classes/methods in the rest of the project while keeping all that in a subdirectory

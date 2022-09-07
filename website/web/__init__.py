@@ -4,7 +4,7 @@ from importlib.metadata import version
 from flask import Flask
 from flask_restx import Api, Resource  # type: ignore
 
-from project.projectname import ProjectName
+from lacus.lacus import Lacus
 
 from .helpers import get_secret_key
 from .proxied import ReverseProxied
@@ -15,11 +15,11 @@ app.wsgi_app = ReverseProxied(app.wsgi_app)  # type: ignore
 
 app.config['SECRET_KEY'] = get_secret_key()
 
-api = Api(app, title='Project API',
-          description='API to query a the project.',
-          version=version('project'))
+api = Api(app, title='Lacus API',
+          description='API to query lacus.',
+          version=version('lacus'))
 
-project: ProjectName = ProjectName()
+project: Lacus = Lacus()
 
 
 @api.route('/redis_up')

@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "project"
+name = "lacus"
 version = "0.1"
-description = "Simple template used in most of the projects."
+description = " A capturing system using playwright, as a web service."
 authors = ["Raphaël Vinot <raphael.vinot@circl.lu>"]
 license = "BSD-3-Clause"
 
@@ -21,9 +21,9 @@ werkzeug = "2.1.2"
 gunicorn = "^20.1.0"
 
 [tool.poetry.dev-dependencies]
-ipython = "^8.4.0"
+ipython = "^8.5.0"
 mypy = "^0.971"
-types-redis = "^4.3.19"
+types-redis = "^4.3.20"
 
 [build-system]
 requires = ["poetry-core>=1.2.0"]

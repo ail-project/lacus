@@ -1,5 +1,5 @@
 [Unit]
-Description=service-name service
+Description=lacus service
 After=network.target
 
 [Service]
@@ -8,11 +8,11 @@ Group=<system user used to install the project>
 Type=forking
 WorkingDirectory=<path to the directory where you cloned the repository>
 Environment="PATH=<path to the directory where the poetry executable is>:/usr/bin"
-Environment="PROJECTNAME_HOME=<path to the directory where you cloned the repository>"
+Environment="LACUS_HOME=<path to the directory where you cloned the repository>"
 ExecStart=/bin/bash -c "exec poetry run start"
 ExecStop=/bin/bash -c "exec poetry run stop"
-StandardOutput=append:/var/log/project-name_message.log
-StandardError=append:/var/log/project-name_error.log
+StandardOutput=append:/var/log/lacus_message.log
+StandardError=append:/var/log/lacus_error.log
 
 
 [Install]

@@ -3,8 +3,8 @@
 import logging
 from subprocess import Popen
 
-from project.default import AbstractManager
-from project.default import get_config, get_homedir
+from lacus.default import AbstractManager
+from lacus.default import get_config, get_homedir
 
 logging.basicConfig(format='%(asctime)s %(name)s %(levelname)s:%(message)s',
                     level=logging.INFO)

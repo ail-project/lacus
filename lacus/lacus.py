@@ -8,7 +8,7 @@ from redis.connection import UnixDomainSocketConnection
 from .default import get_config, get_socket_path
 
 
-class ProjectName():
+class Lacus():
 
     def __init__(self) -> None:
         self.logger = logging.getLogger(f'{self.__class__.__name__}')

@@ -2,7 +2,7 @@
 
 from subprocess import Popen, run
 
-from project.default import get_homedir
+from lacus.default import get_homedir
 
 
 def main():

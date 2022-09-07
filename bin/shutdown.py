@@ -2,7 +2,7 @@
 
 import time
 
-from project.default import AbstractManager
+from lacus.default import AbstractManager
 
 
 def main():

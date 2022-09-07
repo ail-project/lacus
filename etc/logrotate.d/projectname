@@ -1,4 +1,4 @@
-/var/log/project_name*.log {
+/var/log/lacus*.log {
 	daily
 	missingok
 	rotate 14

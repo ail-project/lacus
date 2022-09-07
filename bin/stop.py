@@ -5,7 +5,7 @@ from subprocess import Popen, run
 from redis import Redis
 from redis.exceptions import ConnectionError
 
-from project.default import get_homedir, get_socket_path
+from lacus.default import get_homedir, get_socket_path
 
 
 def main():

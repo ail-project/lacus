@@ -4,7 +4,7 @@ import json
 import logging
 import argparse
 
-from project.default import get_homedir
+from lacus.default import get_homedir
 
 
 def validate_generic_config_file():

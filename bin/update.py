@@ -9,7 +9,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from project.default import get_homedir, get_config
+from lacus.default import get_homedir, get_config
 
 logging.basicConfig(format='%(asctime)s %(name)s %(levelname)s:%(message)s',
                     level=logging.INFO)

@@ -4,7 +4,7 @@ import os
 from functools import lru_cache
 from pathlib import Path
 
-from project.default import get_homedir
+from lacus.default import get_homedir
 
 
 def src_request_ip(request) -> str:

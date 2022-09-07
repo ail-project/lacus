@@ -1,10 +1,10 @@
 {
     "loglevel": "INFO",
     "website_listen_ip": "0.0.0.0",
-    "website_listen_port": 9999,
-    "systemd_service_name": "service-name",
+    "website_listen_port": 7100,
+    "systemd_service_name": "lacus",
     "_notes": {
-        "loglevel": "(lookyloo) Can be one of the value listed here: https://docs.python.org/3/library/logging.html#levels",
+        "loglevel": "Can be one of the value listed here: https://docs.python.org/3/library/logging.html#levels",
         "website_listen_ip": "IP Flask will listen on. Defaults to 0.0.0.0, meaning all interfaces.",
         "website_listen_port": "Port Flask will listen on.",
         "systemd_service_name": "(Optional) Name of the systemd service if your project has one."
