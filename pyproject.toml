@@ -1,0 +1,45 @@
+[tool.poetry]
+name = "project"
+version = "0.1"
+description = "Simple template used in most of the projects."
+authors = ["Raphaël Vinot <raphael.vinot@circl.lu>"]
+license = "BSD-3-Clause"
+
+[tool.poetry.scripts]
+start = "bin.start:main"
+stop = "bin.stop:main"
+update = "bin.update:main"
+shutdown = "bin.shutdown:main"
+run_backend = "bin.run_backend:main"
+start_website = "bin.start_website:main"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+redis = {version = "^4.3.4", extras = ["hiredis"]}
+flask-restx = "^0.5.1"
+werkzeug = "2.1.2"
+gunicorn = "^20.1.0"
+
+[tool.poetry.dev-dependencies]
+ipython = "^8.4.0"
+mypy = "^0.971"
+types-redis = "^4.3.19"
+
+[build-system]
+requires = ["poetry-core>=1.2.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.mypy]
+python_version = 3.8
+check_untyped_defs = true
+ignore_errors = false
+ignore_missing_imports = false
+strict_optional = true
+no_implicit_optional = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+warn_unused_configs = true
+warn_unreachable = true
+
+show_error_context = true
+pretty = true
