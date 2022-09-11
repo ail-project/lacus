@@ -15,6 +15,9 @@ def main():
     print('Start website...')
     Popen(['start_website'])
     print('done.')
+    print('Start Capture manager...')
+    Popen(['capture_manager'])
+    print('done.')
 
 
 if __name__ == '__main__':
