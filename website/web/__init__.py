@@ -4,7 +4,10 @@ from importlib.metadata import version
 from flask import Flask
 from flask_restx import Api, Resource  # type: ignore
 
-from lacus.lacus import Lacus
+from redis import Redis
+
+from lacus.default import get_config, get_socket_path
+from lacus.lacus import LacusCore
 
 from .helpers import get_secret_key
 from .proxied import ReverseProxied
@@ -19,7 +22,9 @@ api = Api(app, title='Lacus API',
           description='API to query lacus.',
           version=version('lacus'))
 
-project: Lacus = Lacus()
+redis: Redis = Redis(unix_socket_path=get_socket_path('cache'))
+
+project: LacusCore = LacusCore(redis, get_config('generic', 'tor_proxy'), get_config('generic', 'only_global_lookups'))
 
 
 @api.route('/redis_up')
