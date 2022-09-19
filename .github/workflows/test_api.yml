@@ -26,29 +26,29 @@ jobs:
       run: |
         python -m pip install --upgrade pip poetry
         poetry install
-        echo PROJECTNAME_HOME=`pwd` > .env
+        echo LACUS_HOME=`pwd` > .env
 
     - name: Install redis
       run: |
         pushd ..
         git clone https://github.com/antirez/redis.git
         pushd redis
-        git checkout 6.2
+        git checkout 7.0
         make
         popd
         popd
 
-    - name: Run API tests
-      run: |
-        poetry run start
+     - name: Run API tests
+     run: |
+       poetry run start
+    # NOTE enable that when the module is available
+    #   git clone https://github.com/Lookyloo/pyproject_template.git
+    #   pushd pyproject_template
+    #   poetry install
+    #   poetry run pytest tests/test_web.py
+    #   popd
 
-        git clone https://github.com/Lookyloo/pyproject_template.git
-        pushd pyproject_template
-        poetry install
-        poetry run pytest tests/test_web.py
-        popd
-
-        poetry run stop
+       poetry run stop
 
     - name: Test update script
       run: |
