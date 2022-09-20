@@ -4,7 +4,7 @@ import asyncio
 import logging
 
 from asyncio import Task
-from typing import List, Tuple, Set
+from typing import Set
 
 from redis import Redis
 
@@ -24,19 +24,15 @@ class CaptureManager(AbstractManager):
         self.redis: Redis = Redis(unix_socket_path=get_socket_path('cache'))
         self.lacus = Lacus()
 
-    async def _capture(self, uuid: str):
+    async def _capture(self):
         self.set_running()
-        await self.lacus.core.capture(uuid)
+        await self.lacus.core.consume_queue()
         self.unset_running()
 
     async def _to_run_forever_async(self):
-        value: List[Tuple[bytes, float]] = self.redis.zpopmax('to_capture')
-        if not value or not value[0]:
-            return
-        uuid: str = value[0][0].decode()
-        capture = asyncio.create_task(self._capture(uuid))
-        self.captures.add(capture)
+        capture = asyncio.create_task(self._capture())
         capture.add_done_callback(self.captures.discard)
+        self.captures.add(capture)
         while len(self.captures) >= get_config('generic', 'concurrent_captures'):
             await asyncio.sleep(1)
 
