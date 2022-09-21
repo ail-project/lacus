@@ -39,13 +39,13 @@ jobs:
         popd
 
      - name: Run API tests
-     run: |
-       poetry run start
-       git clone https://github.com/ail-project/PyLacus.git
-       pushd PyLacus
-       poetry install
-       poetry run pytest tests/test_web.py
-       popd
+       run: |
+         poetry run start
+         git clone https://github.com/ail-project/PyLacus.git
+         pushd PyLacus
+         poetry install
+         poetry run pytest tests/test_web.py
+         popd
 
        poetry run stop
 
