@@ -41,12 +41,11 @@ jobs:
      - name: Run API tests
      run: |
        poetry run start
-    # NOTE enable that when the module is available
-    #   git clone https://github.com/Lookyloo/pyproject_template.git
-    #   pushd pyproject_template
-    #   poetry install
-    #   poetry run pytest tests/test_web.py
-    #   popd
+       git clone https://github.com/ail-project/PyLacus.git
+       pushd PyLacus
+       poetry install
+       poetry run pytest tests/test_web.py
+       popd
 
        poetry run stop
 
