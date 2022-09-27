@@ -23,12 +23,12 @@ gunicorn = "^20.1.0"
 playwrightcapture = "^1.15.3"
 defang = "^0.5.3"
 ua-parser = "^0.16.1"
-lacuscore = "^0.3.2"
+lacuscore = "^0.3.4"
 
 [tool.poetry.dev-dependencies]
 ipython = "^8.5.0"
-mypy = "^0.971"
-types-redis = "^4.3.20"
+mypy = "^0.981"
+types-redis = "^4.3.21"
 
 [build-system]
 requires = ["poetry-core>=1.1.0"]
