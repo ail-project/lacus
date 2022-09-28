@@ -20,10 +20,7 @@ redis = {version = "^4.3.4", extras = ["hiredis"]}
 flask-restx = "^0.5.1"
 werkzeug = "2.1.2"
 gunicorn = "^20.1.0"
-playwrightcapture = "^1.15.3"
-defang = "^0.5.3"
-ua-parser = "^0.16.1"
-lacuscore = "^0.3.4"
+lacuscore = "^0.3.6"
 
 [tool.poetry.dev-dependencies]
 ipython = "^8.5.0"
