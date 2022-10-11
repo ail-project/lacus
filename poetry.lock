@@ -392,7 +392,7 @@ format-nongpl = ["fqdn", "idna", "isoduration", "jsonpointer (>1.13)", "rfc3339-
 
 [[package]]
 name = "lacuscore"
-version = "0.4.5"
+version = "0.4.6"
 description = "Core of Lacus, usable as a module"
 category = "main"
 optional = false
@@ -400,7 +400,7 @@ python-versions = ">=3.8,<4.0"
 
 [package.dependencies]
 defang = ">=0.5.3,<0.6.0"
-playwrightcapture = ">=1.15.7,<2.0.0"
+playwrightcapture = ">=1.15.8,<2.0.0"
 requests = ">=2.28.1,<3.0.0"
 ua-parser = ">=0.16.1,<0.17.0"
 
@@ -531,7 +531,7 @@ typing-extensions = {version = "*", markers = "python_version <= \"3.8\""}
 
 [[package]]
 name = "playwrightcapture"
-version = "1.15.7"
+version = "1.15.8"
 description = "A simple library to capture websites using playwright"
 category = "main"
 optional = false
@@ -866,7 +866,7 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "177324ffb09e7385212ba89659fc96b181bf26e4211f8907d4c8bfc9cd602bcd"
+content-hash = "e2d23642ee866a77f533138c1e3bb9620f4e4dcac9e76e959971f79e6ff8e9a7"
 
 [metadata.files]
 aniso8601 = [
@@ -1094,8 +1094,8 @@ jsonschema = [
     {file = "jsonschema-4.16.0.tar.gz", hash = "sha256:165059f076eff6971bae5b742fc029a7b4ef3f9bcf04c14e4776a7605de14b23"},
 ]
 lacuscore = [
-    {file = "lacuscore-0.4.5-py3-none-any.whl", hash = "sha256:a576b8d94bf091603df5d4ba75f0c4a35f5e9fc554d951949c609638f45ba4de"},
-    {file = "lacuscore-0.4.5.tar.gz", hash = "sha256:006669e53d35f53b80d759349bc71a7793d6f3e84a9ccc3a22670a248d748443"},
+    {file = "lacuscore-0.4.6-py3-none-any.whl", hash = "sha256:eacdeac813ea20c3e5c7209b81819bf270015a12c6e1f906db0a1048054fa862"},
+    {file = "lacuscore-0.4.6.tar.gz", hash = "sha256:bfa9d3ef3ee8934c986ff79e3bccd70e9ba01fd6beabff4f3978e5a7f84d83a1"},
 ]
 lxml = [
     {file = "lxml-4.9.1-cp27-cp27m-macosx_10_15_x86_64.whl", hash = "sha256:98cafc618614d72b02185ac583c6f7796202062c41d2eeecdf07820bad3295ed"},
@@ -1275,8 +1275,8 @@ playwright = [
     {file = "playwright-1.27.0-py3-none-win_amd64.whl", hash = "sha256:8cbeab451099cf0d52d9e80baf970363f900c8cc85ecf4d7dcde76a86c47880a"},
 ]
 playwrightcapture = [
-    {file = "PlaywrightCapture-1.15.7.tar.gz", hash = "sha256:a9df3c02d61ef8b39520feef12421847bfcd54acfc10cc462be5cc0369280761"},
-    {file = "playwrightcapture-1.15.7-py3-none-any.whl", hash = "sha256:905738896dda8d6c92c8689f71a7f97b6db38a61845b8ac4a2fee24bdb093ec8"},
+    {file = "PlaywrightCapture-1.15.8.tar.gz", hash = "sha256:b5618aa84d7b5eb235e33c88491f6a02d7e4e23ff4493ce7084fc095f832e12d"},
+    {file = "playwrightcapture-1.15.8-py3-none-any.whl", hash = "sha256:364ad125eda5b9a70f87ad7f11f4ffa0c96b280179631387862c00d003cbd606"},
 ]
 prompt-toolkit = [
     {file = "prompt_toolkit-3.0.31-py3-none-any.whl", hash = "sha256:9696f386133df0fc8ca5af4895afe5d78f5fcfe5258111c2a79a1c3e41ffa96d"},
