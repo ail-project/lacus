@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# import json
+import json
 import os
 import sys
 
@@ -43,6 +43,13 @@ class Monitoring():
         return self.lacus_monit.get_ongoing_captures()
 
     @property
+    def enqueued(self):
+        return self.lacus_monit.get_enqueued_captures()
+
+    def capture_settings(self, uuid: str):
+        return self.lacus_monit.get_capture_settings(uuid)
+
+    @property
     def number_keys(self):
         return self.redis_cache.info('keyspace')['db0']['keys']
 
@@ -57,18 +64,27 @@ if __name__ == '__main__':
         console.print('[bold red]Backend not up, breaking.[/bold red]')
         sys.exit()
 
-    console.print('DB info:')
-    console.print(Padding(f'{m.number_keys} keys in the database.', (0, 2)))
-    console.print(Padding(f'Current memory use: {m.memory_use["used_memory_rss_human"]}', (0, 2)))
-    console.print(Padding(f'Peak memory use: {m.memory_use["used_memory_peak_human"]}', (0, 2)))
-
     console.print('Services currently running:')
     running = AbstractManager.is_running()
     for service, number in running:
         s = Padding(f'{service} ({int(number)} service(s))', (0, 2))
         console.print(s)
 
+    console.print('DB info:')
+    console.print(Padding(f'{m.number_keys} keys in the database.', (0, 2)))
+    console.print(Padding(f'Current memory use: {m.memory_use["used_memory_rss_human"]}', (0, 2)))
+    console.print(Padding(f'Peak memory use: {m.memory_use["used_memory_peak_human"]}', (0, 2)))
+
     console.print('Ongoing captures:')
     for uuid, start_time in m.ongoing:
         s = Padding(f'{uuid}: {start_time}', (0, 2))
+        console.print(s)
+        settings = m.capture_settings(uuid)
+        if settings:
+            s = Padding(json.dumps(settings, indent=2), (0, 4))
+            console.print(s)
+
+    console.print('Enqueued captures:')
+    for uuid, priority in m.enqueued:
+        s = Padding(f'{uuid}: {priority}', (0, 2))
         console.print(s)
