@@ -28,7 +28,7 @@ Initialize the `.env` file:
 echo LACUS_HOME="`pwd`" >> .env
 ```
 
-**Note**: `LACUS_HOME` is the name you set in `project/default/__init__.py`
+**Note**: `LACUS_HOME` is the name you set in `lacus/default/__init__.py`
 
 ## Configuration
 
