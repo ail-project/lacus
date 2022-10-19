@@ -13,20 +13,25 @@ jobs:
     strategy:
       matrix:
         python-version: ['3.8', '3.9', '3.10']
-    name: Python ${{ matrix.python-version }} sample
+    name: Python ${{ matrix.python-version }}
 
     steps:
     - uses: actions/checkout@v3
+    
+    - name: Install poetry   
+      run: pipx install poetry
+    
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: ${{matrix.python-version}}
+        cache: 'poetry'
 
     - name: Install with poetry
       run: |
-        python -m pip install --upgrade pip poetry
         poetry install
         echo LACUS_HOME=`pwd` > .env
+        poetry run playwright install
 
     - name: Install redis
       run: |
