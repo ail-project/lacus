@@ -3,9 +3,10 @@
 import asyncio
 import logging
 import signal
+import time
 
 from asyncio import Task
-from typing import Set
+from typing import Dict
 
 from redis import Redis
 
@@ -21,7 +22,7 @@ class CaptureManager(AbstractManager):
     def __init__(self, loglevel: int=logging.INFO):
         super().__init__(loglevel)
         self.script_name = 'capture_manager'
-        self.captures: Set[Task] = set()
+        self.captures: Dict[Task, float] = {}
         self.redis: Redis = Redis(unix_socket_path=get_socket_path('cache'))
         self.lacus = Lacus()
 
@@ -30,12 +31,20 @@ class CaptureManager(AbstractManager):
         await self.lacus.core.consume_queue()
         self.unset_running()
 
+    def cancel_old_captures(self):
+        for task, timestamp in self.captures.items():
+            if time.time() - timestamp >= 3600:  # The capture has been running for 1 hour
+                task.cancel()
+
     async def _to_run_forever_async(self):
-        await super()._to_run_forever_async()
+        self.cancel_old_captures()
+        if self.force_stop:
+            return
         capture = asyncio.create_task(self._capture())
-        capture.add_done_callback(self.captures.discard)
-        self.captures.add(capture)
+        self.captures[capture] = time.time()
+        capture.add_done_callback(self.captures.pop)
         while len(self.captures) >= get_config('generic', 'concurrent_captures'):
+            self.cancel_old_captures()
             await asyncio.sleep(1)
 
     async def _wait_to_finish(self):

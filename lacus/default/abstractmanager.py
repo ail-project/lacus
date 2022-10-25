@@ -83,8 +83,7 @@ class AbstractManager(ABC):
             return True
 
     def _to_run_forever(self) -> None:
-        if self.force_stop:
-            return
+        raise NotImplementedError('This method must be implemented by the child')
 
     def _kill_process(self):
         if self.process is None:
@@ -142,8 +141,7 @@ class AbstractManager(ABC):
         self.force_stop = True
 
     async def _to_run_forever_async(self) -> None:
-        if self.force_stop:
-            return
+        raise NotImplementedError('This method must be implemented by the child')
 
     async def _wait_to_finish(self) -> None:
         self.logger.info('Not implemented, nothing to wait for.')
