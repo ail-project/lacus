@@ -31,20 +31,25 @@ class CaptureManager(AbstractManager):
         await self.lacus.core.consume_queue()
         self.unset_running()
 
-    def cancel_old_captures(self):
+    async def cancel_old_captures(self):
+        cancelled_tasks = []
         for task, timestamp in self.captures.items():
-            if time.time() - timestamp >= 3600:  # The capture has been running for 1 hour
+            if time.time() - timestamp >= get_config('generic', 'max_capture_time'):
                 task.cancel()
+                cancelled_tasks.append(task)
+                self.logger.warning('A capture has been going for too long, canceling it.')
+        if cancelled_tasks:
+            await asyncio.gather(*cancelled_tasks, return_exceptions=True)
 
     async def _to_run_forever_async(self):
-        self.cancel_old_captures()
+        await self.cancel_old_captures()
         if self.force_stop:
             return
         capture = asyncio.create_task(self._capture())
         self.captures[capture] = time.time()
         capture.add_done_callback(self.captures.pop)
         while len(self.captures) >= get_config('generic', 'concurrent_captures'):
-            self.cancel_old_captures()
+            await self.cancel_old_captures()
             await asyncio.sleep(1)
 
     async def _wait_to_finish(self):
