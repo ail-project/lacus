@@ -403,7 +403,7 @@ format-nongpl = ["fqdn", "idna", "isoduration", "jsonpointer (>1.13)", "rfc3339-
 
 [[package]]
 name = "lacuscore"
-version = "1.1.1"
+version = "1.1.2"
 description = "Core of Lacus, usable as a module"
 category = "main"
 optional = false
@@ -895,7 +895,7 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "a0569488727a1d0acfd9734777680a659d708d6b5a6b2ab06d859b41398d799e"
+content-hash = "457c7b64eb0239027d63588f242f6622205187890ca2b4b1cd30d3201c881dbe"
 
 [metadata.files]
 aniso8601 = [
@@ -1127,8 +1127,8 @@ jsonschema = [
     {file = "jsonschema-4.16.0.tar.gz", hash = "sha256:165059f076eff6971bae5b742fc029a7b4ef3f9bcf04c14e4776a7605de14b23"},
 ]
 lacuscore = [
-    {file = "lacuscore-1.1.1-py3-none-any.whl", hash = "sha256:bef70fd371863fc4641360903d94c84608597d3155018ceae8b11e002b741af2"},
-    {file = "lacuscore-1.1.1.tar.gz", hash = "sha256:a94d5f7876b6b01b5a3593a8bd4af35e8dcd644e64351f150b3a590df70e7895"},
+    {file = "lacuscore-1.1.2-py3-none-any.whl", hash = "sha256:876d3ccb743bb4d43421d1670762af2f54c6b82dfdec9b5a4c37109dbabd02c6"},
+    {file = "lacuscore-1.1.2.tar.gz", hash = "sha256:ed83c8f4cb31e24ec0e39ce85fcd9dd675c0ae96bf9aaededf7c21469be6b1ad"},
 ]
 lxml = [
     {file = "lxml-4.9.1-cp27-cp27m-macosx_10_15_x86_64.whl", hash = "sha256:98cafc618614d72b02185ac583c6f7796202062c41d2eeecdf07820bad3295ed"},
