@@ -79,7 +79,8 @@ class Enqueue(Resource):
             rendered_hostname_only=to_query.get('rendered_hostname_only', True),
             force=to_query.get('force', False),
             recapture_interval=to_query.get('recapture_interval', 300),
-            priority=to_query.get('priority', 0)
+            priority=to_query.get('priority', 0),
+            uuid=to_query.get('uuid', None)
         )
         return perma_uuid
 
