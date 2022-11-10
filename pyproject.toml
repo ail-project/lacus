@@ -25,8 +25,8 @@ rich = "^12.6.0"
 
 [tool.poetry.dev-dependencies]
 ipython = "^8.6.0"
-mypy = "^0.982"
-types-redis = "^4.3.21.3"
+mypy = "^0.990"
+types-redis = "^4.3.21.4"
 
 [build-system]
 requires = ["poetry-core>=1.1.0"]
