@@ -2,6 +2,7 @@
 
 import asyncio
 import logging
+import logging.config
 import signal
 import time
 
@@ -13,8 +14,7 @@ from redis import Redis
 from lacus.default import AbstractManager, get_config, get_socket_path
 from lacus.lacus import Lacus
 
-logging.basicConfig(format='%(asctime)s %(name)s %(levelname)s:%(message)s',
-                    level=logging.INFO)
+logging.config.dictConfig(get_config('logging'))
 
 
 class CaptureManager(AbstractManager):
