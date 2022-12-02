@@ -3,6 +3,7 @@
 import argparse
 import hashlib
 import logging
+import logging.config
 import platform
 import shlex
 import subprocess
