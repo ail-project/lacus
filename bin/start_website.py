@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import logging
+import logging.config
 from subprocess import Popen
 
 from lacus.default import AbstractManager
