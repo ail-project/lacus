@@ -16,14 +16,17 @@ capture_manager = "bin.capture_manager:main"
 
 [tool.poetry.dependencies]
 python = "^3.8"
-redis = {version = "^4.3.5", extras = ["hiredis"]}
+redis = {version = "^4.4.0", extras = ["hiredis"]}
 flask-restx = "^1.0.3"
 werkzeug = "^2.2.2"
 gunicorn = "^20.1.0"
-lacuscore = "^1.1.9"
+lacuscore = "^1.1.10"
 rich = "^12.6.0"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev]
+optional = true
+
+[tool.poetry.group.dev.dependencies]
 ipython = "^8.7.0"
 mypy = "^0.991"
 types-redis = "^4.3.21.6"
