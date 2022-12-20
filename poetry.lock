@@ -519,21 +519,21 @@ files = [
 
 [[package]]
 name = "importlib-metadata"
-version = "5.1.0"
+version = "5.2.0"
 description = "Read metadata from Python packages"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "importlib_metadata-5.1.0-py3-none-any.whl", hash = "sha256:d84d17e21670ec07990e1044a99efe8d615d860fd176fc29ef5c306068fda313"},
-    {file = "importlib_metadata-5.1.0.tar.gz", hash = "sha256:d5059f9f1e8e41f80e9c56c2ee58811450c31984dfa625329ffd7c0dad88a73b"},
+    {file = "importlib_metadata-5.2.0-py3-none-any.whl", hash = "sha256:0eafa39ba42bf225fc00e67f701d71f85aead9f878569caf13c3724f704b970f"},
+    {file = "importlib_metadata-5.2.0.tar.gz", hash = "sha256:404d48d62bba0b7a77ff9d405efd91501bef2e67ff4ace0bed40a0cf28c3c7cd"},
 ]
 
 [package.dependencies]
 zipp = ">=0.5"
 
 [package.extras]
-docs = ["furo", "jaraco.packaging (>=9)", "jaraco.tidelift (>=1.4)", "rst.linker (>=1.9)", "sphinx (>=3.5)"]
+docs = ["furo", "jaraco.packaging (>=9)", "jaraco.tidelift (>=1.4)", "rst.linker (>=1.9)", "sphinx (>=3.5)", "sphinx-lint"]
 perf = ["ipython"]
 testing = ["flake8 (<5)", "flufl.flake8", "importlib-resources (>=1.3)", "packaging", "pyfakefs", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=1.3)", "pytest-flake8", "pytest-mypy (>=0.9.1)", "pytest-perf (>=0.9.2)"]
 
@@ -669,19 +669,19 @@ format-nongpl = ["fqdn", "idna", "isoduration", "jsonpointer (>1.13)", "rfc3339-
 
 [[package]]
 name = "lacuscore"
-version = "1.1.11"
+version = "1.1.12"
 description = "Core of Lacus, usable as a module"
 category = "main"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "lacuscore-1.1.11-py3-none-any.whl", hash = "sha256:24b35cae445d6f846c61c3cb3d4b1b7aa360a644381cf10dab93d8e7d3701805"},
-    {file = "lacuscore-1.1.11.tar.gz", hash = "sha256:26c36b2adf34b3eb633b5696ac23889c505ea3c7e0014d12c64d41765113d01a"},
+    {file = "lacuscore-1.1.12-py3-none-any.whl", hash = "sha256:0dbd6ab9f36f6d5a8718017b2310be2b1255509f36dd96884a4873b72bb420a9"},
+    {file = "lacuscore-1.1.12.tar.gz", hash = "sha256:3f5627b1d802485e9b32d3b058c04fdd2a5cc2647fae31e424116510fec1a344"},
 ]
 
 [package.dependencies]
 defang = ">=0.5.3,<0.6.0"
-playwrightcapture = {version = ">=1.16.7,<2.0.0", extras = ["recaptcha"]}
+playwrightcapture = {version = ">=1.16.8,<2.0.0", extras = ["recaptcha"]}
 redis = {version = ">=4.4.0,<5.0.0", extras = ["hiredis"]}
 requests = ">=2.28.1,<3.0.0"
 ua-parser = ">=0.16.1,<0.17.0"
@@ -988,14 +988,14 @@ typing-extensions = {version = "*", markers = "python_version <= \"3.8\""}
 
 [[package]]
 name = "playwrightcapture"
-version = "1.16.7"
+version = "1.16.8"
 description = "A simple library to capture websites using playwright"
 category = "main"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "playwrightcapture-1.16.7-py3-none-any.whl", hash = "sha256:08c813bffa824eb49bc579d0b1145c43457705d84f3586d823a70fc15d0c2bb3"},
-    {file = "playwrightcapture-1.16.7.tar.gz", hash = "sha256:016443f93b746183b44d07e1c0675b6121b80f38dfe650e81f010293539ad741"},
+    {file = "playwrightcapture-1.16.8-py3-none-any.whl", hash = "sha256:bc6263803dd6d654875f4dd13436b796b46df530686b1fff1e279c4b057b7a63"},
+    {file = "playwrightcapture-1.16.8.tar.gz", hash = "sha256:0fc0084f5e1be33d27143504a2f1ebba6130f7449a5a372d16092660ce6fed5c"},
 ]
 
 [package.dependencies]
@@ -1144,14 +1144,14 @@ six = ">=1.5"
 
 [[package]]
 name = "pytz"
-version = "2022.6"
+version = "2022.7"
 description = "World timezone definitions, modern and historical"
 category = "main"
 optional = false
 python-versions = "*"
 files = [
-    {file = "pytz-2022.6-py2.py3-none-any.whl", hash = "sha256:222439474e9c98fced559f1709d89e6c9cbf8d79c794ff3eb9f8800064291427"},
-    {file = "pytz-2022.6.tar.gz", hash = "sha256:e89512406b793ca39f5971bc999cc538ce125c0e51c27941bef4568b460095e2"},
+    {file = "pytz-2022.7-py2.py3-none-any.whl", hash = "sha256:93007def75ae22f7cd991c84e02d434876818661f8df9ad5df9e950ff4e52cfd"},
+    {file = "pytz-2022.7.tar.gz", hash = "sha256:7ccfae7b4b2c067464a6733c6261673fdb8fd1be905460396b97a073e9fa683a"},
 ]
 
 [[package]]
@@ -1420,21 +1420,19 @@ files = [
 
 [[package]]
 name = "traitlets"
-version = "5.7.1"
+version = "5.8.0"
 description = "Traitlets Python configuration system"
 category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "traitlets-5.7.1-py3-none-any.whl", hash = "sha256:57ba2ba951632eeab9388fa45f342a5402060a5cc9f0bb942f760fafb6641581"},
-    {file = "traitlets-5.7.1.tar.gz", hash = "sha256:fde8f62c05204ead43c2c1b9389cfc85befa7f54acb5da28529d671175bb4108"},
+    {file = "traitlets-5.8.0-py3-none-any.whl", hash = "sha256:c864831efa0ba6576d09b44884b34e41defc18c0d7e720b4a2d6698c842cab3e"},
+    {file = "traitlets-5.8.0.tar.gz", hash = "sha256:6cc57d6dc28c85d5365961726ffd19b538739347749e13ebe34e03323a0e8f84"},
 ]
 
 [package.extras]
 docs = ["myst-parser", "pydata-sphinx-theme", "sphinx"]
-lint = ["black (>=22.6.0)", "mdformat (>0.7)", "ruff (>=0.0.156)"]
-test = ["pre-commit", "pytest"]
-typing = ["mypy (>=0.990)"]
+test = ["argcomplete (>=2.0)", "pre-commit", "pytest", "pytest-mock"]
 
 [[package]]
 name = "types-redis"
@@ -1583,4 +1581,4 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "43a83b3462481408c08a64db23aa586c529f07ae38a0b9b0699fdad92a9fb461"
+content-hash = "fae14faf29b6686c2463943f27a7a7601ede5cddb331454e64f7fb2e47068d47"
