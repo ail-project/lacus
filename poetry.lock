@@ -59,21 +59,22 @@ files = [
 
 [[package]]
 name = "attrs"
-version = "22.1.0"
+version = "22.2.0"
 description = "Classes Without Boilerplate"
 category = "main"
 optional = false
-python-versions = ">=3.5"
+python-versions = ">=3.6"
 files = [
-    {file = "attrs-22.1.0-py2.py3-none-any.whl", hash = "sha256:86efa402f67bf2df34f51a335487cf46b1ec130d02b8d39fd248abfd30da551c"},
-    {file = "attrs-22.1.0.tar.gz", hash = "sha256:29adc2665447e5191d0e7c568fde78b21f9672d344281d0c6e1ab085429b22b6"},
+    {file = "attrs-22.2.0-py3-none-any.whl", hash = "sha256:29e95c7f6778868dbd49170f98f8818f78f3dc5e0e37c0b1f474e3561b240836"},
+    {file = "attrs-22.2.0.tar.gz", hash = "sha256:c9227bfc2f01993c03f68db37d1d15c9690188323c067c641f1a35ca58185f99"},
 ]
 
 [package.extras]
-dev = ["cloudpickle", "coverage[toml] (>=5.0.2)", "furo", "hypothesis", "mypy (>=0.900,!=0.940)", "pre-commit", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins", "sphinx", "sphinx-notfound-page", "zope.interface"]
-docs = ["furo", "sphinx", "sphinx-notfound-page", "zope.interface"]
-tests = ["cloudpickle", "coverage[toml] (>=5.0.2)", "hypothesis", "mypy (>=0.900,!=0.940)", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins", "zope.interface"]
-tests-no-zope = ["cloudpickle", "coverage[toml] (>=5.0.2)", "hypothesis", "mypy (>=0.900,!=0.940)", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins"]
+cov = ["attrs[tests]", "coverage-enable-subprocess", "coverage[toml] (>=5.3)"]
+dev = ["attrs[docs,tests]"]
+docs = ["furo", "myst-parser", "sphinx", "sphinx-notfound-page", "sphinxcontrib-towncrier", "towncrier", "zope.interface"]
+tests = ["attrs[tests-no-zope]", "zope.interface"]
+tests-no-zope = ["cloudpickle", "cloudpickle", "hypothesis", "hypothesis", "mypy (>=0.971,<0.990)", "mypy (>=0.971,<0.990)", "pympler", "pympler", "pytest (>=4.3.0)", "pytest (>=4.3.0)", "pytest-mypy-plugins", "pytest-mypy-plugins", "pytest-xdist[psutil]", "pytest-xdist[psutil]"]
 
 [[package]]
 name = "backcall"
@@ -669,19 +670,19 @@ format-nongpl = ["fqdn", "idna", "isoduration", "jsonpointer (>1.13)", "rfc3339-
 
 [[package]]
 name = "lacuscore"
-version = "1.1.12"
+version = "1.1.13"
 description = "Core of Lacus, usable as a module"
 category = "main"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "lacuscore-1.1.12-py3-none-any.whl", hash = "sha256:0dbd6ab9f36f6d5a8718017b2310be2b1255509f36dd96884a4873b72bb420a9"},
-    {file = "lacuscore-1.1.12.tar.gz", hash = "sha256:3f5627b1d802485e9b32d3b058c04fdd2a5cc2647fae31e424116510fec1a344"},
+    {file = "lacuscore-1.1.13-py3-none-any.whl", hash = "sha256:1a0ab05937a076a77b9000142a16b087f10e63bac8f451e1026bcffa86738a5b"},
+    {file = "lacuscore-1.1.13.tar.gz", hash = "sha256:4abd74ae05256b34be79921cb1675bb2b083fef5511c6db2c3ea2227203f3151"},
 ]
 
 [package.dependencies]
 defang = ">=0.5.3,<0.6.0"
-playwrightcapture = {version = ">=1.16.8,<2.0.0", extras = ["recaptcha"]}
+playwrightcapture = {version = ">=1.16.9,<2.0.0", extras = ["recaptcha"]}
 redis = {version = ">=4.4.0,<5.0.0", extras = ["hiredis"]}
 requests = ">=2.28.1,<3.0.0"
 ua-parser = ">=0.16.1,<0.17.0"
@@ -988,14 +989,14 @@ typing-extensions = {version = "*", markers = "python_version <= \"3.8\""}
 
 [[package]]
 name = "playwrightcapture"
-version = "1.16.8"
+version = "1.16.9"
 description = "A simple library to capture websites using playwright"
 category = "main"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "playwrightcapture-1.16.8-py3-none-any.whl", hash = "sha256:bc6263803dd6d654875f4dd13436b796b46df530686b1fff1e279c4b057b7a63"},
-    {file = "playwrightcapture-1.16.8.tar.gz", hash = "sha256:0fc0084f5e1be33d27143504a2f1ebba6130f7449a5a372d16092660ce6fed5c"},
+    {file = "playwrightcapture-1.16.9-py3-none-any.whl", hash = "sha256:0b8024783b8cacbfe8f7b268105753b0ec817fa88ccdbd3e34ec0b0d8ff190d8"},
+    {file = "playwrightcapture-1.16.9.tar.gz", hash = "sha256:0dfb9f818cc9a69156ae458366dd9895f2de02f84c6647d1074fd36a1e7c711e"},
 ]
 
 [package.dependencies]
@@ -1581,4 +1582,4 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "fae14faf29b6686c2463943f27a7a7601ede5cddb331454e64f7fb2e47068d47"
+content-hash = "6112569e7d0e7f502befbf11853e3de73cf7517cfadc5f2b027a1f152fc5a3a6"
