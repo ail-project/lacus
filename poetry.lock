@@ -670,19 +670,19 @@ format-nongpl = ["fqdn", "idna", "isoduration", "jsonpointer (>1.13)", "rfc3339-
 
 [[package]]
 name = "lacuscore"
-version = "1.1.14"
+version = "1.1.15"
 description = "Core of Lacus, usable as a module"
 category = "main"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "lacuscore-1.1.14-py3-none-any.whl", hash = "sha256:c4d3bc983d477cf48515049465206115ae3470f51b4329c6f18cffaacf1362a1"},
-    {file = "lacuscore-1.1.14.tar.gz", hash = "sha256:3402ab01c1b126a476b9fd1386ba1d1d2f79b479031c22f3ec3095a86cb68c7a"},
+    {file = "lacuscore-1.1.15-py3-none-any.whl", hash = "sha256:977d5525565eb2454c71746482c245c03e13373ddf86f22520b2b9fa4c964ca7"},
+    {file = "lacuscore-1.1.15.tar.gz", hash = "sha256:8e820906229798e38fbac4eb226556efe9d07f732cc5a9c9c9b472da63e64275"},
 ]
 
 [package.dependencies]
 defang = ">=0.5.3,<0.6.0"
-playwrightcapture = {version = ">=1.16.9,<2.0.0", extras = ["recaptcha"]}
+playwrightcapture = {version = ">=1.16.10,<2.0.0", extras = ["recaptcha"]}
 redis = {version = ">=4.4.0,<5.0.0", extras = ["hiredis"]}
 requests = ">=2.28.1,<3.0.0"
 ua-parser = ">=0.16.1,<0.17.0"
@@ -989,21 +989,21 @@ typing-extensions = {version = "*", markers = "python_version <= \"3.8\""}
 
 [[package]]
 name = "playwrightcapture"
-version = "1.16.9"
+version = "1.16.10"
 description = "A simple library to capture websites using playwright"
 category = "main"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "playwrightcapture-1.16.9-py3-none-any.whl", hash = "sha256:0b8024783b8cacbfe8f7b268105753b0ec817fa88ccdbd3e34ec0b0d8ff190d8"},
-    {file = "playwrightcapture-1.16.9.tar.gz", hash = "sha256:0dfb9f818cc9a69156ae458366dd9895f2de02f84c6647d1074fd36a1e7c711e"},
+    {file = "playwrightcapture-1.16.10-py3-none-any.whl", hash = "sha256:7fc67f9ba93c8fb7a4947257cf9f797e2279a0f2839e57ffb2e505f38ec90f28"},
+    {file = "playwrightcapture-1.16.10.tar.gz", hash = "sha256:ab537b257056a30733a6ff0ce12d57244edb6d3c1d488ff43d5c1ba312677978"},
 ]
 
 [package.dependencies]
 beautifulsoup4 = ">=4.11.1,<5.0.0"
 dateparser = ">=1.1.4,<2.0.0"
 lxml = ">=4.9.2,<5.0.0"
-playwright = ">=1.28.0,<2.0.0"
+playwright = ">=1.29.0,<2.0.0"
 pydub = {version = ">=0.25.1,<0.26.0", optional = true, markers = "extra == \"recaptcha\""}
 requests = {version = ">=2.28.1,<3.0.0", optional = true, markers = "extra == \"recaptcha\""}
 SpeechRecognition = {version = ">=3.9.0,<4.0.0", optional = true, markers = "extra == \"recaptcha\""}
@@ -1582,4 +1582,4 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "303df1d6bc72ccb89b6a1e657cd5f4a3a060977027f43bd27144785af9386ff5"
+content-hash = "34adf329d8805c26b5ad34d8ab365c3ee98ff6bc527c9849a2e689be75f1aa9d"
