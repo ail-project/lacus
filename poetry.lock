@@ -1463,6 +1463,18 @@ docs = ["myst-parser", "pydata-sphinx-theme", "sphinx"]
 test = ["argcomplete (>=2.0)", "pre-commit", "pytest", "pytest-mock"]
 
 [[package]]
+name = "types-psutil"
+version = "5.9.5.5"
+description = "Typing stubs for psutil"
+category = "dev"
+optional = false
+python-versions = "*"
+files = [
+    {file = "types-psutil-5.9.5.5.tar.gz", hash = "sha256:4f26fdb2cb064b274cbc6359fba4abf3b3a2993d7d4abc336ad0947568212c62"},
+    {file = "types_psutil-5.9.5.5-py3-none-any.whl", hash = "sha256:e576bb81c74f7443b067e94f92435894d5dd561161bec3d6401727b63df009f0"},
+]
+
+[[package]]
 name = "types-redis"
 version = "4.3.21.6"
 description = "Typing stubs for redis"
@@ -1609,4 +1621,4 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "48ea0fcd68be1efc0eedcb54cd87ed815706ac100aa55b6cba7190949eac92d1"
+content-hash = "f238597e5d74f48f142ea82fb6a22dfd85822630fb2dada0f6e808454ec27381"

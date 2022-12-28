@@ -18,7 +18,7 @@ def main():
 
     found = False
     for p in psutil.process_iter(['name']):
-        if p.info['name'] == "capture_manager":
+        if p.name() == "capture_manager":
             p.send_signal(signal.SIGTERM)
             found = True
 
