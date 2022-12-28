@@ -13,6 +13,7 @@ shutdown = "bin.shutdown:main"
 run_backend = "bin.run_backend:main"
 start_website = "bin.start_website:main"
 capture_manager = "bin.capture_manager:main"
+stop_capture_manager = "bin.stop_capture_manager:main"
 
 [tool.poetry.dependencies]
 python = "^3.8"
@@ -22,6 +23,7 @@ werkzeug = "^2.2.2"
 gunicorn = "^20.1.0"
 lacuscore = "^1.1.16"
 rich = "^12.6.0"
+psutil = "^5.9.4"
 
 [tool.poetry.group.dev]
 optional = true
