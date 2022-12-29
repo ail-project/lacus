@@ -18,7 +18,8 @@ class Lacus():
         self.redis = Redis(unix_socket_path=get_socket_path('cache'))
 
         self.core = LacusCore(self.redis, get_config('generic', 'tor_proxy'),
-                              get_config('generic', 'only_global_lookups'))
+                              get_config('generic', 'only_global_lookups'),
+                              loglevel=get_config('generic', 'loglevel'))
 
     def check_redis_up(self):
         return self.redis.ping()
