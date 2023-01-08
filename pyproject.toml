@@ -17,12 +17,12 @@ stop_capture_manager = "bin.stop_capture_manager:main"
 
 [tool.poetry.dependencies]
 python = "^3.8"
-redis = {version = "^4.4.0", extras = ["hiredis"]}
+redis = {version = "^4.4.1", extras = ["hiredis"]}
 flask-restx = "^1.0.3"
 werkzeug = "^2.2.2"
 gunicorn = "^20.1.0"
-lacuscore = "^1.2.2"
-rich = "^13.0.0"
+lacuscore = "^1.2.3"
+rich = "^13.0.1"
 psutil = "^5.9.4"
 
 [tool.poetry.group.dev]
