@@ -60,7 +60,7 @@ class Enqueue(Resource):
     @api.doc(body=submit_fields_post)
     @api.produces(['text/text'])
     def post(self):
-        to_query: Dict = request.get_json(force=True)  # type: ignore
+        to_query: Dict = request.get_json(force=True)
         perma_uuid = lacus.core.enqueue(
             url=to_query.get('url'),
             document_name=to_query.get('document_name'),
