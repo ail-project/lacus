@@ -751,14 +751,14 @@ testing = ["flake8 (<5)", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-chec
 
 [[package]]
 name = "ipython"
-version = "8.10.0"
+version = "8.11.0"
 description = "IPython: Productive Interactive Computing"
 category = "dev"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "ipython-8.10.0-py3-none-any.whl", hash = "sha256:b38c31e8fc7eff642fc7c597061fff462537cf2314e3225a19c906b7b0d8a345"},
-    {file = "ipython-8.10.0.tar.gz", hash = "sha256:b13a1d6c1f5818bd388db53b7107d17454129a70de2b87481d555daede5eb49e"},
+    {file = "ipython-8.11.0-py3-none-any.whl", hash = "sha256:5b54478e459155a326bf5f42ee4f29df76258c0279c36f21d71ddb560f88b156"},
+    {file = "ipython-8.11.0.tar.gz", hash = "sha256:735cede4099dbc903ee540307b9171fbfef4aa75cfcacc5a273b2cda2f02be04"},
 ]
 
 [package.dependencies]
@@ -770,7 +770,7 @@ jedi = ">=0.16"
 matplotlib-inline = "*"
 pexpect = {version = ">4.3", markers = "sys_platform != \"win32\""}
 pickleshare = "*"
-prompt-toolkit = ">=3.0.30,<3.1.0"
+prompt-toolkit = ">=3.0.30,<3.0.37 || >3.0.37,<3.1.0"
 pygments = ">=2.4.0"
 stack-data = "*"
 traitlets = ">=5"
@@ -862,19 +862,19 @@ format-nongpl = ["fqdn", "idna", "isoduration", "jsonpointer (>1.13)", "rfc3339-
 
 [[package]]
 name = "lacuscore"
-version = "1.2.7"
+version = "1.3.0"
 description = "Core of Lacus, usable as a module"
 category = "main"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "lacuscore-1.2.7-py3-none-any.whl", hash = "sha256:e4dc9ab6f28b801f82048cd2fc3964c00d5dfe302c67063abb1aeb35a8123fd1"},
-    {file = "lacuscore-1.2.7.tar.gz", hash = "sha256:464e363f72013c9cc94df79338470085b0d4b5d8b28be035f88a71bcbb18900b"},
+    {file = "lacuscore-1.3.0-py3-none-any.whl", hash = "sha256:a31488b0aceb3b0477757ddf1932ee23cea912a3fa54c37d35bb2eaf575599c5"},
+    {file = "lacuscore-1.3.0.tar.gz", hash = "sha256:f42be2926c4118362617b7de824c8c4597b1453a238b8670a3e7b1513fd5c408"},
 ]
 
 [package.dependencies]
 defang = ">=0.5.3,<0.6.0"
-playwrightcapture = {version = ">=1.17.6,<2.0.0", extras = ["recaptcha"]}
+playwrightcapture = {version = ">=1.18.0,<2.0.0", extras = ["recaptcha"]}
 redis = {version = ">=4.5.1,<5.0.0", extras = ["hiredis"]}
 requests = ">=2.28.2,<3.0.0"
 ua-parser = ">=0.16.1,<0.17.0"
@@ -1207,19 +1207,19 @@ files = [
 
 [[package]]
 name = "playwright"
-version = "1.31.0"
+version = "1.31.1"
 description = "A high-level API to automate web browsers"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "playwright-1.31.0-py3-none-macosx_10_13_x86_64.whl", hash = "sha256:4073eab6856c0897219a8db9244e7911db23f087a0fd6dac0bad8ec67688476f"},
-    {file = "playwright-1.31.0-py3-none-macosx_11_0_arm64.whl", hash = "sha256:1a5e8142e3ab32a3011f9169b0981ce5784b8fa7a5404378978831bca89bd1b9"},
-    {file = "playwright-1.31.0-py3-none-macosx_11_0_universal2.whl", hash = "sha256:4ba1ec9b751c3ef24b0d98c63c93e3012a6abf5da2c1e027c5177f26c69549aa"},
-    {file = "playwright-1.31.0-py3-none-manylinux1_x86_64.whl", hash = "sha256:2d443d0757b1d2f5c222a9bbfd549b9dc89ca0d761a3c159162482763bb2bebd"},
-    {file = "playwright-1.31.0-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:529421030d43f5f5802556186e00af97d50f7bfce6bc53313f54ed98627e63f6"},
-    {file = "playwright-1.31.0-py3-none-win32.whl", hash = "sha256:847b89b19d5bb4d12dfc4603dc3e293ca479c8448251b08d49d053b997801003"},
-    {file = "playwright-1.31.0-py3-none-win_amd64.whl", hash = "sha256:93303193eccf85dc26adadff2593205d9906b11a908718e23c1695b2114e30ff"},
+    {file = "playwright-1.31.1-py3-none-macosx_10_13_x86_64.whl", hash = "sha256:225ff39ff29219caab242a562e6a5efa486d4659ac10d16421ad5904c7f23b25"},
+    {file = "playwright-1.31.1-py3-none-macosx_11_0_arm64.whl", hash = "sha256:c51029b8837f3533277718ff003a6fc1b512e7879ef4880306c69048345d04ac"},
+    {file = "playwright-1.31.1-py3-none-macosx_11_0_universal2.whl", hash = "sha256:d74ee6b7de96ddaf3af91a90d6160beda68b281b1027b8afec46945062c25aec"},
+    {file = "playwright-1.31.1-py3-none-manylinux1_x86_64.whl", hash = "sha256:12c73e6a10ba8a1ddac4849a6f06c753e38de60bec6db5f50f7580ade5772d97"},
+    {file = "playwright-1.31.1-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:f032c87b918a0b348b15065d5a67693cd70f39861ea65b8c9f0b63c991bf1a75"},
+    {file = "playwright-1.31.1-py3-none-win32.whl", hash = "sha256:5a3eefb7bbe5fb90c89b31ac52a6d78dde94cf82d5fbe0a999789a37d414a92f"},
+    {file = "playwright-1.31.1-py3-none-win_amd64.whl", hash = "sha256:5cb681c1bfc05e49dfe5299b9bf2f51300e60ed077d47c927c8f056938972565"},
 ]
 
 [package.dependencies]
@@ -1229,21 +1229,21 @@ typing-extensions = {version = "*", markers = "python_version <= \"3.8\""}
 
 [[package]]
 name = "playwrightcapture"
-version = "1.17.6"
+version = "1.18.0"
 description = "A simple library to capture websites using playwright"
 category = "main"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "playwrightcapture-1.17.6-py3-none-any.whl", hash = "sha256:465381f537db3e029dee73f7443f6f6018e95c8717312f8d5e04ed986bf83fe5"},
-    {file = "playwrightcapture-1.17.6.tar.gz", hash = "sha256:3b11f3666ed455e167bc3c674499bf6b9cad1693bb7afff978eb47ede68d2c72"},
+    {file = "playwrightcapture-1.18.0-py3-none-any.whl", hash = "sha256:2f382eddc4d2228114685af24dae45f174681acbe2dff641d3a93ade5cce6f63"},
+    {file = "playwrightcapture-1.18.0.tar.gz", hash = "sha256:eba2b3e98de4394bc5c11ad9aa11998653574b29ffa1d839d656df47fe6f4e17"},
 ]
 
 [package.dependencies]
 beautifulsoup4 = ">=4.11.2,<5.0.0"
 dateparser = ">=1.1.7,<2.0.0"
 lxml = ">=4.9.2,<5.0.0"
-playwright = ">=1.31.0,<2.0.0"
+playwright = ">=1.31.1,<2.0.0"
 pydub = {version = ">=0.25.1,<0.26.0", optional = true, markers = "extra == \"recaptcha\""}
 requests = {version = ">=2.28.2,<3.0.0", optional = true, markers = "extra == \"recaptcha\""}
 SpeechRecognition = {version = ">=3.9.0,<4.0.0", optional = true, markers = "extra == \"recaptcha\""}
@@ -1254,14 +1254,14 @@ recaptcha = ["SpeechRecognition (>=3.9.0,<4.0.0)", "pydub (>=0.25.1,<0.26.0)", "
 
 [[package]]
 name = "prompt-toolkit"
-version = "3.0.37"
+version = "3.0.38"
 description = "Library for building powerful interactive command lines in Python"
 category = "dev"
 optional = false
 python-versions = ">=3.7.0"
 files = [
-    {file = "prompt_toolkit-3.0.37-py3-none-any.whl", hash = "sha256:6a2948ec427dfcc7c983027b1044b355db6aaa8be374f54ad2015471f7d81c5b"},
-    {file = "prompt_toolkit-3.0.37.tar.gz", hash = "sha256:d5d73d4b5eb1a92ba884a88962b157f49b71e06c4348b417dd622b25cdd3800b"},
+    {file = "prompt_toolkit-3.0.38-py3-none-any.whl", hash = "sha256:45ea77a2f7c60418850331366c81cf6b5b9cf4c7fd34616f733c5427e6abbb1f"},
+    {file = "prompt_toolkit-3.0.38.tar.gz", hash = "sha256:23ac5d50538a9a38c8bde05fecb47d0b403ecd0662857a86f886f798563d5b9b"},
 ]
 
 [package.dependencies]
@@ -1721,14 +1721,14 @@ test = ["argcomplete (>=2.0)", "pre-commit", "pytest", "pytest-mock"]
 
 [[package]]
 name = "types-psutil"
-version = "5.9.5.8"
+version = "5.9.5.9"
 description = "Typing stubs for psutil"
 category = "dev"
 optional = false
 python-versions = "*"
 files = [
-    {file = "types-psutil-5.9.5.8.tar.gz", hash = "sha256:26e2841996fdfc66542ef74eb27ed3fbd8199bfa84e9aac0c36e177b8a74341e"},
-    {file = "types_psutil-5.9.5.8-py3-none-any.whl", hash = "sha256:21dc3aa224554b81226785708443c8b1f19d8c52a350f1a75eb9f82dfb35fffd"},
+    {file = "types-psutil-5.9.5.9.tar.gz", hash = "sha256:c6c7e6b41b6f7ebb87afd5650df360751d0e8acf0d276b7ac64d00f419beb922"},
+    {file = "types_psutil-5.9.5.9-py3-none-any.whl", hash = "sha256:f7830fb3a7bc3288113ff08199330fced7851f5219f0af1b2abc24aaa3112236"},
 ]
 
 [[package]]
@@ -1748,14 +1748,14 @@ cryptography = ">=35.0.0"
 
 [[package]]
 name = "types-redis"
-version = "4.5.1.3"
+version = "4.5.1.4"
 description = "Typing stubs for redis"
 category = "dev"
 optional = false
 python-versions = "*"
 files = [
-    {file = "types-redis-4.5.1.3.tar.gz", hash = "sha256:805160ea01ba5860a7dcd84e36661bca4eca657048f36c4c65116009cfb1ab38"},
-    {file = "types_redis-4.5.1.3-py3-none-any.whl", hash = "sha256:68a061e213dedd6bc09433b8fb927f1dd4a5ada017a1f9017453be1a09a9eb5a"},
+    {file = "types-redis-4.5.1.4.tar.gz", hash = "sha256:7660178754d60a4cfacf5b33ee063aa0625311791c62075cd936136627a3f7bf"},
+    {file = "types_redis-4.5.1.4-py3-none-any.whl", hash = "sha256:4ad21473605b9e1f96162b1298383dcbc73daa3bec2abe1fd3e81d077753f9ab"},
 ]
 
 [package.dependencies]
@@ -1880,21 +1880,21 @@ watchdog = ["watchdog"]
 
 [[package]]
 name = "zipp"
-version = "3.14.0"
+version = "3.15.0"
 description = "Backport of pathlib-compatible object wrapper for zip files"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "zipp-3.14.0-py3-none-any.whl", hash = "sha256:188834565033387710d046e3fe96acfc9b5e86cbca7f39ff69cf21a4128198b7"},
-    {file = "zipp-3.14.0.tar.gz", hash = "sha256:9e5421e176ef5ab4c0ad896624e87a7b2f07aca746c9b2aa305952800cb8eecb"},
+    {file = "zipp-3.15.0-py3-none-any.whl", hash = "sha256:48904fc76a60e542af151aded95726c1a5c34ed43ab4134b597665c86d7ad556"},
+    {file = "zipp-3.15.0.tar.gz", hash = "sha256:112929ad649da941c23de50f356a2b5570c954b65150642bccdd66bf194d224b"},
 ]
 
 [package.extras]
 docs = ["furo", "jaraco.packaging (>=9)", "jaraco.tidelift (>=1.4)", "rst.linker (>=1.9)", "sphinx (>=3.5)", "sphinx-lint"]
-testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools", "more-itertools", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=1.3)", "pytest-flake8", "pytest-mypy (>=0.9.1)"]
+testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more-itertools", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=1.3)", "pytest-flake8", "pytest-mypy (>=0.9.1)"]
 
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "15d5e1efcfddd876d28f06672008ede827afe6498b9598c0b8ee073557efe8c8"
+content-hash = "ad53bbc43601d93dd7abb78e542695fd24e279ee21215d73f5393a73193d77b2"

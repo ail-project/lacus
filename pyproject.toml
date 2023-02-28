@@ -1,9 +1,10 @@
 [tool.poetry]
 name = "lacus"
-version = "1.2.0"
+version = "1.3.0"
 description = " A capturing system using playwright, as a web service."
 authors = ["Raphaël Vinot <raphael.vinot@circl.lu>"]
 license = "BSD-3-Clause"
+repository = "https://github.com/ail-project/Lacus"
 
 [tool.poetry.scripts]
 start = "bin.start:main"
@@ -21,7 +22,7 @@ redis = {version = "^4.5.1", extras = ["hiredis"]}
 flask-restx = "^1.0.6"
 werkzeug = "^2.2.3"
 gunicorn = "^20.1.0"
-lacuscore = "^1.2.7"
+lacuscore = "^1.3.0"
 rich = "^13.3.1"
 psutil = "^5.9.4"
 
