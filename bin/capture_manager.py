@@ -7,7 +7,7 @@ import signal
 import time
 
 from asyncio import Task
-from typing import Dict
+from typing import Dict, Optional
 
 from redis import Redis
 
@@ -19,7 +19,7 @@ logging.config.dictConfig(get_config('logging'))
 
 class CaptureManager(AbstractManager):
 
-    def __init__(self, loglevel: int=logging.INFO):
+    def __init__(self, loglevel: Optional[int]=None):
         super().__init__(loglevel)
         self.script_name = 'capture_manager'
         self.captures: Dict[Task, float] = {}

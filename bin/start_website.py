@@ -2,6 +2,9 @@
 
 import logging
 import logging.config
+
+from typing import Optional
+
 from subprocess import Popen
 
 from lacus.default import AbstractManager
@@ -12,7 +15,7 @@ logging.config.dictConfig(get_config('logging'))
 
 class Website(AbstractManager):
 
-    def __init__(self, loglevel: int=logging.INFO):
+    def __init__(self, loglevel: Optional[int]=None):
         super().__init__(loglevel)
         self.script_name = 'website'
         self.process = self._launch_website()
