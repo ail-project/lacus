@@ -148,6 +148,7 @@ class AbstractManager(ABC):
         except KeyboardInterrupt:
             self.logger.warning(f'{self.script_name} killed by user.')
         finally:
+            self._wait_to_finish()
             if self.process:
                 self._kill_process()
             try:
@@ -157,13 +158,16 @@ class AbstractManager(ABC):
                 pass
             self.logger.info(f'Shutting down {self.__class__.__name__}')
 
+    def _wait_to_finish(self) -> None:
+        self.logger.info('Not implemented, nothing to wait for.')
+
     async def stop(self):
         self.force_stop = True
 
     async def _to_run_forever_async(self) -> None:
         raise NotImplementedError('This method must be implemented by the child')
 
-    async def _wait_to_finish(self) -> None:
+    async def _wait_to_finish_async(self) -> None:
         self.logger.info('Not implemented, nothing to wait for.')
 
     async def stop_async(self):
@@ -200,7 +204,7 @@ class AbstractManager(ABC):
         except Exception as e:  # nosec B110
             self.logger.exception(e)
         finally:
-            await self._wait_to_finish()
+            await self._wait_to_finish_async()
             if self.process:
                 self._kill_process()
             try:

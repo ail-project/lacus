@@ -4,7 +4,7 @@ import logging
 
 from redis import Redis
 
-from lacuscore import LacusCore
+from lacuscore import LacusCore, LacusCoreMonitoring
 
 from .default import get_config, get_socket_path
 
@@ -16,10 +16,13 @@ class Lacus():
         self.logger.setLevel(get_config('generic', 'loglevel'))
 
         self.redis = Redis(unix_socket_path=get_socket_path('cache'))
+        self.redis_decode = Redis(unix_socket_path=get_socket_path('cache'), decode_responses=True)
 
-        self.core = LacusCore(self.redis, get_config('generic', 'tor_proxy'),
-                              get_config('generic', 'only_global_lookups'),
+        self.core = LacusCore(self.redis, tor_proxy=get_config('generic', 'tor_proxy'),
+                              only_global_lookups=get_config('generic', 'only_global_lookups'),
                               loglevel=get_config('generic', 'loglevel'))
+
+        self.monitoring = LacusCoreMonitoring(self.redis_decode)
 
     def check_redis_up(self):
         return self.redis.ping()

@@ -4,14 +4,12 @@ import asyncio
 import logging
 import logging.config
 import signal
-import time
 
 from asyncio import Task
-from typing import Dict, Optional
+from typing import Optional, Set
 
-from redis import Redis
 
-from lacus.default import AbstractManager, get_config, get_socket_path
+from lacus.default import AbstractManager, get_config
 from lacus.lacus import Lacus
 
 logging.config.dictConfig(get_config('logging'))
@@ -22,37 +20,29 @@ class CaptureManager(AbstractManager):
     def __init__(self, loglevel: Optional[int]=None):
         super().__init__(loglevel)
         self.script_name = 'capture_manager'
-        self.captures: Dict[Task, float] = {}
-        self.redis: Redis = Redis(unix_socket_path=get_socket_path('cache'))
+        self.captures: Set[Task] = set()
         self.lacus = Lacus()
 
-    async def _capture(self):
-        self.set_running()
-        await self.lacus.core.consume_queue()
-        self.unset_running()
-
-    async def cancel_old_captures(self):
-        cancelled_tasks = []
-        for task, timestamp in self.captures.items():
-            if time.time() - timestamp >= get_config('generic', 'max_capture_time'):
-                task.cancel()
-                cancelled_tasks.append(task)
-                self.logger.warning('A capture has been going for too long, canceling it.')
-        if cancelled_tasks:
-            await asyncio.gather(*cancelled_tasks, return_exceptions=True)
+    async def clear_dead_captures(self):
+        ongoing = [capture.get_name() for capture in self.captures]
+        for expected_uuid in [uuid for uuid, ts in self.lacus.monitoring.get_ongoing_captures()]:
+            if expected_uuid not in ongoing:
+                self.lacus.core.clear_capture(expected_uuid, 'Capture not in the list of tasks, it has been canceled.')
 
     async def _to_run_forever_async(self):
-        await self.cancel_old_captures()
+        await self.clear_dead_captures()
         if self.force_stop:
             return
-        capture = asyncio.create_task(self._capture())
-        self.captures[capture] = time.time()
-        capture.add_done_callback(self.captures.pop)
-        while len(self.captures) >= get_config('generic', 'concurrent_captures'):
-            await self.cancel_old_captures()
-            await asyncio.sleep(1)
+        max_new_captures = get_config('generic', 'concurrent_captures') - len(self.captures)
+        self.logger.debug(f'{len(self.captures)} ongoing captures.')
+        if max_new_captures <= 0:
+            self.logger.info(f'Max amount of captures in parallel reached ({len(self.captures)})')
+            return
+        for capture_task in self.lacus.core.consume_queue(max_new_captures):
+            self.captures.add(capture_task)
+            capture_task.add_done_callback(self.captures.discard)
 
-    async def _wait_to_finish(self):
+    async def _wait_to_finish_async(self):
         while self.captures:
             self.logger.info(f'Waiting for {len(self.captures)} capture(s) to finish...')
             await asyncio.sleep(5)
