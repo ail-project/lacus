@@ -30,6 +30,7 @@ class CaptureManager(AbstractManager):
                 self.lacus.core.clear_capture(expected_uuid, 'Capture not in the list of tasks, it has been canceled.')
 
     async def _to_run_forever_async(self):
+        self.set_running()
         await self.clear_dead_captures()
         if self.force_stop:
             return
@@ -46,7 +47,9 @@ class CaptureManager(AbstractManager):
         while self.captures:
             self.logger.info(f'Waiting for {len(self.captures)} capture(s) to finish...')
             await asyncio.sleep(5)
+        await asyncio.gather(*self.captures)
         self.logger.info('No more captures')
+        self.unset_running()
 
 
 def main():
