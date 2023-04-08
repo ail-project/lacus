@@ -67,9 +67,15 @@ class AbstractManager(ABC):
         except RedisConnectionError:
             print('Unable to connect to redis, the system is down.')
 
-    def set_running(self) -> None:
-        self.__redis.zincrby('running', 1, self.script_name)
-        self.__redis.sadd(f'service|{self.script_name}', os.getpid())
+    def set_running(self, number: Optional[int]=None) -> None:
+        if number == 0:
+            self.__redis.zrem('running', self.script_name)
+        else:
+            if number is None:
+                self.__redis.zincrby('running', 1, self.script_name)
+            else:
+                self.__redis.zadd('running', {self.script_name: number})
+            self.__redis.sadd(f'service|{self.script_name}', os.getpid())
 
     def unset_running(self) -> None:
         current_running = self.__redis.zincrby('running', -1, self.script_name)
