@@ -33,7 +33,6 @@ class CaptureManager(AbstractManager):
         await self.clear_dead_captures()
         if self.force_stop:
             return
-        self.set_running(len(self.captures))
         max_new_captures = get_config('generic', 'concurrent_captures') - len(self.captures)
         self.logger.debug(f'{len(self.captures)} ongoing captures.')
         if max_new_captures <= 0:
@@ -42,6 +41,9 @@ class CaptureManager(AbstractManager):
         for capture_task in self.lacus.core.consume_queue(max_new_captures):
             self.captures.add(capture_task)
             capture_task.add_done_callback(self.captures.discard)
+        # NOTE: +1 because running this method also counts for one and will
+        #       be decremented when it finishes
+        self.set_running(len(self.captures) + 1)
 
     async def _wait_to_finish_async(self):
         while self.captures:
