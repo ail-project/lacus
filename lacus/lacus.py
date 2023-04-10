@@ -20,7 +20,8 @@ class Lacus():
 
         self.core = LacusCore(self.redis, tor_proxy=get_config('generic', 'tor_proxy'),
                               only_global_lookups=get_config('generic', 'only_global_lookups'),
-                              loglevel=get_config('generic', 'loglevel'))
+                              loglevel=get_config('generic', 'loglevel'),
+                              max_capture_time=get_config('generic', 'max_capture_time'))
 
         self.monitoring = LacusCoreMonitoring(self.redis_decode)
 
