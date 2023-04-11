@@ -48,6 +48,7 @@ class CaptureManager(AbstractManager):
     async def _wait_to_finish_async(self):
         while self.captures:
             self.logger.info(f'Waiting for {len(self.captures)} capture(s) to finish...')
+            self.logger.info(f'Ongoing captures: {", ".join(capture.get_name() for capture in self.captures)}')
             await asyncio.sleep(5)
             self.set_running(len(self.captures))
         self.logger.info('No more captures')
