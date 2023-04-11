@@ -846,19 +846,19 @@ format-nongpl = ["fqdn", "idna", "isoduration", "jsonpointer (>1.13)", "rfc3339-
 
 [[package]]
 name = "lacuscore"
-version = "1.4.6"
+version = "1.4.7"
 description = "Core of Lacus, usable as a module"
 category = "main"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "lacuscore-1.4.6-py3-none-any.whl", hash = "sha256:ba4f673056de95aad30c7e1684bb8405cb78aeed799cb6885d43b44a8bb370f1"},
-    {file = "lacuscore-1.4.6.tar.gz", hash = "sha256:9fc710c1f8c092cdbf67d743c8f1187c766c2cfb4d640f50cac09db822b8bd2b"},
+    {file = "lacuscore-1.4.7-py3-none-any.whl", hash = "sha256:372ae337e8d2174fc8da6822752e3d272530ba6157c13ab6d13b483fac595974"},
+    {file = "lacuscore-1.4.7.tar.gz", hash = "sha256:dd187487be02de2aae1af45f86e09d1a7eb9cb7261c0127992084d121eb9f169"},
 ]
 
 [package.dependencies]
 defang = ">=0.5.3,<0.6.0"
-playwrightcapture = {version = ">=1.19.7,<2.0.0", extras = ["recaptcha"]}
+playwrightcapture = {version = ">=1.19.8,<2.0.0", extras = ["recaptcha"]}
 redis = {version = ">=4.5.4,<5.0.0", extras = ["hiredis"]}
 requests = ">=2.28.2,<3.0.0"
 ua-parser = ">=0.16.1,<0.17.0"
@@ -1213,14 +1213,14 @@ typing-extensions = {version = "*", markers = "python_version <= \"3.8\""}
 
 [[package]]
 name = "playwrightcapture"
-version = "1.19.7"
+version = "1.19.8"
 description = "A simple library to capture websites using playwright"
 category = "main"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "playwrightcapture-1.19.7-py3-none-any.whl", hash = "sha256:58f0569a2a15552b2c11b80ab793d49bbc91cfd14df32932b831b6ebf1deed84"},
-    {file = "playwrightcapture-1.19.7.tar.gz", hash = "sha256:f890bbf018bb45a7c4db38e39936bbf4b13b10f69fda3346ef2e1ac259934bdb"},
+    {file = "playwrightcapture-1.19.8-py3-none-any.whl", hash = "sha256:f0086bbca8a976b000d7fd6de6c775a6e70b73efe3ca700b816a28ebafe60520"},
+    {file = "playwrightcapture-1.19.8.tar.gz", hash = "sha256:8e958184a06a8e231a889cbaa66e9f4ce18b2aefa5b49fd0c901805d0ad68e1b"},
 ]
 
 [package.dependencies]
@@ -1855,4 +1855,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "d3d4eb0c46d0ea300bad07a8d0080a4eb01f93cedcdf6bb892d837bdd2a20924"
+content-hash = "63ad8c6f52e43ecef4b31c985d15b928dfeaff6bc3f708f7b8b8d110927936c3"
