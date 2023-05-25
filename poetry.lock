@@ -899,19 +899,19 @@ format-nongpl = ["fqdn", "idna", "isoduration", "jsonpointer (>1.13)", "rfc3339-
 
 [[package]]
 name = "lacuscore"
-version = "1.4.14"
+version = "1.4.15"
 description = "Core of Lacus, usable as a module"
 category = "main"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "lacuscore-1.4.14-py3-none-any.whl", hash = "sha256:6bb10af0e46baff5256cc4e5a68fd15beddb5a8ca268ee117c998ba7578adba2"},
-    {file = "lacuscore-1.4.14.tar.gz", hash = "sha256:7f6656cd6d2b22fc2906aa864e75b40234b294883bc6091bff1b7ff0a7b897ff"},
+    {file = "lacuscore-1.4.15-py3-none-any.whl", hash = "sha256:ac9c45e654db0b96bce5484932c4bcee62f1277b0cc638647015bac8bd2d2c02"},
+    {file = "lacuscore-1.4.15.tar.gz", hash = "sha256:1b39e0e78658c54806a97b11b189bfb7b1730d83a92ee676f785d3d7eb4aedc2"},
 ]
 
 [package.dependencies]
 defang = ">=0.5.3,<0.6.0"
-playwrightcapture = {version = ">=1.19.13,<2.0.0", extras = ["recaptcha"]}
+playwrightcapture = {version = ">=1.19.15,<2.0.0", extras = ["recaptcha"]}
 redis = {version = ">=4.5.5,<5.0.0", extras = ["hiredis"]}
 requests = ">=2.31.0,<3.0.0"
 ua-parser = ">=0.16.1,<0.17.0"
@@ -1262,14 +1262,14 @@ typing-extensions = {version = "*", markers = "python_version <= \"3.8\""}
 
 [[package]]
 name = "playwrightcapture"
-version = "1.19.13"
+version = "1.19.15"
 description = "A simple library to capture websites using playwright"
 category = "main"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "playwrightcapture-1.19.13-py3-none-any.whl", hash = "sha256:914248734306833abff39042d2f64b1476d91a72084b6aa0666db35d9a02e9cd"},
-    {file = "playwrightcapture-1.19.13.tar.gz", hash = "sha256:942c1206a066e980ef054b66074bdc5f2b6e36e10f1c7230410fb5ad5c7ffd7e"},
+    {file = "playwrightcapture-1.19.15-py3-none-any.whl", hash = "sha256:dad56a1c6129a43f83d2787769159c664c7a5dc78f7f4698757e83581dcbb1a7"},
+    {file = "playwrightcapture-1.19.15.tar.gz", hash = "sha256:dacb79377dcc39c13b60a0516d4921f7e29a7bd1b91ba9302b9cae67e4eb71f7"},
 ]
 
 [package.dependencies]
@@ -1784,14 +1784,14 @@ types-pyOpenSSL = "*"
 
 [[package]]
 name = "typing-extensions"
-version = "4.6.0"
+version = "4.6.2"
 description = "Backported and Experimental Type Hints for Python 3.7+"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "typing_extensions-4.6.0-py3-none-any.whl", hash = "sha256:6ad00b63f849b7dcc313b70b6b304ed67b2b2963b3098a33efe18056b1a9a223"},
-    {file = "typing_extensions-4.6.0.tar.gz", hash = "sha256:ff6b238610c747e44c268aa4bb23c8c735d665a63726df3f9431ce707f2aa768"},
+    {file = "typing_extensions-4.6.2-py3-none-any.whl", hash = "sha256:3a8b36f13dd5fdc5d1b16fe317f5668545de77fa0b8e02006381fd49d731ab98"},
+    {file = "typing_extensions-4.6.2.tar.gz", hash = "sha256:06006244c70ac8ee83fa8282cb188f697b8db25bc8b4df07be1873c43897060c"},
 ]
 
 [[package]]
@@ -1916,4 +1916,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "c9d9c6ffd48747374fa10f4f0e439c777c957baf576355969158f88b22482fc8"
+content-hash = "30d51261a94ceb95054778c411e3c30122dc9bd3160b4e55cc2c401f53d2fc24"
