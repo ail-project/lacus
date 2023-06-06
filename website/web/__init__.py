@@ -32,6 +32,22 @@ class RedisUp(Resource):
         return lacus.check_redis_up()
 
 
+http_creds_model = api.model('HttpCredentialtModel', {
+    'username': fields.String(),
+    'password': fields.String()
+})
+
+viewport_model = api.model('ViewportModel', {
+    'width': fields.Integer(),
+    'height': fields.Integer()
+})
+
+geolocation_model = api.model('GeolocalisationModel', {
+    'longitude': fields.Float(),
+    'latitude': fields.Float()
+})
+
+
 submit_fields_post = api.model('SubmitFieldsPost', {
     'url': fields.Url(description="The URL to capture"),
     'document': fields.String(description="A base64 encoded document, it can be anything a browser can display."),
@@ -42,11 +58,15 @@ submit_fields_post = api.model('SubmitFieldsPost', {
     'device_name': fields.String(description="Use the pre-configured settings for this device. Get a list from /json/devices.", example=''),
     'user_agent': fields.String(description="User agent to use for the capture", example=''),
     'proxy': fields.Url(description="Proxy to use for the capture. Format: [scheme]://[username]:[password]@[hostname]:[port]", example=''),
-    'general_timeout_in_sec': fields.Integer(description=""),
+    'general_timeout_in_sec': fields.Integer(description="General timeout for the capture. It will be killed regardless the status after that time."),
     'cookies': fields.String(description="JSON export of a list of cookies as exported from an other capture", example=''),
     'headers': fields.String(description="Headers to pass to the capture", example='Accept-Language: en-US;q=0.5, fr-FR;q=0.4'),
-    # 'http_credentials': fields.(description=""),
-    # 'viewport': fields.(description=""),
+    'http_credentials': fields.Nested(http_creds_model, description="HTTP Authentication settings"),
+    'geolocation': fields.Nested(geolocation_model, description="The geolocalisation of the browser"),
+    'viewport': fields.Nested(viewport_model, description="The viewport of the capture"),
+    'timezone_id': fields.String(description="The timesone ID of the browser"),
+    'locale': fields.String(description="The locale of the browser"),
+    'color_scheme': fields.String(description="The color scheme of the browser"),
     'referer': fields.String(description="Referer to pass to the capture", example=''),
     'force': fields.Boolean(description="Force a capture, even if the same one was already done recently"),
     'recapture_interval': fields.Integer(description="The nimomal interval to re-trigger a capture, unless force is True"),
@@ -75,6 +95,10 @@ class Enqueue(Resource):
             headers=to_query.get('headers'),
             http_credentials=to_query.get('http_credentials'),
             viewport=to_query.get('viewport'),
+            geolocation=to_query.get('geolocation'),
+            timezone_id=to_query.get('timezone_id'),
+            locale=to_query.get('locale'),
+            color_scheme=to_query.get('color_scheme'),
             referer=to_query.get('referer'),
             rendered_hostname_only=to_query.get('rendered_hostname_only', True),
             force=to_query.get('force', False),
