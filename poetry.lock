@@ -866,13 +866,13 @@ format-nongpl = ["fqdn", "idna", "isoduration", "jsonpointer (>1.13)", "rfc3339-
 
 [[package]]
 name = "lacuscore"
-version = "1.5.3"
+version = "1.5.4"
 description = "Core of Lacus, usable as a module"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "lacuscore-1.5.3-py3-none-any.whl", hash = "sha256:9f269874f155dd72f0ffb190b4da39726f874e750e1f7c0bd1068cdc09d63766"},
-    {file = "lacuscore-1.5.3.tar.gz", hash = "sha256:778081a60b80f098daf9d31e5a6b3dc478c6136f55e82951710b1d52b0d51905"},
+    {file = "lacuscore-1.5.4-py3-none-any.whl", hash = "sha256:bb118ee6e7603ecb18191e5eb60a74d2a9c700076d1c80ec581acefceb66def7"},
+    {file = "lacuscore-1.5.4.tar.gz", hash = "sha256:6de799e9735a32950445225db9018e1f52d593c29e1f536059b541ac7d6fb47d"},
 ]
 
 [package.dependencies]
@@ -1216,13 +1216,13 @@ typing-extensions = {version = "*", markers = "python_version <= \"3.8\""}
 
 [[package]]
 name = "playwrightcapture"
-version = "1.20.3"
+version = "1.20.4"
 description = "A simple library to capture websites using playwright"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "playwrightcapture-1.20.3-py3-none-any.whl", hash = "sha256:5757b2200f60b929c0a4183bd357b5ba11c8a3e802e0735d2f95215c352d30a2"},
-    {file = "playwrightcapture-1.20.3.tar.gz", hash = "sha256:4b103a2963e3fd49be8abfd7f3f5321ef420f35e6d41d283b5ada29e4bbcfbd6"},
+    {file = "playwrightcapture-1.20.4-py3-none-any.whl", hash = "sha256:e943b5cc3700402cfe395ca61c42b7812bde9d9c1c30c71abf219e2f700ac83b"},
+    {file = "playwrightcapture-1.20.4.tar.gz", hash = "sha256:ae8b6b680992b992290260fbac16a07bedd0d0e3259d8864cba70272481a2b0a"},
 ]
 
 [package.dependencies]
@@ -1234,6 +1234,7 @@ pydub = {version = ">=0.25.1,<0.26.0", optional = true, markers = "extra == \"re
 pytz = {version = ">=2023.3,<2024.0", markers = "python_version < \"3.9\""}
 requests = {version = ">=2.31.0,<3.0.0", optional = true, markers = "extra == \"recaptcha\""}
 SpeechRecognition = {version = ">=3.10.0,<4.0.0", optional = true, markers = "extra == \"recaptcha\""}
+tzdata = ">=2023.3,<2024.0"
 w3lib = ">=2.1.1,<3.0.0"
 
 [package.extras]
@@ -1764,13 +1765,13 @@ files = [
 
 [[package]]
 name = "urllib3"
-version = "2.0.2"
+version = "2.0.3"
 description = "HTTP library with thread-safe connection pooling, file post, and more."
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "urllib3-2.0.2-py3-none-any.whl", hash = "sha256:d055c2f9d38dc53c808f6fdc8eab7360b6fdbbde02340ed25cfbcd817c62469e"},
-    {file = "urllib3-2.0.2.tar.gz", hash = "sha256:61717a1095d7e155cdb737ac7bb2f4324a858a1e2e6466f6d03ff630ca68d3cc"},
+    {file = "urllib3-2.0.3-py3-none-any.whl", hash = "sha256:48e7fafa40319d358848e1bc6809b208340fafe2096f1725d05d67443d0483d1"},
+    {file = "urllib3-2.0.3.tar.gz", hash = "sha256:bee28b5e56addb8226c96f7f13ac28cb4c301dd5ea8a6ca179c0b9835e032825"},
 ]
 
 [package.extras]
@@ -1836,4 +1837,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "18d938af09677c290d6c76061cda72bdf47c4dc0e3faa016536cc7939fdae42f"
+content-hash = "d60c58e5b84ac9b35e808f948164d54745c1b0c3cbea90d1e993038e3ba3014a"
