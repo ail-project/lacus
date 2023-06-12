@@ -866,18 +866,18 @@ format-nongpl = ["fqdn", "idna", "isoduration", "jsonpointer (>1.13)", "rfc3339-
 
 [[package]]
 name = "lacuscore"
-version = "1.5.4"
+version = "1.5.6"
 description = "Core of Lacus, usable as a module"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "lacuscore-1.5.4-py3-none-any.whl", hash = "sha256:bb118ee6e7603ecb18191e5eb60a74d2a9c700076d1c80ec581acefceb66def7"},
-    {file = "lacuscore-1.5.4.tar.gz", hash = "sha256:6de799e9735a32950445225db9018e1f52d593c29e1f536059b541ac7d6fb47d"},
+    {file = "lacuscore-1.5.6-py3-none-any.whl", hash = "sha256:dfccc4a0230472734e0b1ba6cdcc9fe4a981b47e0cc4d7abb81ff8a7a65ecb06"},
+    {file = "lacuscore-1.5.6.tar.gz", hash = "sha256:199a4392073afeeb6ead3e82dc73e88812adc1c6c3fca0c70bb4c7bb527200f9"},
 ]
 
 [package.dependencies]
 defang = ">=0.5.3,<0.6.0"
-playwrightcapture = {version = ">=1.20.3,<2.0.0", extras = ["recaptcha"]}
+playwrightcapture = {version = ">=1.20.4,<2.0.0", extras = ["recaptcha"]}
 redis = {version = ">=4.5.5,<5.0.0", extras = ["hiredis"]}
 requests = ">=2.31.0,<3.0.0"
 ua-parser = ">=0.16.1,<0.17.0"
@@ -1674,13 +1674,13 @@ test = ["argcomplete (>=2.0)", "pre-commit", "pytest", "pytest-mock"]
 
 [[package]]
 name = "types-psutil"
-version = "5.9.5.13"
+version = "5.9.5.15"
 description = "Typing stubs for psutil"
 optional = false
 python-versions = "*"
 files = [
-    {file = "types-psutil-5.9.5.13.tar.gz", hash = "sha256:3374c06ff92436f57c72e5df1e8fa08480af3e846f78d72498ddc7181985ac85"},
-    {file = "types_psutil-5.9.5.13-py3-none-any.whl", hash = "sha256:692213804a926bf88eeaef40dc3c7d3e01926eb5282de4655c4bf8af1ba0b675"},
+    {file = "types-psutil-5.9.5.15.tar.gz", hash = "sha256:943a5f9556c1995097c89f50274330dd8d71d17bd73cbc6b09c61dbf4e114cc6"},
+    {file = "types_psutil-5.9.5.15-py3-none-any.whl", hash = "sha256:7f183072d1fdb4e092fd6dd88ea017b957056bf10e58eafcdca26bf4372c0742"},
 ]
 
 [[package]]
@@ -1804,13 +1804,13 @@ files = [
 
 [[package]]
 name = "werkzeug"
-version = "2.3.5"
+version = "2.3.6"
 description = "The comprehensive WSGI web application library."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "Werkzeug-2.3.5-py3-none-any.whl", hash = "sha256:26c6a6a63a8a8d10a8d4e13e7f10821772ff5f138909262e89e946717c72b857"},
-    {file = "Werkzeug-2.3.5.tar.gz", hash = "sha256:f6426f626540009131f06482c73f10c536efd47125afc63c850cc950db9ae585"},
+    {file = "Werkzeug-2.3.6-py3-none-any.whl", hash = "sha256:935539fa1413afbb9195b24880778422ed620c0fc09670945185cce4d91a8890"},
+    {file = "Werkzeug-2.3.6.tar.gz", hash = "sha256:98c774df2f91b05550078891dee5f0eb0cb797a522c757a2452b9cee5b202330"},
 ]
 
 [package.dependencies]
@@ -1837,4 +1837,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "44fe4ae402259358c983f28f116aa734a12f8c99aa7fe3535ec19a386dc93ce8"
+content-hash = "554fcf2037946858115e3e858de10e0bc78aae1511c407fd64ed0d4662f25bbf"
