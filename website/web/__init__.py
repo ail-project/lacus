@@ -89,7 +89,7 @@ class Enqueue(Resource):
             browser=to_query.get('browser'),
             device_name=to_query.get('device_name'),
             user_agent=to_query.get('user_agent'),
-            proxy=to_query.get('proxy'),
+            proxy=lacus.global_proxy if lacus.global_proxy else to_query.get('proxy'),
             general_timeout_in_sec=to_query.get('general_timeout_in_sec'),
             cookies=to_query.get('cookies'),
             headers=to_query.get('headers'),

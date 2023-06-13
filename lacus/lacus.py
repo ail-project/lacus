@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import copy
 import logging
 
 from redis import Redis, ConnectionPool
@@ -33,6 +34,12 @@ class Lacus():
                               max_capture_time=get_config('generic', 'max_capture_time'))
 
         self.monitoring = LacusCoreMonitoring(self.redis_decode)
+
+        self.global_proxy = {}
+        if global_proxy := get_config('generic', 'global_proxy'):
+            if global_proxy.get('enable'):
+                self.global_proxy = copy.copy(global_proxy)
+                self.global_proxy.pop('enable')
 
     @property
     def redis(self):
