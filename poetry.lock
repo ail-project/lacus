@@ -866,13 +866,13 @@ format-nongpl = ["fqdn", "idna", "isoduration", "jsonpointer (>1.13)", "rfc3339-
 
 [[package]]
 name = "lacuscore"
-version = "1.5.7"
+version = "1.5.8"
 description = "Core of Lacus, usable as a module"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "lacuscore-1.5.7-py3-none-any.whl", hash = "sha256:851568c3da735cd71f05a4c6b608803e2c2f6baa5b722012508b78942d0cfa3f"},
-    {file = "lacuscore-1.5.7.tar.gz", hash = "sha256:06051a45d1ff889e770ac93140334bda44840fb260252d90f6ee29709af6e4c5"},
+    {file = "lacuscore-1.5.8-py3-none-any.whl", hash = "sha256:ebd5a92c7b2dd0285e6b6a240deacab594ec5d1d11894d2e59db6cf4ff92312d"},
+    {file = "lacuscore-1.5.8.tar.gz", hash = "sha256:dde2e0a96c88df9c277f2f2e89262a34094462501a8c5061217c505cdf682717"},
 ]
 
 [package.dependencies]
@@ -1837,4 +1837,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "a336570bc31d6402385af74a99209954ee0e7b66efa3c74c761e5fd19591c127"
+content-hash = "92a4cf6712f32ebba6010a52cbd9b2be2b1eb4b8c0b731e0924be90396e31bf1"
