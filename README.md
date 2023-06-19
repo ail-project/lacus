@@ -22,6 +22,12 @@ From the directory you just cloned, run:
 poetry install
 ```
 
+Install the system dependencies required by playwright (will call sudo):
+
+```bash
+poetry shell playwright install-deps
+```
+
 Initialize the `.env` file:
 
 ```bash
