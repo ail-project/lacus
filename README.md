@@ -28,17 +28,15 @@ Initialize the `.env` file:
 echo LACUS_HOME="`pwd`" >> .env
 ```
 
-**Note**: `LACUS_HOME` is the name you set in `lacus/default/__init__.py`
+Initialize the config and install playwright browsers:
+
+```bash
+poetry run update --init
+```
 
 ## Configuration
 
-Copy the config file:
-
-```bash
-cp config/generic.json.sample config/generic.json
-```
-
-And configure it accordingly to your needs.
+Edit the config file `config/generic.json`, and configure it accordingly to your needs.
 
 # Usage
 

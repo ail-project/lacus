@@ -61,12 +61,13 @@ def check_poetry_version():
 def main():
     parser = argparse.ArgumentParser(description='Pull latest release, update dependencies, update and validate the config files, update 3rd deps for the website.')
     parser.add_argument('--yes', default=False, action='store_true', help='Run all commands without asking.')
+    parser.add_argument('--init', default=False, action='store_true', help='Run all commands without starting the service.')
     args = parser.parse_args()
 
     old_hash = compute_hash_self()
 
     print('* Update repository.')
-    keep_going(args.yes)
+    keep_going(args.yes or args.init)
     run_command('git submodule init')
     run_command('git pull --recurse-submodules')
     new_hash = compute_hash_self()
@@ -77,19 +78,19 @@ def main():
     check_poetry_version()
 
     print('* Install/update dependencies.')
-    keep_going(args.yes)
+    keep_going(args.yes or args.init)
     run_command('poetry install')
 
     print('* Install or make sure the playwright browsers are installed.')
-    keep_going(args.yes)
+    keep_going(args.yes or args.init)
     run_command('poetry run playwright install')
 
     print('* Validate configuration files.')
-    keep_going(args.yes)
+    keep_going(args.yes or args.init)
     run_command(f'poetry run {(Path("tools") / "validate_config_files.py").as_posix()} --check')
 
     print('* Update configuration files.')
-    keep_going(args.yes)
+    keep_going(args.yes or args.init)
     run_command(f'poetry run {(Path("tools") / "validate_config_files.py").as_posix()} --update')
 
     print('* Restarting')
