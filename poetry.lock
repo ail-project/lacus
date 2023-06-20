@@ -866,18 +866,18 @@ format-nongpl = ["fqdn", "idna", "isoduration", "jsonpointer (>1.13)", "rfc3339-
 
 [[package]]
 name = "lacuscore"
-version = "1.5.10"
+version = "1.5.11"
 description = "Core of Lacus, usable as a module"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "lacuscore-1.5.10-py3-none-any.whl", hash = "sha256:7bb9de100f11833ab9dffb42b4fabcb85fa600d71e06f143adc465ebaa408d02"},
-    {file = "lacuscore-1.5.10.tar.gz", hash = "sha256:3dd4bd25aa12aa833453fd1830dbd7712199c6a211282bfda1cb3ca4cd6bc567"},
+    {file = "lacuscore-1.5.11-py3-none-any.whl", hash = "sha256:214c9ec7878e7030960cc6a2349cae48946eb6b5aa84d8f9fdf4fe2cd22a2892"},
+    {file = "lacuscore-1.5.11.tar.gz", hash = "sha256:e6c2b85476354438223ce64b553a6a56459c23279117b63a97515fb88e59db21"},
 ]
 
 [package.dependencies]
 defang = ">=0.5.3,<0.6.0"
-playwrightcapture = {version = ">=1.20.6,<2.0.0", extras = ["recaptcha"]}
+playwrightcapture = {version = ">=1.20.7,<2.0.0", extras = ["recaptcha"]}
 redis = {version = ">=4.5.5,<5.0.0", extras = ["hiredis"]}
 requests = ">=2.31.0,<3.0.0"
 ua-parser = ">=0.16.1,<0.17.0"
@@ -1216,13 +1216,13 @@ typing-extensions = {version = "*", markers = "python_version <= \"3.8\""}
 
 [[package]]
 name = "playwrightcapture"
-version = "1.20.6"
+version = "1.20.7"
 description = "A simple library to capture websites using playwright"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "playwrightcapture-1.20.6-py3-none-any.whl", hash = "sha256:11f07166bd2d321b87616462d6234403ca60a5198201335a24e4deaee8c80f73"},
-    {file = "playwrightcapture-1.20.6.tar.gz", hash = "sha256:bc4e423f2abcc26975b6c8b95b1cd5f6e911e95bf793d1e1278451e28321e17f"},
+    {file = "playwrightcapture-1.20.7-py3-none-any.whl", hash = "sha256:d6c0ce3a5aa9faa288be11add671d69ae23628618af246ad89f2730a137bb5c3"},
+    {file = "playwrightcapture-1.20.7.tar.gz", hash = "sha256:3db2bcdc20b4b97e4877a8c2195568ddad1b0db563f3c39f0c689ac5e04b693e"},
 ]
 
 [package.dependencies]
@@ -1574,13 +1574,13 @@ jupyter = ["ipywidgets (>=7.5.1,<9)"]
 
 [[package]]
 name = "setuptools"
-version = "67.8.0"
+version = "68.0.0"
 description = "Easily download, build, install, upgrade, and uninstall Python packages"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "setuptools-67.8.0-py3-none-any.whl", hash = "sha256:5df61bf30bb10c6f756eb19e7c9f3b473051f48db77fddbe06ff2ca307df9a6f"},
-    {file = "setuptools-67.8.0.tar.gz", hash = "sha256:62642358adc77ffa87233bc4d2354c4b2682d214048f500964dbe760ccedf102"},
+    {file = "setuptools-68.0.0-py3-none-any.whl", hash = "sha256:11e52c67415a381d10d6b462ced9cfb97066179f0e871399e006c4ab101fc85f"},
+    {file = "setuptools-68.0.0.tar.gz", hash = "sha256:baf1fdb41c6da4cd2eae722e135500da913332ab3f2f5c7d33af9b492acb5235"},
 ]
 
 [package.extras]
@@ -1837,4 +1837,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "7041bb444baed342df56b91ace4f4a8f28e13a5cd0fb19a6082fe80eedddc8ea"
+content-hash = "8217246b8a4cdd05e22c21872523880507cddea2a44f11871de56f1e2a834296"
