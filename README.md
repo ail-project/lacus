@@ -16,6 +16,12 @@ this directory. See [this guide](https://www.lookyloo.eu/docs/main/install-looky
 
 ## Installation
 
+Clone this repository:
+
+```bash
+git clone https://github.com/ail-project/lacus.git
+```
+
 From the directory you just cloned, run:
 
 ```bash
@@ -25,7 +31,8 @@ poetry install
 Install the system dependencies required by playwright (will call sudo):
 
 ```bash
-poetry shell playwright install-deps
+poetry shell 
+playwright install-deps
 ```
 
 Initialize the `.env` file:
@@ -39,6 +46,7 @@ Initialize the config and install playwright browsers:
 ```bash
 poetry run update --init
 ```
+This will already launch a first instance.
 
 ## Configuration
 
