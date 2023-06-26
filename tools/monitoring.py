@@ -57,6 +57,10 @@ class Monitoring():
     def memory_use(self):
         return self.redis_cache.info('memory')
 
+    @property
+    def stats(self):
+        return self.lacus_monit.get_stats()
+
 
 if __name__ == '__main__':
     m = Monitoring()
@@ -74,6 +78,17 @@ if __name__ == '__main__':
     console.print(Padding(f'{m.number_keys} keys in the database.', (0, 2)))
     console.print(Padding(f'Current memory use: {m.memory_use["used_memory_rss_human"]}', (0, 2)))
     console.print(Padding(f'Peak memory use: {m.memory_use["used_memory_peak_human"]}', (0, 2)))
+
+    if stats := m.stats:
+        console.print('Daily stats:')
+        if captures := stats.get('captures'):
+            console.print(Padding(f'{len(captures)} captures', (0, 2)))
+        if retry_failed := stats.get('retry_failed'):
+            console.print(Padding(f'{len(retry_failed)} failed retries', (0, 2)))
+        if errors := stats.get('errors'):
+            console.print(Padding('Errors:', (0, 2)))
+            for error_name, number in errors:
+                console.print(Padding(f'{error_name}: {int(number)}', (0, 4)))
 
     console.print('Ongoing captures:')
     for uuid, start_time in m.ongoing:
