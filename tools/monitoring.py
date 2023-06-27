@@ -83,6 +83,8 @@ if __name__ == '__main__':
         console.print('Daily stats:')
         if captures := stats.get('captures'):
             console.print(Padding(f'{len(captures)} captures', (0, 2)))
+        if retry_success := stats.get('retry_success'):
+            console.print(Padding(f'{len(retry_success)} successful retries', (0, 2)))
         if retry_failed := stats.get('retry_failed'):
             console.print(Padding(f'{len(retry_failed)} failed retries', (0, 2)))
         if errors := stats.get('errors'):
