@@ -31,7 +31,7 @@ poetry install
 Install the system dependencies required by playwright (will call sudo):
 
 ```bash
-poetry shell 
+poetry shell
 playwright install-deps
 ```
 
