@@ -26,6 +26,7 @@ lacuscore = "^1.6.0"
 rich = "^13.4.2"
 psutil = "^5.9.5"
 poethepoet = "^0.20.0"
+pytz = "^2023.3"
 
 [tool.poetry.group.dev]
 optional = true
