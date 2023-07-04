@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import argparse
 import os
 import time
@@ -14,6 +12,16 @@ from lacus.default import get_homedir, get_socket_path
 
 
 def check_running(name: str) -> bool:
+    """
+    Check if a Redis server with the specified name is running.
+
+    Args:
+        name: The name of the Redis server.
+
+    Returns
+    -------
+        A boolean indicating if the Redis server is running.
+    """
     socket_path = get_socket_path(name)
     if not os.path.exists(socket_path):
         return False
@@ -25,6 +33,13 @@ def check_running(name: str) -> bool:
 
 
 def launch_cache(storage_directory: Optional[Path] = None):
+    """
+    Launch a Redis cache server.
+
+    Args:
+        storage_directory: Optional storage directory for the Redis server.
+                            If not provided, the default home directory will be used.
+    """
     if not storage_directory:
         storage_directory = get_homedir()
     if not check_running("cache"):
@@ -32,6 +47,13 @@ def launch_cache(storage_directory: Optional[Path] = None):
 
 
 def shutdown_cache(storage_directory: Optional[Path] = None):
+    """
+    Shutdown the Redis cache server.
+
+    Args:
+        storage_directory: Optional storage directory for the Redis server.
+                            If not provided, the default home directory will be used.
+    """
     if not storage_directory:
         storage_directory = get_homedir()
     r = Redis(unix_socket_path=get_socket_path("cache"))
@@ -40,10 +62,17 @@ def shutdown_cache(storage_directory: Optional[Path] = None):
 
 
 def launch_all():
+    """Launch all backend databases."""
     launch_cache()
 
 
 def check_all(stop: bool = False):
+    """
+    Check the status of all backend databases.
+
+    Args:
+        stop: If True, wait for all databases to stop; if False, wait for all databases to start.
+    """
     backends: Dict[str, bool] = {"cache": False}
     while True:
         for db_name in backends:
@@ -66,10 +95,19 @@ def check_all(stop: bool = False):
 
 
 def stop_all():
+    """Stop all backend databases."""
     shutdown_cache()
 
 
 def main():
+    """
+    Manage backend databases using command-line arguments.
+
+    Available arguments:
+    --start: Start all backend databases.
+    --stop: Stop all backend databases.
+    --status: Show the status of all backend databases (default behavior).
+    """
     parser = argparse.ArgumentParser(description="Manage backend DBs.")
     parser.add_argument("--start", action="store_true", default=False, help="Start all")
     parser.add_argument("--stop", action="store_true", default=False, help="Stop all")
@@ -82,7 +120,3 @@ def main():
         stop_all()
     if not args.stop and args.status:
         check_all()
-
-
-if __name__ == "__main__":
-    main()
