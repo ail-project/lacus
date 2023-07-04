@@ -13,7 +13,7 @@ from typing import List, Optional, Tuple
 from redis import Redis
 from redis.exceptions import ConnectionError as RedisConnectionError
 
-from .helpers import get_socket_path, get_config
+from lacus.default.helpers import get_config, get_socket_path
 
 
 class AbstractManager(ABC):
@@ -34,7 +34,7 @@ class AbstractManager(ABC):
     def is_running() -> List[Tuple[str, float]]:
         try:
             r = Redis(unix_socket_path=get_socket_path('cache'), db=1, decode_responses=True)
-            for script_name, score in r.zrangebyscore('running', '-inf', '+inf', withscores=True):
+            for script_name, _score in r.zrangebyscore('running', '-inf', '+inf', withscores=True):
                 for pid in r.smembers(f'service|{script_name}'):
                     try:
                         os.kill(int(pid), 0)
@@ -178,7 +178,7 @@ class AbstractManager(ABC):
 
     async def stop_async(self):
         """Method to pass the signal handler:
-            loop.add_signal_handler(signal.SIGTERM, lambda: loop.create_task(p.stop()))
+        loop.add_signal_handler(signal.SIGTERM, lambda: loop.create_task(p.stop())).
         """
         self.force_stop = True
 

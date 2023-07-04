@@ -3,9 +3,9 @@
 import argparse
 import logging
 import logging.config
+import signal
 
 import psutil
-import signal
 
 from lacus.default import get_config
 

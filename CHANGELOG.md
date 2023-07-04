@@ -2,55 +2,14 @@
 
 ### Feat
 
-**code-formatting-best-practices**:
-- pre-commit new features:
-  - python-check-mock-methods
-  - python-use-type-annotations
-  - rst-backticks
-  - rst-directive-colons
-  - rst-inline-touching-normal
-  - text-unicode-replacement-char
-  - check-added-large-files
-  - check-ast
-  - check-builtin-literals
-  - check-case-conflict
-  - check-docstring-first
-  - check-json
-  - check-merge-conflict
-  - check-shebang-scripts-are-executable
-  - check-symlinks
-  - check-toml
-  - check-vcs-permalinks
-  - check-xml
-  - check-yaml
-  - debug-statements
-  - destroyed-symlinks
-  - detect-private-key
-  - end-of-file-fixer
-  - fix-byte-order-marker
-  - mixed-line-ending
-  - name-tests-test
-  - trailing-whitespace
-  - commitizen
-  - ruff
-  - black
-  - poetry-check
-  - poetry-lock-check
-  - mypy
-- add support to documentation
-- add support to test
-- add support to poethepoet
-- add force format commit message(documentation)
-- add support to pre-commit
-- add support to black
-- add support to coverage
-- add support to pytest
-- add support to ruff 
-- add support to ChangeLog
-- add support to bump(release): v$current_version → v$new_version
+- **test_api.yml**: add suport to workflow
+- **test_api.yml**: add suport to workflow
+- **code-formatting-best-practices**: add commitizen\nadd ruff
 
+### Fix
 
-
+- **pyproject**: fix tool.mypy
+- **CHANGELOG.md**: add description to new implementation
 
 ## v1.6.0 (2023-06-30)
 

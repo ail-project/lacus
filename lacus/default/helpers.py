@@ -6,8 +6,8 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Any, Dict, Optional, Union
 
-from . import env_global_name
-from .exceptions import ConfigError, CreateDirectoryException, MissingEnv
+from lacus.default import env_global_name
+from lacus.default.exceptions import ConfigError, CreateDirectoryException, MissingEnv
 
 configs: Dict[str, Dict[str, Any]] = {}
 logger = logging.getLogger('Helpers')
@@ -58,7 +58,7 @@ def load_configs(path_to_config_files: Optional[Union[str, Path]]=None):
 
 @lru_cache(64)
 def get_config(config_type: str, entry: Optional[str]=None, quiet: bool=False) -> Any:
-    """Get an entry from the given config_type file. Automatic fallback to the sample file"""
+    """Get an entry from the given config_type file. Automatic fallback to the sample file."""
     global configs
     if not configs:
         load_configs()

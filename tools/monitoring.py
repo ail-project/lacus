@@ -4,16 +4,17 @@ import json
 import os
 import sys
 
-from lacus.default import get_socket_path, AbstractManager
 from lacuscore import LacusCoreMonitoring
+from redis import Redis
 from rich.console import Console
 from rich.padding import Padding
-from redis import Redis
+
+from lacus.default import AbstractManager, get_socket_path
 
 console = Console(color_system="256")
 
 
-class Monitoring():
+class Monitoring:
 
     def __init__(self):
         self.redis_cache: Redis = Redis(unix_socket_path=get_socket_path('cache'), decode_responses=True)

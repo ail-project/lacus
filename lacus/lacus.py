@@ -3,15 +3,14 @@
 import copy
 import logging
 
-from redis import Redis, ConnectionPool
+from lacuscore import LacusCore, LacusCoreMonitoring
+from redis import ConnectionPool, Redis
 from redis.connection import UnixDomainSocketConnection
 
-from lacuscore import LacusCore, LacusCoreMonitoring
-
-from .default import get_config, get_socket_path
+from lacus.default import get_config, get_socket_path
 
 
-class Lacus():
+class Lacus:
 
     def __init__(self) -> None:
         self.logger = logging.getLogger(f'{self.__class__.__name__}')
@@ -36,10 +35,9 @@ class Lacus():
         self.monitoring = LacusCoreMonitoring(self.redis_decode)
 
         self.global_proxy = {}
-        if global_proxy := get_config('generic', 'global_proxy'):
-            if global_proxy.get('enable'):
-                self.global_proxy = copy.copy(global_proxy)
-                self.global_proxy.pop('enable')
+        if (global_proxy := get_config('generic', 'global_proxy')) and global_proxy.get('enable'):
+            self.global_proxy = copy.copy(global_proxy)
+            self.global_proxy.pop('enable')
 
     @property
     def redis(self):

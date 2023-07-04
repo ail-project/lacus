@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
+import argparse
 import json
 import logging
-import argparse
 
 from lacus.default import get_homedir
 
@@ -12,7 +12,7 @@ def validate_generic_config_file():
     with sample_config.open() as f:
         generic_config_sample = json.load(f)
     # Check documentation
-    for key in generic_config_sample.keys():
+    for key in generic_config_sample:
         if key == '_notes':
             continue
         if key not in generic_config_sample['_notes']:
@@ -28,7 +28,7 @@ def validate_generic_config_file():
         generic_config = json.load(f)
 
     # Check all entries in the sample files are in the user file, and they have the same type
-    for key in generic_config_sample.keys():
+    for key in generic_config_sample:
         if key == '_notes':
             continue
         if generic_config.get(key) is None:
@@ -39,14 +39,14 @@ def validate_generic_config_file():
 
         if isinstance(generic_config[key], dict):
             # Check entries
-            for sub_key in generic_config_sample[key].keys():
+            for sub_key in generic_config_sample[key]:
                 if sub_key not in generic_config[key]:
                     raise Exception(f'{sub_key} is missing in generic_config[key]. Default from sample file: {generic_config_sample[key][sub_key]}')
                 if not isinstance(generic_config[key][sub_key], type(generic_config_sample[key][sub_key])):
                     raise Exception(f'Invalid type for {sub_key} in {key}. Got: {type(generic_config[key][sub_key])} ({generic_config[key][sub_key]}), expected: {type(generic_config_sample[key][sub_key])} ({generic_config_sample[key][sub_key]})')
 
     # Make sure the user config file doesn't have entries missing in the sample config
-    for key in generic_config.keys():
+    for key in generic_config:
         if key not in generic_config_sample:
             raise Exception(f'{key} is missing in the sample config file. You need to compare {user_config} with {sample_config}.')
 
@@ -64,7 +64,7 @@ def update_user_configs():
             generic_config_sample = json.load(f)
 
         has_new_entry = False
-        for key in generic_config_sample.keys():
+        for key in generic_config_sample:
             if key == '_notes':
                 continue
             if generic_config.get(key) is None:
@@ -73,7 +73,7 @@ def update_user_configs():
                 generic_config[key] = generic_config_sample[key]
                 has_new_entry = True
             elif isinstance(generic_config[key], dict):
-                for sub_key in generic_config_sample[key].keys():
+                for sub_key in generic_config_sample[key]:
                     if sub_key not in generic_config[key]:
                         print(f'{sub_key} was missing in {key} from {file_name}, adding it.')
                         generic_config[key][sub_key] = generic_config_sample[key][sub_key]
@@ -91,10 +91,8 @@ if __name__ == '__main__':
     parser.add_argument('--update', default=False, action='store_true', help='Update the user config with the entries from the sample config if entries are missing')
     args = parser.parse_args()
 
-    if args.check:
-        if validate_generic_config_file():
-            print(f"The entries in {get_homedir() / 'config' / 'generic.json'} are valid.")
+    if args.check and validate_generic_config_file():
+        print(f"The entries in {get_homedir() / 'config' / 'generic.json'} are valid.")
 
-    if args.update:
-        if not update_user_configs():
-            print(f"No updates needed in {get_homedir() / 'config' / 'generic.json'}.")
+    if args.update and not update_user_configs():
+        print(f"No updates needed in {get_homedir() / 'config' / 'generic.json'}.")

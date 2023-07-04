@@ -4,10 +4,8 @@ import asyncio
 import logging
 import logging.config
 import signal
-
 from asyncio import Task
 from typing import Optional, Set
-
 
 from lacus.default import AbstractManager, get_config
 from lacus.lacus import Lacus

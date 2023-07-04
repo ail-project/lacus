@@ -2,7 +2,7 @@
 from typing import Any, MutableMapping
 
 
-class ReverseProxied():
+class ReverseProxied:
     def __init__(self, app: Any) -> None:
         self.app = app
 

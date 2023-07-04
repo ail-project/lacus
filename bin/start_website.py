@@ -2,13 +2,10 @@
 
 import logging
 import logging.config
-
+from subprocess import Popen
 from typing import Optional
 
-from subprocess import Popen
-
-from lacus.default import AbstractManager
-from lacus.default import get_config, get_homedir
+from lacus.default import AbstractManager, get_config, get_homedir
 
 logging.config.dictConfig(get_config('logging'))
 

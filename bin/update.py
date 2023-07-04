@@ -10,7 +10,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from lacus.default import get_homedir, get_config
+from lacus.default import get_config, get_homedir
 
 logging.config.dictConfig(get_config('logging'))
 

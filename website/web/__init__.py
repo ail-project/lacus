@@ -7,9 +7,8 @@ from flask import Flask, request
 from flask_restx import Api, Resource, fields  # type: ignore
 
 from lacus.lacus import Lacus
-
-from .helpers import get_secret_key
-from .proxied import ReverseProxied
+from website.web.helpers import get_secret_key
+from website.web.proxied import ReverseProxied
 
 app: Flask = Flask(__name__)
 
