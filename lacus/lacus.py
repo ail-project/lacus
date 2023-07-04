@@ -9,7 +9,23 @@ from lacus.default import get_config, get_socket_path
 
 
 class Lacus:
+    """A class representing the Lacus object.
+
+    Lacus is used for interacting with LacusCore and LacusCoreMonitoring
+    components for caching and monitoring purposes.
+
+    Attributes
+    ----------
+        logger (Logger): The logger object for logging information.
+        redis_pool (ConnectionPool): The connection pool for the Redis cache.
+        redis_pool_decoded (ConnectionPool): The connection pool with decoded responses.
+        core (LacusCore): The LacusCore object for performing core functionality.
+        monitoring (LacusCoreMonitoring): The LacusCoreMonitoring object for monitoring.
+        global_proxy (dict): A dictionary representing global proxy configuration.
+    """
+
     def __init__(self) -> None:
+        """Initialize the Lacus object."""
         self.logger = logging.getLogger(f"{self.__class__.__name__}")
         self.logger.setLevel(get_config("generic", "loglevel"))
 
@@ -43,11 +59,19 @@ class Lacus:
 
     @property
     def redis(self):
+        """Redis: The Redis object connected to the cache."""
         return Redis(connection_pool=self.redis_pool)
 
     @property
     def redis_decode(self):
+        """Redis: The Redis object with decoded responses."""
         return Redis(connection_pool=self.redis_pool_decoded)
 
     def check_redis_up(self):
+        """Check if Redis is up and running.
+
+        Returns
+        -------
+            bool: True if Redis is up, False otherwise.
+        """
         return self.redis.ping()

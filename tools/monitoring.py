@@ -13,20 +13,28 @@ console = Console(color_system="256")
 
 
 class Monitoring:
+    """Class for monitoring system status and capturing information."""
+
     def __init__(self):
         self.redis_cache: Redis = Redis(
             unix_socket_path=get_socket_path("cache"), decode_responses=True
         )
-
         self.lacus_monit = LacusCoreMonitoring(self.redis_cache)
 
     @property
-    def backend_status(self):
+    def backend_status(self) -> bool:
+        """
+        Check the status of the backend.
+
+        Returns
+        -------
+            bool: True if the backend is up, False otherwise.
+        """
         socket_path_cache = get_socket_path("cache")
         backend_up = True
         if not os.path.exists(socket_path_cache):
             console.print(
-                f"Socket path for the [blue]cache[/blue] redis DB [red]does not exists[/red] ({socket_path_cache})."
+                f"Socket path for the [blue]cache[/blue] redis DB [red]does not exist[/red] ({socket_path_cache})."
             )
             backend_up = False
         if backend_up:
@@ -42,25 +50,70 @@ class Monitoring:
 
     @property
     def ongoing(self):
+        """
+        Get the ongoing captures.
+
+        Returns
+        -------
+            List[Tuple[str, str]]: List of tuples containing UUID and start time of ongoing captures.
+        """
         return self.lacus_monit.get_ongoing_captures()
 
     @property
     def enqueued(self):
+        """
+        Get the enqueued captures.
+
+        Returns
+        -------
+            List[Tuple[str, int]]: List of tuples containing UUID and priority of enqueued captures.
+        """
         return self.lacus_monit.get_enqueued_captures()
 
     def capture_settings(self, uuid: str):
+        """
+        Get the capture settings for a specific UUID.
+
+        Args:
+            uuid (str): The UUID of the capture.
+
+        Returns
+        -------
+            Dict[str, str]: Capture settings as a dictionary.
+        """
         return self.lacus_monit.get_capture_settings(uuid)
 
     @property
-    def number_keys(self):
+    def number_keys(self) -> int:
+        """
+        Get the number of keys in the database.
+
+        Returns
+        -------
+            int: Number of keys in the database.
+        """
         return self.redis_cache.info("keyspace")["db0"]["keys"]
 
     @property
     def memory_use(self):
+        """
+        Get the memory usage of the database.
+
+        Returns
+        -------
+            Dict[str, str]: Memory usage information.
+        """
         return self.redis_cache.info("memory")
 
     @property
     def stats(self):
+        """
+        Get the system statistics.
+
+        Returns
+        -------
+            Dict[str, List[Tuple[str, int]]]: System statistics.
+        """
         return self.lacus_monit.get_stats()
 
 

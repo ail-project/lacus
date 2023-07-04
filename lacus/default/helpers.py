@@ -14,6 +14,16 @@ logger = logging.getLogger("Helpers")
 
 @lru_cache(64)
 def get_homedir() -> Path:
+    """Get the home directory path.
+
+    Returns
+    -------
+        Path: The path to the home directory.
+
+    Raises
+    ------
+        MissingEnv: If the environment variable is missing.
+    """
     if not os.environ.get(env_global_name):
         # Try to open a .env file in the home directory if it exists.
         if (Path(__file__).resolve().parent.parent.parent / ".env").exists():
@@ -36,6 +46,15 @@ Run the following command (assuming you run the code from the clonned repository
 
 @lru_cache(64)
 def load_configs(path_to_config_files: Optional[Union[str, Path]] = None):
+    """Load the configuration files.
+
+    Args:
+        path_to_config_files (Union[str, Path], optional): Path to the configuration files. Defaults to None.
+
+    Raises
+    ------
+        ConfigError: If the configuration directory is not found or is not a directory.
+    """
     global configs
     if configs:
         return
@@ -59,7 +78,21 @@ def load_configs(path_to_config_files: Optional[Union[str, Path]] = None):
 
 @lru_cache(64)
 def get_config(config_type: str, entry: Optional[str] = None, quiet: bool = False) -> Any:
-    """Get an entry from the given config_type file. Automatic fallback to the sample file."""
+    """Get a specific entry from the configuration file.
+
+    Args:
+        config_type (str): The type of configuration file.
+        entry (str, optional): The specific entry to retrieve. Defaults to None.
+        quiet (bool, optional): Whether to suppress warnings. Defaults to False.
+
+    Returns
+    -------
+        Any: The value of the specified entry.
+
+    Raises
+    ------
+        ConfigError: If the configuration file is not found.
+    """
     global configs
     if not configs:
         load_configs()
@@ -87,6 +120,15 @@ def get_config(config_type: str, entry: Optional[str] = None, quiet: bool = Fals
 
 
 def safe_create_dir(to_create: Path) -> None:
+    """Safely create a directory.
+
+    Args:
+    to_create (Path): The path of the directory to create.
+
+    Raises
+    ------
+    CreateDirectoryException: If the path already exists and is not a directory.
+    """
     if to_create.exists() and not to_create.is_dir():
         raise CreateDirectoryException(
             f"The path {to_create} already exists and is not a directory"
@@ -95,11 +137,29 @@ def safe_create_dir(to_create: Path) -> None:
 
 
 def get_socket_path(name: str) -> str:
+    """Get the path to a specific socket.
+
+    Args:
+        name (str): The name of the socket.
+
+    Returns
+    -------
+        str: The path to the socket.
+    """
     mapping = {"cache": Path("cache", "cache.sock")}
     return str(get_homedir() / mapping[name])
 
 
 def try_make_file(filename: Path):
+    """Try to create a file if it doesn't exist.
+
+    Args:
+        filename (Path): The path to the file.
+
+    Returns
+    -------
+        bool: True if the file is successfully created, False if it already exists.
+    """
     try:
         filename.touch(exist_ok=False)
         return True

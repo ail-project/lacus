@@ -1,0 +1,1 @@
+::: lacus.default.abstractmanager

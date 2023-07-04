@@ -53,6 +53,13 @@ pytest-mock = "^3.11.1"
 pytest-xdist = "^3.3.1"
 ruff = "^0.0.276"
 
+
+[tool.poetry.group.docs.dependencies]
+mkdocstrings = "^0.22.0"
+mkdocs-material = "^9.1.18"
+mkdocstrings-python = "^1.1.2"
+mkdocs-minify-plugin = "^0.6.4"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

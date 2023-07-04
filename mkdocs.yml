@@ -1,0 +1,19 @@
+site_name: "Lacus Crawler"
+
+theme:
+  name: "material"
+
+plugins:
+  - mkdocstrings
+  - search
+
+nav:
+  - Api:
+    - api/abstractmanager.md
+    - api/exceptions.md
+    - api/helpers.md
+    - api/lacus.md
+  - Tools:
+    - api/abstractmanager.md
+    - tools/monitoring.md
+    - tools/validate_config_files.md
