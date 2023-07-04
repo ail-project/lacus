@@ -39,6 +39,7 @@ mypy = "^1.4.1"
 types-redis = "^4.6.0.0"
 types-psutil = "^5.9.5.15"
 pdoc = "^14.0.0"
+pydantic = ">=1.10.7"
 
 
 [tool.poetry.group.test.dependencies]
@@ -103,9 +104,8 @@ version = "0.0.1"
 version_files = ["pyproject.toml:version"]
 
 
-[tool.mypy]
+[tool.mypy]  # https://mypy.readthedocs.io/en/latest/config_file.html
 junit_xml = "reports/mypy.xml"
-plugins = "pydantic.mypy"
 python_version = 3.8
 check_untyped_defs = true
 ignore_errors = false
