@@ -11,6 +11,10 @@
 - **pyproject**: fix tool.mypy
 - **CHANGELOG.md**: add description to new implementation
 
+### Refactor
+
+- **all-code**: code review
+
 ## v1.6.0 (2023-06-30)
 
 ### Fix

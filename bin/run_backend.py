@@ -24,27 +24,27 @@ def check_running(name: str) -> bool:
         return False
 
 
-def launch_cache(storage_directory: Optional[Path]=None):
+def launch_cache(storage_directory: Optional[Path] = None):
     if not storage_directory:
         storage_directory = get_homedir()
-    if not check_running('cache'):
-        Popen(["./run_redis.sh"], cwd=(storage_directory / 'cache'))
+    if not check_running("cache"):
+        Popen(["./run_redis.sh"], cwd=(storage_directory / "cache"))
 
 
-def shutdown_cache(storage_directory: Optional[Path]=None):
+def shutdown_cache(storage_directory: Optional[Path] = None):
     if not storage_directory:
         storage_directory = get_homedir()
-    r = Redis(unix_socket_path=get_socket_path('cache'))
+    r = Redis(unix_socket_path=get_socket_path("cache"))
     r.shutdown(save=True)
-    print('Redis cache database shutdown.')
+    print("Redis cache database shutdown.")
 
 
 def launch_all():
     launch_cache()
 
 
-def check_all(stop: bool=False):
-    backends: Dict[str, bool] = {'cache': False}
+def check_all(stop: bool = False):
+    backends: Dict[str, bool] = {"cache": False}
     while True:
         for db_name in backends:
             try:
@@ -70,10 +70,10 @@ def stop_all():
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Manage backend DBs.')
-    parser.add_argument("--start", action='store_true', default=False, help="Start all")
-    parser.add_argument("--stop", action='store_true', default=False, help="Stop all")
-    parser.add_argument("--status", action='store_true', default=True, help="Show status")
+    parser = argparse.ArgumentParser(description="Manage backend DBs.")
+    parser.add_argument("--start", action="store_true", default=False, help="Start all")
+    parser.add_argument("--stop", action="store_true", default=False, help="Stop all")
+    parser.add_argument("--status", action="store_true", default=True, help="Show status")
     args = parser.parse_args()
 
     if args.start:
@@ -84,5 +84,5 @@ def main():
         check_all()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

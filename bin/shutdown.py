@@ -12,7 +12,7 @@ def main():
         try:
             running = AbstractManager.is_running()
         except FileNotFoundError:
-            print('Redis is already down.')
+            print("Redis is already down.")
             break
         if not running:
             break
@@ -20,5 +20,5 @@ def main():
         time.sleep(5)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
