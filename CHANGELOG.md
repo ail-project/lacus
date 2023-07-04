@@ -8,11 +8,13 @@
 
 ### Fix
 
+- **pyproject.py**: fix version import
 - **pyproject**: fix tool.mypy
 - **CHANGELOG.md**: add description to new implementation
 
 ### Refactor
 
+- **bin/***: write all documentation/typing
 - **run_backend.py**: white documentation
 - **all-code**: code review
 - **all-code**: code review
