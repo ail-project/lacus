@@ -2,7 +2,7 @@ name: Python application - API Test
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main , test ]
   pull_request:
     branches: [ main ]
 
