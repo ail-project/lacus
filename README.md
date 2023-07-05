@@ -2,19 +2,18 @@
 
 A capturing system using playwright, as a web service.
 
-# Install guide
+## Install Guide
 
-## System dependencies
+### System dependencies
 
 You need poetry installed, see the [install guide](https://python-poetry.org/docs/).
 
-## Prerequisites
+### Prerequisites
 
 You need to have redis cloned and installed in the same directory you clone this template in:
-this repoitory and and `redis` must be in the same directory, and **not** `redis` cloned in the
-this directory. See [this guide](https://www.lookyloo.eu/docs/main/install-lookyloo.html#_install_redis).
+this repository and `redis` must be in the same directory, and **not** `redis` cloned in this directory. See [this guide](https://www.lookyloo.eu/docs/main/install-lookyloo.html#_install_redis).
 
-## Installation
+### Installation
 
 Clone this repository:
 
@@ -25,6 +24,7 @@ git clone https://github.com/ail-project/lacus.git
 From the directory you just cloned, run:
 
 ```bash
+cd lacus
 poetry install
 ```
 
@@ -45,26 +45,103 @@ Initialize the config and install playwright browsers:
 
 ```bash
 poetry run update --init
+
+* Restarting
+Continue? (y/N) <-- N
+Okay, quitting.
 ```
-This will already launch a first instance.
 
-## Configuration
+**Clone the Redis server:**
 
-Edit the config file `config/generic.json`, and configure it accordingly to your needs.
-
-# Usage
-
-Start the tool (as usual, from the directory):
+1. Navigate to the parent directory:
 
 ```bash
-poetry run start
+pushd ..
 ```
 
-You can stop it with
+2. Clone the Redis repository:
 
+```bash
+git clone https://github.com/antirez/redis.git
+```
+
+3. Enter the Redis directory:
+
+```bash
+pushd redis
+```
+
+4. Checkout the version "7.0" of Redis:
+
+```bash
+git checkout 7.0
+```
+
+5. Compile Redis:
+
+```bash
+make
+```
+
+6. Return to the previous directory:
+
+```bash
+popd
+```
+
+7. Return to the initial directory:
+
+```bash
+popd
+```
+
+### Lacus CLI(Command line Interface) User Guide
+## start
+- `poetry run start`: This command is used to start a Lacus service
+```bash
+poetry run start 
+```
+## stop
+- `poetry run stop`: This command is used to stop a Lacus service
 ```bash
 poetry run stop
 ```
 
-With the default configuration, you can access the web interface on `http://0.0.0.0:7100`,
-where you will find the API and can start playing with it.
+## update
+- `poetry run update`: This command is used to update the project dependencies according to the configurations defined in the `pyproject.toml` file.
+```bash
+poetry run update
+```
+
+### Lacus CLI(Command line Interface) Admin/Dev  Guide
+## shutdown
+- `poetry run shutdown`: This command is used to completely shut down a  Lacus service
+```bash
+poetry run shutdown 
+```
+
+## run_backend
+- `poetry run run_backend`: This command is used to manager the backend redis 
+```bash
+poetry run run_backend --help 
+  -h, --help  show this help message and exit
+  --start     Start all
+  --stop      Stop all
+  --status    Show status
+```
+## start_website
+- `poetry run start_website`: This command is used to start the web server 
+```bash
+poetry run start_website
+```
+## capture_manager
+- `poetry run capture_manager`: This command is used to start the capture manager for data.
+```bash
+poetry run capture_manager
+```
+
+## stop_capture_manager
+- `poetry run stop_capture_manager`: This command is used to stop the running capture manager.
+```bash
+poetry run stop_capture_manager
+```
