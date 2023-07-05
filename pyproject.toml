@@ -2,7 +2,7 @@
 name = "lacus"
 version = "1.6.0"
 description = " A capturing system using playwright, as a web service."
-authors = ["Raphaël Vinot <raphael.vinot@circl.lu>"]
+authors = ["Raphaël Vinot <raphael.vinot@circl.lu>","Luiz Corrêa <darkcode357@gmail.com>"]
 license = "BSD-3-Clause"
 repository = "https://github.com/ail-project/Lacus"
 
@@ -25,6 +25,8 @@ gunicorn = "^20.1.0"
 lacuscore = "^1.6.0"
 rich = "^13.4.2"
 psutil = "^5.9.5"
+poethepoet = "^0.20.0"
+pytz = "^2023.3"
 
 [tool.poetry.group.dev]
 optional = true
@@ -37,12 +39,81 @@ ipython = [
 mypy = "^1.4.1"
 types-redis = "^4.6.0.0"
 types-psutil = "^5.9.5.15"
+pdoc = "^14.0.0"
+pydantic = ">=1.10.7"
+
+
+[tool.poetry.group.test.dependencies]
+black = "^23.3.0"
+coverage = "^7.2.7"
+pre-commit = "^3.3.3"
+pytest = "^7.4.0"
+pytest-clarity = "^1.0.1"
+pytest-mock = "^3.11.1"
+pytest-xdist = "^3.3.1"
+ruff = "^0.0.276"
+
+
+[tool.poetry.group.docs.dependencies]
+mkdocstrings = "^0.22.0"
+mkdocs-material = "^9.1.18"
+mkdocstrings-python = "^1.1.2"
+mkdocs-minify-plugin = "^0.6.4"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
-[tool.mypy]
+
+[tool.black]  # https://black.readthedocs.io/en/stable/usage_and_configuration/the_basics.html#configuration-via-a-file
+line-length = 100
+target-version = ["py38","py39","py310","py311"]
+
+[tool.coverage.report]  # https://coverage.readthedocs.io/en/latest/config.html#report
+precision = 1
+show_missing = true
+skip_covered = true
+
+[tool.coverage.run]  # https://coverage.readthedocs.io/en/latest/config.html#run
+branch = true
+command_line = "--module pytest"
+data_file = "reports/.coverage"
+source = ["lacus","bin"]
+
+[tool.coverage.xml]  # https://coverage.readthedocs.io/en/latest/config.html#xml
+output = "reports/coverage.xml"
+
+[tool.pytest.ini_options]  # https://docs.pytest.org/en/latest/reference/reference.html#ini-options-ref
+addopts = "--color=yes --doctest-modules --exitfirst --failed-first --verbosity=2 --junitxml=reports/pytest.xml"
+testpaths = ["lacus", "tests","bin"]
+xfail_strict = true
+
+[tool.ruff]  # https://github.com/charliermarsh/ruff
+fix = true
+ignore-init-module-imports = true
+line-length = 100
+select = ["A", "ASYNC", "B", "C4", "C90", "D", "DTZ", "E", "F", "FLY", "I", "ISC", "N", "NPY", "PGH", "PIE", "PLC", "PLE", "PLR", "PLW", "PT", "RET", "RUF", "RSE", "SIM", "TID", "UP", "W", "YTT"]
+ignore = ["E501", "PGH001", "PGH002", "PGH003", "RET504", "S101"]
+unfixable = ["F401", "F841"]
+src = ["lacus", "tests","bin"]
+target-version = "py38"
+
+[tool.ruff.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[tool.ruff.pydocstyle]
+convention = "numpy"
+
+[tool.commitizen]  # https://commitizen-tools.github.io/commitizen/config/
+bump_message = "bump(release): v$current_version → v$new_version"
+tag_format = "v$version"
+update_changelog_on_bump = true
+version = "0.0.1"
+version_files = ["pyproject.toml:version"]
+
+
+[tool.mypy]  # https://mypy.readthedocs.io/en/latest/config_file.html
+junit_xml = "reports/mypy.xml"
 python_version = 3.8
 check_untyped_defs = true
 ignore_errors = false
@@ -53,6 +124,97 @@ warn_unused_ignores = true
 warn_redundant_casts = true
 warn_unused_configs = true
 warn_unreachable = true
-
 show_error_context = true
 pretty = true
+
+
+[tool.poe.tasks]  # https://github.com/nat-n/poethepoet
+
+
+  [tool.poe.tasks.api]
+  help = "Serve a REST API"
+  shell = """
+    if [ $dev ]
+    then {
+      uvicorn \
+        --host $host \
+        --port $port \
+        --reload \
+        florestlib.api:app
+    } else {
+      gunicorn \
+        --access-logfile - \
+        --bind $host:$port \
+        --graceful-timeout 10 \
+        --keep-alive 10 \
+        --log-file - \
+        --timeout 30 \
+        --worker-class uvicorn.workers.UvicornWorker \
+        --worker-tmp-dir /dev/shm \
+        --workers 2 \
+        florestlib.api:app
+    } fi
+    """
+
+    [[tool.poe.tasks.api.args]]
+    help = "Bind socket to this host (default: 0.0.0.0)"
+    name = "host"
+    options = ["--host"]
+    default = "0.0.0.0"
+
+    [[tool.poe.tasks.api.args]]
+    help = "Bind socket to this port (default: 8000)"
+    name = "port"
+    options = ["--port"]
+    default = "8000"
+
+    [[tool.poe.tasks.api.args]]
+    help = "Enable development mode"
+    type = "boolean"
+    name = "dev"
+    options = ["--dev"]
+
+  [tool.poe.tasks.docs]
+  help = "Generate this package's docs"
+  cmd = """
+    pdoc
+      --docformat $docformat
+      --output-directory $outputdirectory
+      florestlib
+    """
+
+    [[tool.poe.tasks.docs.args]]
+    help = "The docstring style (default: numpy)"
+    name = "docformat"
+    options = ["--docformat"]
+    default = "numpy"
+
+    [[tool.poe.tasks.docs.args]]
+    help = "The output directory (default: docs)"
+    name = "outputdirectory"
+    options = ["--output-directory"]
+    default = "docs"
+
+
+
+  [tool.poe.tasks.lint]
+  help = "Lint this package"
+
+    [[tool.poe.tasks.lint.sequence]]
+    cmd = """
+      pre-commit run
+        --all-files
+        --color always
+      """
+
+  [tool.poe.tasks.test]
+  help = "Test this package"
+
+    [[tool.poe.tasks.test.sequence]]
+    cmd = "coverage run"
+
+    [[tool.poe.tasks.test.sequence]]
+    cmd = "coverage report"
+
+    [[tool.poe.tasks.test.sequence]]
+    cmd = "coverage xml"

@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import argparse
 import hashlib
 import logging
@@ -10,28 +8,57 @@ import subprocess
 import sys
 from pathlib import Path
 
-from lacus.default import get_homedir, get_config
+from lacus.default import get_config, get_homedir
 
-logging.config.dictConfig(get_config('logging'))
+logging.config.dictConfig(get_config("logging"))
 
 
-def compute_hash_self():
+def compute_hash_self() -> bytes:
+    """
+    Compute the SHA-256 hash of the "update.py" script.
+
+    Returns
+    -------
+        bytes: The computed hash.
+    """
     m = hashlib.sha256()
-    with (get_homedir() / 'bin' / 'update.py').open('rb') as f:
+    with (get_homedir() / "bin" / "update.py").open("rb") as f:
         m.update(f.read())
         return m.digest()
 
 
-def keep_going(ignore=False):
+def keep_going(ignore: bool = False) -> None:
+    """
+    Prompt the user to continue or quit based on the provided `ignore` flag.
+
+    Args:
+        ignore (bool): Flag to ignore the prompt and continue. Defaults to False.
+
+    Returns
+    -------
+        None
+    """
     if ignore:
         return
-    keep_going = input('Continue? (y/N) ')
-    if keep_going.lower() != 'y':
-        print('Okay, quitting.')
+    keep_going = input("Continue? (y/N) ")
+    if keep_going.lower() != "y":
+        print("Okay, quitting.")
         sys.exit()
 
 
-def run_command(command, expect_fail: bool=False, capture_output: bool=True):
+def run_command(command: str, expect_fail: bool = False, capture_output: bool = True) -> None:
+    """
+    Run a command as a subprocess and print the output.
+
+    Args:
+        command (str): The command to run.
+        expect_fail (bool): Flag to expect failure of the command. Defaults to False.
+        capture_output (bool): Flag to capture and print the subprocess output. Defaults to True.
+
+    Returns
+    -------
+        None
+    """
     args = shlex.split(command)
     homedir = get_homedir()
     process = subprocess.run(args, cwd=homedir, capture_output=capture_output)
@@ -42,34 +69,65 @@ def run_command(command, expect_fail: bool=False, capture_output: bool=True):
         sys.exit()
 
 
-def check_poetry_version():
+def check_poetry_version() -> None:
+    """
+    Check the version of Poetry and exit if it's below the required version.
+
+    Returns
+    -------
+        None
+    """
     args = shlex.split("poetry self -V")
     homedir = get_homedir()
     process = subprocess.run(args, cwd=homedir, capture_output=True)
     poetry_version_str = process.stdout.decode()
     version = poetry_version_str.split()[2]
-    version = version.strip(')')
-    version_details = tuple(int(i) for i in version.split('.'))
+    version = version.strip(")")
+    version_details = tuple(int(i) for i in version.split("."))
     if version_details < (1, 3, 0):
-        print('The project requires poetry >= 1.3.0, please update.')
-        print('If you installed with "pip install --user poetry", run "pip install --user -U poetry"')
+        print("The project requires poetry >= 1.3.0, please update.")
+        print(
+            'If you installed with "pip install --user poetry", run "pip install --user -U poetry"'
+        )
         print('If you installed via the recommended method, use "poetry self update"')
-        print('More details: https://github.com/python-poetry/poetry#updating-poetry')
+        print("More details: https://github.com/python-poetry/poetry#updating-poetry")
         sys.exit()
 
 
-def main():
-    parser = argparse.ArgumentParser(description='Pull latest release, update dependencies, update and validate the config files, update 3rd deps for the website.')
-    parser.add_argument('--yes', default=False, action='store_true', help='Run all commands without asking.')
-    parser.add_argument('--init', default=False, action='store_true', help='Run all commands without starting the service.')
+def main() -> None:
+    """
+    Entry point for the program.
+
+    This function performs various update and validation tasks.
+
+    It parses command-line arguments using `argparse` to control the behavior of the commands.
+    It updates the repository, installs/update dependencies, validates and updates configuration files,
+    and restarts the service if required.
+
+    Returns
+    -------
+        None
+    """
+    parser = argparse.ArgumentParser(
+        description="Pull latest release, update dependencies, update and validate the config files, update 3rd deps for the website."
+    )
+    parser.add_argument(
+        "--yes", default=False, action="store_true", help="Run all commands without asking."
+    )
+    parser.add_argument(
+        "--init",
+        default=False,
+        action="store_true",
+        help="Run all commands without starting the service.",
+    )
     args = parser.parse_args()
 
     old_hash = compute_hash_self()
 
-    print('* Update repository.')
+    print("* Update repository.")
     keep_going(args.yes or args.init)
-    run_command('git submodule init')
-    run_command('git pull --recurse-submodules')
+    run_command("git submodule init")
+    run_command("git pull --recurse-submodules")
     new_hash = compute_hash_self()
     if old_hash != new_hash:
         print('Update script changed, please do "poetry run update"')
@@ -77,43 +135,43 @@ def main():
 
     check_poetry_version()
 
-    print('* Install/update dependencies.')
+    print("* Install/update dependencies.")
     keep_going(args.yes or args.init)
-    run_command('poetry install')
+    run_command("poetry install")
 
-    print('* Install or make sure the playwright browsers are installed.')
+    print("* Install or make sure the playwright browsers are installed.")
     keep_going(args.yes or args.init)
-    run_command('poetry run playwright install')
+    run_command("poetry run playwright install")
 
-    print('* Validate configuration files.')
+    print("* Validate configuration files.")
     keep_going(args.yes or args.init)
     run_command(f'poetry run {(Path("tools") / "validate_config_files.py").as_posix()} --check')
 
-    print('* Update configuration files.')
+    print("* Update configuration files.")
     keep_going(args.yes or args.init)
     run_command(f'poetry run {(Path("tools") / "validate_config_files.py").as_posix()} --update')
 
-    print('* Restarting')
+    print("* Restarting")
     keep_going(args.yes)
-    if platform.system() == 'Windows':
-        print('Restarting with poetry...')
-        run_command('poetry run stop', expect_fail=True)
-        run_command('poetry run start', capture_output=False)
-        print('Started.')
+    if platform.system() == "Windows":
+        print("Restarting with poetry...")
+        run_command("poetry run stop", expect_fail=True)
+        run_command("poetry run start", capture_output=False)
+        print("Started.")
     else:
-        service = get_config('generic', 'systemd_service_name')
+        service = get_config("generic", "systemd_service_name")
         p = subprocess.run(["systemctl", "is-active", "--quiet", service])
         try:
             p.check_returncode()
-            print('Restarting with systemd...')
-            run_command(f'sudo service {service} restart')
-            print('done.')
+            print("Restarting with systemd...")
+            run_command(f"sudo service {service} restart")
+            print("done.")
         except subprocess.CalledProcessError:
-            print('Restarting with poetry...')
-            run_command('poetry run stop', expect_fail=True)
-            run_command('poetry run start', capture_output=False)
-            print('Started.')
+            print("Restarting with poetry...")
+            run_command("poetry run stop", expect_fail=True)
+            run_command("poetry run start", capture_output=False)
+            print("Started.")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
