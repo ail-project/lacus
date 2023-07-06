@@ -31,7 +31,7 @@ poetry install
 Install the system dependencies required by playwright (will call sudo):
 
 ```bash
-poetry shell 
+poetry shell
 playwright install-deps
 ```
 
@@ -46,7 +46,8 @@ Initialize the config and install playwright browsers:
 ```bash
 poetry run update --init
 ```
-This will already launch a first instance.
+
+It will launch the instance if you answer yes to the "restart" question.
 
 ## Configuration
 
