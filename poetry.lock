@@ -888,18 +888,18 @@ referencing = ">=0.28.0"
 
 [[package]]
 name = "lacuscore"
-version = "1.6.4"
+version = "1.6.5"
 description = "Core of Lacus, usable as a module"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "lacuscore-1.6.4-py3-none-any.whl", hash = "sha256:8703413533f707b338194c5c17f8c107331b3b38f85836892338c6db90794761"},
-    {file = "lacuscore-1.6.4.tar.gz", hash = "sha256:92c1da0a5a8fa21be6c94e7e536e8839125eb16f9201f15274cd8b86bd44caa2"},
+    {file = "lacuscore-1.6.5-py3-none-any.whl", hash = "sha256:373cde9898938521514d08e3a53e6b8d5c71dac59eaad1a067c33086fddbfd4f"},
+    {file = "lacuscore-1.6.5.tar.gz", hash = "sha256:bc6da53bf58819e995db8f2ed33be032bcc9bac04e06c2f2d752cb30c6965e3a"},
 ]
 
 [package.dependencies]
 defang = ">=0.5.3,<0.6.0"
-playwrightcapture = {version = ">=1.21.3,<2.0.0", extras = ["recaptcha"]}
+playwrightcapture = {version = ">=1.21.4,<2.0.0", extras = ["recaptcha"]}
 redis = {version = ">=4.6.0,<5.0.0", extras = ["hiredis"]}
 requests = ">=2.31.0,<3.0.0"
 ua-parser = ">=0.18.0,<0.19.0"
@@ -1253,13 +1253,13 @@ typing-extensions = {version = "*", markers = "python_version <= \"3.8\""}
 
 [[package]]
 name = "playwrightcapture"
-version = "1.21.3"
+version = "1.21.4"
 description = "A simple library to capture websites using playwright"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "playwrightcapture-1.21.3-py3-none-any.whl", hash = "sha256:86e17263acf03c08e1dda827dfa3d9ef376a1e8bada86e3b1520b029b61d925b"},
-    {file = "playwrightcapture-1.21.3.tar.gz", hash = "sha256:c04d557427d89514815f0ee2391b8374a3a507d67dd3932ea7e8dcbbc1c0e63c"},
+    {file = "playwrightcapture-1.21.4-py3-none-any.whl", hash = "sha256:2d83818f109d440755da463d8941cd5a55e1f3790ebf0538a5be947a6d8f18dc"},
+    {file = "playwrightcapture-1.21.4.tar.gz", hash = "sha256:db34d15134c23357b919028aca6ad734348755c598e5252038ef0c07feeec7ef"},
 ]
 
 [package.dependencies]
@@ -1955,4 +1955,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "e4cb16f2ea645eebec6e642c4ec7ffcd17cd143822515f39a39a8d20e2e33632"
+content-hash = "a5209bb8af19723ec6b7e3c000e750ed673671f768bfac67ae6947f4382678ad"
