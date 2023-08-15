@@ -36,7 +36,8 @@ class CaptureManager(AbstractManager):
         max_new_captures = get_config('generic', 'concurrent_captures') - len(self.captures)
         self.logger.debug(f'{len(self.captures)} ongoing captures.')
         if max_new_captures <= 0:
-            self.logger.info(f'Max amount of captures in parallel reached ({len(self.captures)})')
+            if len(self.lacus.monitoring.get_enqueued_captures()) > 0:
+                self.logger.info(f'Max amount of captures in parallel reached ({len(self.captures)})')
             return
         for capture_task in self.lacus.core.consume_queue(max_new_captures):
             self.captures.add(capture_task)

@@ -20,9 +20,9 @@ stop_capture_manager = "bin.stop_capture_manager:main"
 python = "^3.8"
 redis = {version = "^4.6.0", extras = ["hiredis"]}
 flask-restx = "^1.1.0"
-werkzeug = "^2.3.6"
+werkzeug = "^2.3.7"
 gunicorn = "^21.2.0"
-lacuscore = "^1.6.6"
+lacuscore = "^1.6.7"
 rich = "^13.5.2"
 psutil = "^5.9.5"
 

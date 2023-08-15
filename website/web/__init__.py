@@ -52,7 +52,7 @@ submit_fields_post = api.model('SubmitFieldsPost', {
     'url': fields.Url(description="The URL to capture", example=''),
     'document': fields.String(description="A base64 encoded document, it can be anything a browser can display.", example=''),
     'document_name': fields.String(description="The name of the document.", example=''),
-    'depth': fields.Integer(description="Depth of the capture, based on te URLs that can be found in the rendered page.", example=1),
+    'depth': fields.Integer(description="Depth of the capture, based on te URLs that can be found in the rendered page.", example=0),
     'rendered_hostname_only': fields.Boolean(description="If depth is >0, which URLs are we capturing (only the ones with the same hostname as the rendered page, or all of them.)", example=True),
     'browser': fields.String(description="Use this browser. Must be chromium, firefox or webkit.", example='webkit'),
     'device_name': fields.String(description="Use the pre-configured settings for this device. Get a list from /json/devices.", example='Nexus 6'),
