@@ -888,18 +888,18 @@ referencing = ">=0.28.0"
 
 [[package]]
 name = "lacuscore"
-version = "1.6.9"
+version = "1.6.10"
 description = "Core of Lacus, usable as a module"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "lacuscore-1.6.9-py3-none-any.whl", hash = "sha256:632f63635f433adeafe85fdd198f0c15da57c0e89f1bcaf0bf1906129c663341"},
-    {file = "lacuscore-1.6.9.tar.gz", hash = "sha256:4a3250add919a9988a6fab2fee959d27223e6360d1ec8b4f13be306146a5bf86"},
+    {file = "lacuscore-1.6.10-py3-none-any.whl", hash = "sha256:d4b8410718f41da31e8fe0f9ff20271c9e3109e055f83bd4491a5f20104390b2"},
+    {file = "lacuscore-1.6.10.tar.gz", hash = "sha256:0f6f6aa42af73e1bbbcbfc66437078a2f62cbaf461b0782a96d9f9cab201824d"},
 ]
 
 [package.dependencies]
 defang = ">=0.5.3,<0.6.0"
-playwrightcapture = {version = ">=1.21.7,<2.0.0", extras = ["recaptcha"]}
+playwrightcapture = {version = ">=1.21.8,<2.0.0", extras = ["recaptcha"]}
 redis = {version = ">=4.6.0,<5.0.0", extras = ["hiredis"]}
 requests = ">=2.31.0,<3.0.0"
 ua-parser = ">=0.18.0,<0.19.0"
@@ -1253,13 +1253,13 @@ typing-extensions = {version = "*", markers = "python_version <= \"3.8\""}
 
 [[package]]
 name = "playwrightcapture"
-version = "1.21.7"
+version = "1.21.8"
 description = "A simple library to capture websites using playwright"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "playwrightcapture-1.21.7-py3-none-any.whl", hash = "sha256:65b2f18ee0b66f5077516c4c3201102af1b10d93772275b48259f098540f42dc"},
-    {file = "playwrightcapture-1.21.7.tar.gz", hash = "sha256:7ba9726bfd2fa2b0999115c2e65c04c4f2bf332a9efdcd5fd85bebf436316756"},
+    {file = "playwrightcapture-1.21.8-py3-none-any.whl", hash = "sha256:197ab42b9452df15ca506bc3292dbaf87910a7a772a0117584b6acd727b84966"},
+    {file = "playwrightcapture-1.21.8.tar.gz", hash = "sha256:592914c75bbbd5897fc675870f289c6a4a8f18ada918a5dfd5923780fa51128e"},
 ]
 
 [package.dependencies]
@@ -1955,4 +1955,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "b243f6a8a5d409a48ea7c8577bc9c9b18f71783d582904f1cf4a2dd7ace354c9"
+content-hash = "755d3a0495ffbf4b2361e185a36b5938a33354d8435846e8c59e218e96db656c"
