@@ -27,13 +27,6 @@ jobs:
         python-version: ${{matrix.python-version}}
         cache: 'poetry'
 
-    - name: Install with poetry
-      run: |
-        poetry install
-        echo LACUS_HOME=`pwd` > .env
-        poetry run playwright install
-        poetry run playwright install-deps
-
     - name: Clone Redis
       uses: actions/checkout@v4
       with:
@@ -50,6 +43,14 @@ jobs:
         popd
         popd
 
+    - name: Install with poetry
+      run: |
+        echo LACUS_HOME=`pwd` > .env
+        poetry install
+        poetry run playwright install
+        poetry run playwright install-deps
+        poetry run start
+
     - name: Clone PyLacus
       uses: actions/checkout@v4
       with:
@@ -57,7 +58,6 @@ jobs:
 
     - name: Run API tests
       run: |
-        poetry run start
         pushd PyLacus
         poetry install
         poetry run pytest tests/test_web.py
