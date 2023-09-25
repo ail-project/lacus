@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.8', '3.9', '3.10']
+        python-version: ['3.8', '3.9', '3.10', '3.11']
     name: Python ${{ matrix.python-version }}
 
     steps:
@@ -32,26 +32,36 @@ jobs:
         poetry install
         echo LACUS_HOME=`pwd` > .env
         poetry run playwright install
+        poetry run playwright install-deps
+
+    - name: Clone Redis
+      uses: actions/checkout@v4
+      with:
+        repository: redis/redis
+        path: redis-tmp
+        ref: 7.2
 
     - name: Install redis
       run: |
+        mv redis-tmp ../redis
         pushd ..
-        git clone https://github.com/antirez/redis.git
         pushd redis
-        git checkout 7.0
         make
         popd
         popd
 
+    - name: Clone PyLacus
+      uses: actions/checkout@v4
+      with:
+        repository: ail-project/PyLacus
+
     - name: Run API tests
       run: |
         poetry run start
-        git clone https://github.com/ail-project/PyLacus.git
         pushd PyLacus
         poetry install
         poetry run pytest tests/test_web.py
         popd
-
         poetry run stop
 
     - name: Test update script
