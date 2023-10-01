@@ -11,7 +11,7 @@ You need poetry installed, see the [install guide](https://python-poetry.org/doc
 ## Prerequisites
 
 You need to have redis cloned and installed in the same directory you clone this template in:
-this repoitory and and `redis` must be in the same directory, and **not** `redis` cloned in the
+this repoitory and `redis` must be in the same directory, and **not** `redis` cloned in the
 this directory. See [this guide](https://www.lookyloo.eu/docs/main/install-lookyloo.html#_install_redis).
 
 ## Installation
