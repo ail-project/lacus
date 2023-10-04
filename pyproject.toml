@@ -23,7 +23,7 @@ flask-restx = "^1.1.0"
 werkzeug = "^2.3.7"
 gunicorn = "^21.2.0"
 lacuscore = "^1.6.12"
-rich = "^13.5.3"
+rich = "^13.6.0"
 psutil = "^5.9.5"
 
 [tool.poetry.group.dev]
