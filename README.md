@@ -69,3 +69,27 @@ poetry run stop
 
 With the default configuration, you can access the web interface on `http://0.0.0.0:7100`,
 where you will find the API and can start playing with it.
+
+# Maintenance
+
+If you have recurring messages like the ones below you can remove the uuid from the queue as follows.
+
+```
+2023-11-17 08:00:59,936 LacusCore WARNING:[ef7f653d-4cfd-4e7b-9b91-58c9c2658868] Attempted to clear capture that is still being processed.
+2023-11-17 08:01:00,939 LacusCore WARNING:[ef7f653d-4cfd-4e7b-9b91-58c9c2658868] Attempted to clear capture that is still being processed.
+2023-11-17 08:01:01,941 LacusCore WARNING:[ef7f653d-4cfd-4e7b-9b91-58c9c2658868] Attempted to clear capture that is still being processed.
+2023-11-17 08:01:02,944 LacusCore WARNING:[ef7f653d-4cfd-4e7b-9b91-58c9c2658868] Attempted to clear capture that is still being processed.
+2023-11-17 08:01:03,947 LacusCore WARNING:[ef7f653d-4cfd-4e7b-9b91-58c9c2658868] Attempted to clear capture that is still being processed.
+...
+```
+
+
+While redis is running connect to it via its socket and zrem then entry.
+
+```
+ail@ail-tokyo:~$ cd lacus/
+ail@ail-tokyo:~/lacus$ ../redis/src/redis-cli -s cache/cache.sock
+redis cache/cache.sock> zrem lacus:ongoing ef7f653d-4cfd-4e7b-9b91-58c9c2658868
+(integer) 1
+redis cache/cache.sock>
+```
