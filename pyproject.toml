@@ -22,7 +22,7 @@ redis = {version = "^5.0.1", extras = ["hiredis"]}
 flask-restx = "^1.2.0"
 werkzeug = "^2.3.8"
 gunicorn = "^21.2.0"
-lacuscore = "^1.7.2"
+lacuscore = "^1.7.3"
 rich = "^13.7.0"
 psutil = "^5.9.6"
 
