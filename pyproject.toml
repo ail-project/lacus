@@ -20,10 +20,10 @@ stop_capture_manager = "bin.stop_capture_manager:main"
 python = "^3.8"
 redis = {version = "^5.0.1", extras = ["hiredis"]}
 flask-restx = "^1.2.0"
-werkzeug = "^2.3.7"
+werkzeug = "^2.3.8"
 gunicorn = "^21.2.0"
 lacuscore = "^1.7.2"
-rich = "^13.6.0"
+rich = "^13.7.0"
 psutil = "^5.9.6"
 
 [tool.poetry.group.dev]
@@ -34,8 +34,8 @@ ipython = [
     {version = "<8.13.0", python = "<3.9"},
     {version = "^8.13.0", python = ">=3.9"}
 ]
-mypy = "^1.6.1"
-types-redis = "^4.6.0.8"
+mypy = "^1.7.0"
+types-redis = "^4.6.0.10"
 types-psutil = "^5.9.5.17"
 
 [build-system]
