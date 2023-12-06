@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 
+import datetime
+
+from collections import defaultdict
 from importlib.metadata import version
-from typing import Dict
+from typing import Dict, Optional, Union
 
 from flask import Flask, request
 from flask_restx import Api, Resource, fields  # type: ignore
@@ -127,3 +130,99 @@ class CaptureResult(Resource):
 
     def get(self, capture_uuid: str):
         return lacus.core.get_capture(capture_uuid)
+
+
+stats_model = api.model('StatsModel', {
+    'captures': fields.Integer,
+    'retry_success': fields.Integer,
+    'retry_failed': fields.Integer,
+    'errors': fields.List(fields.List(fields.String)),
+})
+
+
+@api.route('/daily_stats')
+@api.route('/daily_stats/<string:date>')
+@api.doc(description='Get the statistics for a day.',
+         params={'date': 'The date in ISO format YYYY-MM-DD'})
+class DailyStats(Resource):
+
+    @api.marshal_with(stats_model, skip_none=True)
+    def get(self, date: Optional[str]=None):
+        if 'date' in request.args:
+            date = request.args['date']
+        if not date:
+            date = datetime.date.today().isoformat()
+        return lacus.monitoring.get_stats(date, cardinality_only=True)
+
+
+stats_details_model = api.model('StatsDetailsModel', {
+    'captures': fields.List(fields.String),
+    'retry_success': fields.List(fields.String),
+    'retry_failed': fields.List(fields.String),
+    'errors': fields.List(fields.List(fields.String)),
+})
+
+
+@api.route('/daily_stats_details')
+@api.route('/daily_stats_details/<string:date>')
+@api.doc(description='Get the statistics for a day, with lists of successful/failed URLs.',
+         params={'date': 'The date in ISO format YYYY-MM-DD'})
+class DailyStatsDetails(Resource):
+
+    @api.marshal_with(stats_details_model, skip_none=True)
+    def get(self, date: Optional[str]=None):
+        if 'date' in request.args:
+            date = request.args['date']
+        if not date:
+            date = datetime.date.today().isoformat()
+        return lacus.monitoring.get_stats(date, cardinality_only=False)
+
+
+@api.route('/db_status')
+@api.doc(description='Get a few infos about Redis usage.')
+class DBSatus(Resource):
+
+    def get(self):
+        redis_info = lacus.redis.info()
+        return {'total_keys': redis_info['db0']['keys'],
+                'current_memory_use': redis_info['used_memory_rss_human'],
+                'peak_memory_use': redis_info['used_memory_peak_human']}
+
+
+@api.route('/ongoing_captures')
+@api.route('/ongoing_captures/<int:with_settings>')
+@api.doc(description='Get all the ongoing captures.',
+         params={'with_settings': 'If set, returns the settings.'})
+class OngoingCaptures(Resource):
+
+    def get(self, with_settings: Optional[int]=None):
+        ongoing = lacus.monitoring.get_ongoing_captures()
+        _ongoing = [[uuid, d.isoformat()] for uuid, d in ongoing]
+        if 'with_settings' in request.args:
+            with_settings = True
+        if not with_settings:
+            return _ongoing
+        to_return: Dict[str, Dict[str, Union[Dict, str]]] = defaultdict(dict)
+        for uuid, capture_time in _ongoing:
+            to_return[uuid]['settings'] = lacus.monitoring.get_capture_settings(uuid)
+            to_return[uuid]['capture_time'] = capture_time
+        return to_return
+
+
+@api.route('/enqueued_captures')
+@api.route('/enqueued_captures/<int:with_settings>')
+@api.doc(description='Get all the enqueued but not yet ongoing captures.',
+         params={'with_settings': 'If set, returns the settings.'})
+class EnqueuedCaptures(Resource):
+
+    def get(self, with_settings: Optional[int]=None):
+        enqueued = lacus.monitoring.get_enqueued_captures()
+        if 'with_settings' in request.args:
+            with_settings = True
+        if not with_settings:
+            return enqueued
+        to_return: Dict[str, Dict[str, Union[Dict, str, float]]] = defaultdict(dict)
+        for uuid, priority in enqueued:
+            to_return[uuid]['settings'] = lacus.monitoring.get_capture_settings(uuid)
+            to_return[uuid]['priority'] = priority
+        return to_return

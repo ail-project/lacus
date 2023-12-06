@@ -59,7 +59,7 @@ class Monitoring():
 
     @property
     def stats(self):
-        return self.lacus_monit.get_stats()
+        return self.lacus_monit.get_stats(cardinality_only=True)
 
 
 if __name__ == '__main__':
@@ -82,11 +82,11 @@ if __name__ == '__main__':
     if stats := m.stats:
         console.print('Daily stats:')
         if captures := stats.get('captures'):
-            console.print(Padding(f'{len(captures)} captures', (0, 2)))
+            console.print(Padding(f'{captures} captures', (0, 2)))
         if retry_success := stats.get('retry_success'):
-            console.print(Padding(f'{len(retry_success)} successful retries', (0, 2)))
+            console.print(Padding(f'{retry_success} successful retries', (0, 2)))
         if retry_failed := stats.get('retry_failed'):
-            console.print(Padding(f'{len(retry_failed)} failed retries', (0, 2)))
+            console.print(Padding(f'{retry_failed} failed retries', (0, 2)))
         if errors := stats.get('errors'):
             console.print(Padding('Errors:', (0, 2)))
             for error_name, number in errors:
