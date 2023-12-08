@@ -28,7 +28,7 @@ class CaptureManager(AbstractManager):
     async def clear_dead_captures(self):
         ongoing = {capture.get_name(): capture for capture in self.captures}
         max_capture_time = get_config('generic', 'max_capture_time')
-        oldest_start_time = datetime.now() - timedelta(seconds=max_capture_time)
+        oldest_start_time = datetime.now() - timedelta(seconds=max_capture_time + 300)
         for expected_uuid, start_time in self.lacus.monitoring.get_ongoing_captures():
             if expected_uuid not in ongoing.keys():
                 self.lacus.core.clear_capture(expected_uuid, 'Capture not in the list of tasks, it has been canceled.')
