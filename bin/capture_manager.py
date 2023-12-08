@@ -26,21 +26,23 @@ class CaptureManager(AbstractManager):
         self.lacus = Lacus()
 
     async def clear_dead_captures(self):
-        ongoing = [capture.get_name() for capture in self.captures]
+        ongoing = {capture.get_name(): capture for capture in self.captures}
         max_capture_time = get_config('generic', 'max_capture_time')
         oldest_start_time = datetime.now() - timedelta(seconds=max_capture_time)
         for expected_uuid, start_time in self.lacus.monitoring.get_ongoing_captures():
-            if expected_uuid not in ongoing:
+            if expected_uuid not in ongoing.keys():
                 self.lacus.core.clear_capture(expected_uuid, 'Capture not in the list of tasks, it has been canceled.')
             elif start_time < oldest_start_time:
                 self.logger.warning(f'{expected_uuid} has been running for too long. Started at {start_time}.')
-                for capture in self.captures:
-                    if capture.get_name() == expected_uuid:
-                        if sys.version_info >= (3, 9):
-                            capture.cancel(f'Capture as been running for more than {max_capture_time}s.')
-                        else:
-                            capture.cancel()
-                        break
+                capture = ongoing[expected_uuid]
+                if sys.version_info >= (3, 9):
+                    capture.cancel(f'Capture as been running for more than {max_capture_time}s.')
+                else:
+                    capture.cancel()
+                try:
+                    await capture
+                except asyncio.CancelledError:
+                    self.logger.warning(f'{expected_uuid} is canceled now.')
 
     async def _to_run_forever_async(self):
         await self.clear_dead_captures()
