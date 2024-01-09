@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 import datetime
+import logging
+import logging.config
 
 from collections import defaultdict
 from importlib.metadata import version
@@ -9,10 +11,13 @@ from typing import Dict, Optional, Union
 from flask import Flask, request
 from flask_restx import Api, Resource, fields  # type: ignore
 
+from lacus.default import get_config
 from lacus.lacus import Lacus
 
 from .helpers import get_secret_key
 from .proxied import ReverseProxied
+
+logging.config.dictConfig(get_config('logging'))
 
 app: Flask = Flask(__name__)
 
