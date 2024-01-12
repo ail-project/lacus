@@ -3,6 +3,9 @@
 import copy
 import logging
 
+from datetime import datetime
+from typing import Dict, Any
+
 from redis import Redis, ConnectionPool
 from redis.connection import UnixDomainSocketConnection
 
@@ -42,12 +45,29 @@ class Lacus():
                 self.global_proxy.pop('enable')
 
     @property
-    def redis(self):
+    def redis(self) -> Redis:  # type: ignore[type-arg]
         return Redis(connection_pool=self.redis_pool)
 
     @property
-    def redis_decode(self):
+    def redis_decode(self) -> Redis:  # type: ignore[type-arg]
         return Redis(connection_pool=self.redis_pool_decoded)
 
-    def check_redis_up(self):
+    def check_redis_up(self) -> bool:
         return self.redis.ping()
+
+    def redis_status(self) -> Dict[str, Any]:
+        redis_info = self.redis.info()
+        return {'total_keys': redis_info['db0']['keys'],
+                'current_memory_use': redis_info['used_memory_rss_human'],
+                'peak_memory_use': redis_info['used_memory_peak_human']}
+
+    def status(self) -> Dict[str, Any]:
+        to_return: Dict[str, Any] = {}
+        to_return['max_concurrent_captures'] = get_config('generic', 'concurrent_captures')
+        to_return['max_capture_time'] = get_config('generic', 'max_capture_time')
+        ongoing_captures = self.monitoring.get_ongoing_captures()
+        to_return['ongoing_captures'] = len(ongoing_captures)
+        to_return['captures_time'] = {uuid: (datetime.now() - start_time).total_seconds() for uuid, start_time in ongoing_captures}
+        enqueued_captures = self.monitoring.get_enqueued_captures()
+        to_return['enqueued_captures'] = len(enqueued_captures)
+        return to_return

@@ -1,13 +1,17 @@
 #!/usr/bin/env python3
 
+from __future__ import annotations
+
 import os
 from functools import lru_cache
 from pathlib import Path
 
+from flask import Request
+
 from lacus.default import get_homedir
 
 
-def src_request_ip(request) -> str:
+def src_request_ip(request: Request) -> str | None:
     # NOTE: X-Real-IP is the IP passed by the reverse proxy in the headers.
     real_ip = request.headers.get('X-Real-IP')
     if not real_ip:

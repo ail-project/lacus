@@ -1,15 +1,19 @@
 #!/usr/bin/env python3
 
+from __future__ import annotations
+
 import datetime
 import logging
 import logging.config
 
 from collections import defaultdict
 from importlib.metadata import version
-from typing import Dict, Optional, Union
+from typing import Dict, Optional, Union, Any, List, Tuple
 
 from flask import Flask, request
 from flask_restx import Api, Resource, fields  # type: ignore
+
+from lacuscore import CaptureStatus, CaptureResponse
 
 from lacus.default import get_config
 from lacus.lacus import Lacus
@@ -34,9 +38,9 @@ lacus: Lacus = Lacus()
 
 @api.route('/redis_up')
 @api.doc(description='Check if redis is up and running')
-class RedisUp(Resource):
+class RedisUp(Resource):  # type: ignore[misc]
 
-    def get(self):
+    def get(self) -> bool:
         return lacus.check_redis_up()
 
 
@@ -84,12 +88,12 @@ submit_fields_post = api.model('SubmitFieldsPost', {
 
 
 @api.route('/enqueue')
-class Enqueue(Resource):
+class Enqueue(Resource):  # type: ignore[misc]
 
-    @api.doc(body=submit_fields_post)
-    @api.produces(['text/text'])
-    def post(self):
-        to_query: Dict = request.get_json(force=True)
+    @api.doc(body=submit_fields_post)  # type: ignore[misc]
+    @api.produces(['text/text'])  # type: ignore[misc]
+    def post(self) -> str:
+        to_query: Dict[str, Any] = request.get_json(force=True)
         perma_uuid = lacus.core.enqueue(
             url=to_query.get('url'),
             document_name=to_query.get('document_name'),
@@ -122,18 +126,18 @@ class Enqueue(Resource):
 @api.route('/capture_status/<string:capture_uuid>')
 @api.doc(description='Get the status of a capture.',
          params={'capture_uuid': 'The UUID of the capture'})
-class CaptureStatusQuery(Resource):
+class CaptureStatusQuery(Resource):  # type: ignore[misc]
 
-    def get(self, capture_uuid: str):
+    def get(self, capture_uuid: str) -> CaptureStatus:
         return lacus.core.get_capture_status(capture_uuid)
 
 
 @api.route('/capture_result/<string:capture_uuid>')
 @api.doc(description='Get the result of a capture.',
          params={'capture_uuid': 'The UUID of the capture'})
-class CaptureResult(Resource):
+class CaptureResult(Resource):  # type: ignore[misc]
 
-    def get(self, capture_uuid: str):
+    def get(self, capture_uuid: str) -> CaptureResponse:
         return lacus.core.get_capture(capture_uuid)
 
 
@@ -149,10 +153,10 @@ stats_model = api.model('StatsModel', {
 @api.route('/daily_stats/<string:date>')
 @api.doc(description='Get the statistics for a day.',
          params={'date': 'The date in ISO format YYYY-MM-DD'})
-class DailyStats(Resource):
+class DailyStats(Resource):  # type: ignore[misc]
 
-    @api.marshal_with(stats_model, skip_none=True)
-    def get(self, date: Optional[str]=None):
+    @api.marshal_with(stats_model, skip_none=True)  # type: ignore[misc]
+    def get(self, date: Optional[str]=None) -> Dict[str, Any]:
         if 'date' in request.args:
             date = request.args['date']
         if not date:
@@ -172,10 +176,10 @@ stats_details_model = api.model('StatsDetailsModel', {
 @api.route('/daily_stats_details/<string:date>')
 @api.doc(description='Get the statistics for a day, with lists of successful/failed URLs.',
          params={'date': 'The date in ISO format YYYY-MM-DD'})
-class DailyStatsDetails(Resource):
+class DailyStatsDetails(Resource):  # type: ignore[misc]
 
-    @api.marshal_with(stats_details_model, skip_none=True)
-    def get(self, date: Optional[str]=None):
+    @api.marshal_with(stats_details_model, skip_none=True)  # type: ignore[misc]
+    def get(self, date: Optional[str]=None) -> Dict[str, Any]:
         if 'date' in request.args:
             date = request.args['date']
         if not date:
@@ -185,29 +189,26 @@ class DailyStatsDetails(Resource):
 
 @api.route('/db_status')
 @api.doc(description='Get a few infos about Redis usage.')
-class DBSatus(Resource):
+class DBSatus(Resource):  # type: ignore[misc]
 
-    def get(self):
-        redis_info = lacus.redis.info()
-        return {'total_keys': redis_info['db0']['keys'],
-                'current_memory_use': redis_info['used_memory_rss_human'],
-                'peak_memory_use': redis_info['used_memory_peak_human']}
+    def get(self) -> Dict[str, Any]:
+        return lacus.redis_status()
 
 
 @api.route('/ongoing_captures')
 @api.route('/ongoing_captures/<int:with_settings>')
 @api.doc(description='Get all the ongoing captures.',
          params={'with_settings': 'If set, returns the settings.'})
-class OngoingCaptures(Resource):
+class OngoingCaptures(Resource):  # type: ignore[misc]
 
-    def get(self, with_settings: Optional[int]=None):
+    def get(self, with_settings: Optional[int]=None) -> Union[List[Tuple[str, str]], Dict[str, Any]]:
         ongoing = lacus.monitoring.get_ongoing_captures()
-        _ongoing = [[uuid, d.isoformat()] for uuid, d in ongoing]
+        _ongoing = [(uuid, d.isoformat()) for uuid, d in ongoing]
         if 'with_settings' in request.args:
             with_settings = True
         if not with_settings:
             return _ongoing
-        to_return: Dict[str, Dict[str, Union[Dict, str]]] = defaultdict(dict)
+        to_return: Dict[str, Dict[str, Union[Dict[str, Any], str]]] = defaultdict(dict)
         for uuid, capture_time in _ongoing:
             to_return[uuid]['settings'] = lacus.monitoring.get_capture_settings(uuid)
             to_return[uuid]['capture_time'] = capture_time
@@ -218,16 +219,24 @@ class OngoingCaptures(Resource):
 @api.route('/enqueued_captures/<int:with_settings>')
 @api.doc(description='Get all the enqueued but not yet ongoing captures.',
          params={'with_settings': 'If set, returns the settings.'})
-class EnqueuedCaptures(Resource):
+class EnqueuedCaptures(Resource):  # type: ignore[misc]
 
-    def get(self, with_settings: Optional[int]=None):
+    def get(self, with_settings: Optional[int]=None) -> Union[List[Tuple[str, float]], Dict[str, Any]]:
         enqueued = lacus.monitoring.get_enqueued_captures()
         if 'with_settings' in request.args:
             with_settings = True
         if not with_settings:
             return enqueued
-        to_return: Dict[str, Dict[str, Union[Dict, str, float]]] = defaultdict(dict)
+        to_return: Dict[str, Dict[str, Union[Dict[str, Any], str, float]]] = defaultdict(dict)
         for uuid, priority in enqueued:
             to_return[uuid]['settings'] = lacus.monitoring.get_capture_settings(uuid)
             to_return[uuid]['priority'] = priority
         return to_return
+
+
+@api.route('/lacus_status')
+@api.doc(description='Get the status of the Lacus instance.')
+class LacusStatus(Resource):  # type: ignore[misc]
+
+    def get(self) -> Dict[str, Any]:
+        return lacus.status()

@@ -12,7 +12,7 @@ from lacus.default import get_config
 logging.config.dictConfig(get_config('logging'))
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(description='Sends a SIGTERM to the capture_manager so you can restart it cleanly.')
     parser.parse_args()
 

@@ -1,8 +1,13 @@
 #!/usr/bin/env python3
 
+from __future__ import annotations
+
 import json
 import os
 import sys
+
+from datetime import datetime
+from typing import Any, Mapping
 
 from lacus.default import get_socket_path, AbstractManager
 from lacuscore import LacusCoreMonitoring
@@ -15,13 +20,12 @@ console = Console(color_system="256")
 
 class Monitoring():
 
-    def __init__(self):
-        self.redis_cache: Redis = Redis(unix_socket_path=get_socket_path('cache'), decode_responses=True)
-
+    def __init__(self) -> None:
+        self.redis_cache: Redis = Redis(unix_socket_path=get_socket_path('cache'), decode_responses=True)  # type: ignore[type-arg]
         self.lacus_monit = LacusCoreMonitoring(self.redis_cache)
 
     @property
-    def backend_status(self):
+    def backend_status(self) -> bool:
         socket_path_cache = get_socket_path('cache')
         backend_up = True
         if not os.path.exists(socket_path_cache):
@@ -39,26 +43,26 @@ class Monitoring():
         return backend_up
 
     @property
-    def ongoing(self):
+    def ongoing(self) -> list[tuple[str, datetime]]:
         return self.lacus_monit.get_ongoing_captures()
 
     @property
-    def enqueued(self):
+    def enqueued(self) -> list[tuple[str, float]]:
         return self.lacus_monit.get_enqueued_captures()
 
-    def capture_settings(self, uuid: str):
+    def capture_settings(self, uuid: str) -> dict[str, str]:
         return self.lacus_monit.get_capture_settings(uuid)
 
     @property
-    def number_keys(self):
+    def number_keys(self) -> int:
         return self.redis_cache.info('keyspace')['db0']['keys']
 
     @property
-    def memory_use(self):
+    def memory_use(self) -> Mapping[str, Any]:
         return self.redis_cache.info('memory')
 
     @property
-    def stats(self):
+    def stats(self) -> dict[str, Any]:
         return self.lacus_monit.get_stats(cardinality_only=True)
 
 

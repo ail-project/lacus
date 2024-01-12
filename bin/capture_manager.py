@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+from __future__ import annotations
+
 import asyncio
 import logging
 import logging.config
@@ -19,13 +21,13 @@ logging.config.dictConfig(get_config('logging'))
 
 class CaptureManager(AbstractManager):
 
-    def __init__(self, loglevel: Optional[int]=None):
+    def __init__(self, loglevel: Optional[int]=None) -> None:
         super().__init__(loglevel)
         self.script_name = 'capture_manager'
-        self.captures: Set[Task] = set()
+        self.captures: Set[Task] = set()  # type: ignore[type-arg]
         self.lacus = Lacus()
 
-    async def clear_dead_captures(self):
+    async def clear_dead_captures(self) -> None:
         ongoing = {capture.get_name(): capture for capture in self.captures}
         max_capture_time = get_config('generic', 'max_capture_time')
         oldest_start_time = datetime.now() - timedelta(seconds=max_capture_time + 300)
@@ -44,7 +46,7 @@ class CaptureManager(AbstractManager):
                 except asyncio.CancelledError:
                     self.logger.warning(f'{expected_uuid} is canceled now.')
 
-    async def _to_run_forever_async(self):
+    async def _to_run_forever_async(self) -> None:
         await self.clear_dead_captures()
         if self.force_stop:
             return
@@ -61,7 +63,7 @@ class CaptureManager(AbstractManager):
         #       be decremented when it finishes
         self.set_running(len(self.captures) + 1)
 
-    async def _wait_to_finish_async(self):
+    async def _wait_to_finish_async(self) -> None:
         while self.captures:
             self.logger.info(f'Waiting for {len(self.captures)} capture(s) to finish...')
             self.logger.info(f'Ongoing captures: {", ".join(capture.get_name() for capture in self.captures)}')
@@ -70,7 +72,7 @@ class CaptureManager(AbstractManager):
         self.logger.info('No more captures')
 
 
-def main():
+def main() -> None:
     p = CaptureManager()
 
     loop = asyncio.new_event_loop()
