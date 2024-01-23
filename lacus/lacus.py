@@ -57,9 +57,13 @@ class Lacus():
 
     def redis_status(self) -> Dict[str, Any]:
         redis_info = self.redis.info()
-        return {'total_keys': redis_info['db0']['keys'],
+        return {'total_keys': redis_info['db0']['keys'] if 'db0' in redis_info else 0,
                 'current_memory_use': redis_info['used_memory_rss_human'],
                 'peak_memory_use': redis_info['used_memory_peak_human']}
+
+    @property
+    def is_busy(self) -> bool:
+        return get_config('generic', 'concurrent_captures') <= len(self.monitoring.get_ongoing_captures())
 
     def status(self) -> Dict[str, Any]:
         to_return: Dict[str, Any] = {}

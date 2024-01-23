@@ -240,3 +240,11 @@ class LacusStatus(Resource):  # type: ignore[misc]
 
     def get(self) -> Dict[str, Any]:
         return lacus.status()
+
+
+@api.route('/is_busy')
+@api.doc(description='Check if Lacus is busy (ongoing captures >= max ongoing captures).')
+class LacusIsBusy(Resource):  # type: ignore[misc]
+
+    def get(self) -> bool:
+        return lacus.is_busy

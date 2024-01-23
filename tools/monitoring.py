@@ -7,13 +7,12 @@ import os
 import sys
 
 from datetime import datetime
-from typing import Any, Mapping
+from typing import Any
 
 from lacus.default import get_socket_path, AbstractManager
-from lacuscore import LacusCoreMonitoring
+from lacus import Lacus
 from rich.console import Console
 from rich.padding import Padding
-from redis import Redis
 
 console = Console(color_system="256")
 
@@ -21,8 +20,7 @@ console = Console(color_system="256")
 class Monitoring():
 
     def __init__(self) -> None:
-        self.redis_cache: Redis = Redis(unix_socket_path=get_socket_path('cache'), decode_responses=True)  # type: ignore[type-arg]
-        self.lacus_monit = LacusCoreMonitoring(self.redis_cache)
+        self.lacus = Lacus()
 
     @property
     def backend_status(self) -> bool:
@@ -33,7 +31,7 @@ class Monitoring():
             backend_up = False
         if backend_up:
             try:
-                if not self.lacus_monit.check_redis_up():
+                if not self.lacus.monitoring.check_redis_up():
                     console.print('Unable to ping the redis cache db.')
                     backend_up = False
             except ConnectionError:
@@ -44,26 +42,22 @@ class Monitoring():
 
     @property
     def ongoing(self) -> list[tuple[str, datetime]]:
-        return self.lacus_monit.get_ongoing_captures()
+        return self.lacus.monitoring.get_ongoing_captures()
 
     @property
     def enqueued(self) -> list[tuple[str, float]]:
-        return self.lacus_monit.get_enqueued_captures()
+        return self.lacus.monitoring.get_enqueued_captures()
 
     def capture_settings(self, uuid: str) -> dict[str, str]:
-        return self.lacus_monit.get_capture_settings(uuid)
+        return self.lacus.monitoring.get_capture_settings(uuid)
 
     @property
-    def number_keys(self) -> int:
-        return self.redis_cache.info('keyspace')['db0']['keys']
-
-    @property
-    def memory_use(self) -> Mapping[str, Any]:
-        return self.redis_cache.info('memory')
+    def redis_status(self) -> dict[str, Any]:
+        return self.lacus.redis_status()
 
     @property
     def stats(self) -> dict[str, Any]:
-        return self.lacus_monit.get_stats(cardinality_only=True)
+        return self.lacus.monitoring.get_stats(cardinality_only=True)
 
 
 if __name__ == '__main__':
@@ -79,9 +73,20 @@ if __name__ == '__main__':
         console.print(s)
 
     console.print('DB info:')
-    console.print(Padding(f'{m.number_keys} keys in the database.', (0, 2)))
-    console.print(Padding(f'Current memory use: {m.memory_use["used_memory_rss_human"]}', (0, 2)))
-    console.print(Padding(f'Peak memory use: {m.memory_use["used_memory_peak_human"]}', (0, 2)))
+    redis_status = m.redis_status
+    console.print(Padding(f'{redis_status["total_keys"]} keys in the database.', (0, 2)))
+    console.print(Padding(f'Current memory use: {redis_status["current_memory_use"]}', (0, 2)))
+    console.print(Padding(f'Peak memory use: {redis_status["peak_memory_use"]}', (0, 2)))
+
+    console.print('Lacus info:')
+    if m.lacus.is_busy:
+        console.print(Padding('[red]WARNING[/red]: Lacus is busy.', (0, 2)))
+    lacus_status = m.lacus.status()
+    console.print(Padding(f'{lacus_status["ongoing_captures"]} ongoing captures.', (0, 2)))
+    console.print(Padding(f'{lacus_status["enqueued_captures"]} enqueued captures.', (0, 2)))
+    console.print(Padding('Configuration settings', (0, 2)))
+    console.print(Padding(f'Max concurrent captures: {lacus_status["max_concurrent_captures"]}', (0, 4)))
+    console.print(Padding(f'Max capture time: {lacus_status["max_capture_time"]}', (0, 4)))
 
     if stats := m.stats:
         console.print('Daily stats:')
@@ -96,16 +101,16 @@ if __name__ == '__main__':
             for error_name, number in errors:
                 console.print(Padding(f'{error_name}: {int(number)}', (0, 4)))
 
-    console.print('Ongoing captures:')
+    console.print(f'Ongoing captures ({lacus_status["ongoing_captures"]}):')
     for uuid, start_time in m.ongoing:
-        s = Padding(f'{uuid}: {start_time}', (0, 2))
+        s = Padding(f'{uuid}: {start_time} ({lacus_status["captures_time"][uuid]}s)', (0, 2))
         console.print(s)
         settings = m.capture_settings(uuid)
         if settings:
             s = Padding(json.dumps(settings, indent=2), (0, 4))
             console.print(s)
 
-    console.print('Enqueued captures:')
+    console.print(f'Enqueued captures ({lacus_status["enqueued_captures"]}):')
     for uuid, priority in m.enqueued:
         s = Padding(f'{uuid}: {priority}', (0, 2))
         console.print(s)
