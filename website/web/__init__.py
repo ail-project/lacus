@@ -11,7 +11,7 @@ from importlib.metadata import version
 from typing import Dict, Optional, Union, Any, List, Tuple
 
 from flask import Flask, request
-from flask_restx import Api, Resource, fields  # type: ignore
+from flask_restx import Api, Resource, fields  # type: ignore[import-untyped]
 
 from lacuscore import CaptureStatus, CaptureResponse
 
@@ -25,7 +25,7 @@ logging.config.dictConfig(get_config('logging'))
 
 app: Flask = Flask(__name__)
 
-app.wsgi_app = ReverseProxied(app.wsgi_app)  # type: ignore
+app.wsgi_app = ReverseProxied(app.wsgi_app)  # type: ignore[method-assign]
 
 app.config['SECRET_KEY'] = get_secret_key()
 
