@@ -63,7 +63,13 @@ class Lacus():
 
     @property
     def is_busy(self) -> bool:
-        return get_config('generic', 'concurrent_captures') <= len(self.monitoring.get_ongoing_captures())
+        max_concurrent_captures = get_config('generic', 'concurrent_captures')
+        number_ongoing_captures = len(self.monitoring.get_ongoing_captures())
+        if max_concurrent_captures <= number_ongoing_captures:
+            return True
+        # If the ongoing capture list is not full, we need to check if the queue is also very long
+        enqueued_captures = len(self.monitoring.get_enqueued_captures())
+        return number_ongoing_captures + enqueued_captures >= max_concurrent_captures
 
     def status(self) -> Dict[str, Any]:
         to_return: Dict[str, Any] = {}
