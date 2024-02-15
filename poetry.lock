@@ -427,6 +427,26 @@ files = [
 ]
 
 [[package]]
+name = "dnspython"
+version = "2.5.0"
+description = "DNS toolkit"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "dnspython-2.5.0-py3-none-any.whl", hash = "sha256:6facdf76b73c742ccf2d07add296f178e629da60be23ce4b0a9c927b1e02c3a6"},
+    {file = "dnspython-2.5.0.tar.gz", hash = "sha256:a0034815a59ba9ae888946be7ccca8f7c157b286f8455b379c692efb51022a15"},
+]
+
+[package.extras]
+dev = ["black (>=23.1.0)", "coverage (>=7.0)", "flake8 (>=5.0.3)", "mypy (>=1.0.1)", "pylint (>=2.7)", "pytest (>=6.2.5)", "pytest-cov (>=3.0.0)", "sphinx (>=7.0.0)", "twine (>=4.0.0)", "wheel (>=0.41.0)"]
+dnssec = ["cryptography (>=41)"]
+doh = ["h2 (>=4.1.0)", "httpcore (>=0.17.3)", "httpx (>=0.25.1)"]
+doq = ["aioquic (>=0.9.20)"]
+idna = ["idna (>=2.1)"]
+trio = ["trio (>=0.14)"]
+wmi = ["wmi (>=1.5.1)"]
+
+[[package]]
 name = "exceptiongroup"
 version = "1.2.0"
 description = "Backport of PEP 654 (exception groups)"
@@ -957,17 +977,18 @@ referencing = ">=0.31.0"
 
 [[package]]
 name = "lacuscore"
-version = "1.8.2"
+version = "1.8.3"
 description = "Core of Lacus, usable as a module"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "lacuscore-1.8.2-py3-none-any.whl", hash = "sha256:82b1a182b0fdba9c788c767e5fdffcfd624dcc73f6c73cb7b1979db2e647f02f"},
-    {file = "lacuscore-1.8.2.tar.gz", hash = "sha256:c7637939eefd252b4d745732867159437d091a0c3f17a91e8e805c6fe4951df8"},
+    {file = "lacuscore-1.8.3-py3-none-any.whl", hash = "sha256:f354b8b56798b752e4c7ebbc22e4ff05e875f474c2f3e9c9140e13e696fa7c64"},
+    {file = "lacuscore-1.8.3.tar.gz", hash = "sha256:cb06ebf95c3ac6d5847b889d57e2e3ced8286aba748a635bf526592e8ef631d0"},
 ]
 
 [package.dependencies]
 defang = ">=0.5.3,<0.6.0"
+dnspython = ">=2.5.0,<3.0.0"
 playwrightcapture = {version = ">=1.23.2,<2.0.0", extras = ["recaptcha"]}
 redis = {version = ">=5.0.1,<6.0.0", extras = ["hiredis"]}
 requests = ">=2.31.0,<3.0.0"
@@ -2081,4 +2102,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "7e5c3c287e80d26639b2101035380047d8756c64b47f15385269665c8b2955b3"
+content-hash = "5f015f64a0c860c08ee9054e8c6623f9403ed2b714a37ffc312d595dd8fdd93f"
