@@ -444,22 +444,22 @@ files = [
 
 [[package]]
 name = "dnspython"
-version = "2.5.0"
+version = "2.6.0"
 description = "DNS toolkit"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "dnspython-2.5.0-py3-none-any.whl", hash = "sha256:6facdf76b73c742ccf2d07add296f178e629da60be23ce4b0a9c927b1e02c3a6"},
-    {file = "dnspython-2.5.0.tar.gz", hash = "sha256:a0034815a59ba9ae888946be7ccca8f7c157b286f8455b379c692efb51022a15"},
+    {file = "dnspython-2.6.0-py3-none-any.whl", hash = "sha256:44c40af3bffed66e3307cea9ab667fd583e138ecc0777b18f262a9dae034e5fa"},
+    {file = "dnspython-2.6.0.tar.gz", hash = "sha256:233f871ff384d84c33b2eaf4358ffe7f8927eae3b257ad8467f9bdba7e7ac6bc"},
 ]
 
 [package.extras]
-dev = ["black (>=23.1.0)", "coverage (>=7.0)", "flake8 (>=5.0.3)", "mypy (>=1.0.1)", "pylint (>=2.7)", "pytest (>=6.2.5)", "pytest-cov (>=3.0.0)", "sphinx (>=7.0.0)", "twine (>=4.0.0)", "wheel (>=0.41.0)"]
+dev = ["black (>=23.1.0)", "coverage (>=7.0)", "flake8 (>=7)", "mypy (>=1.8)", "pylint (>=3)", "pytest (>=7.4)", "pytest-cov (>=4.1.0)", "sphinx (>=7.2.0)", "twine (>=4.0.0)", "wheel (>=0.42.0)"]
 dnssec = ["cryptography (>=41)"]
-doh = ["h2 (>=4.1.0)", "httpcore (>=0.17.3)", "httpx (>=0.25.1)"]
-doq = ["aioquic (>=0.9.20)"]
-idna = ["idna (>=2.1)"]
-trio = ["trio (>=0.14)"]
+doh = ["h2 (>=4.1.0)", "httpcore (>=1.0.0)", "httpx (>=0.26.0)"]
+doq = ["aioquic (>=0.9.25)"]
+idna = ["idna (>=3.6)"]
+trio = ["trio (>=0.23)"]
 wmi = ["wmi (>=1.5.1)"]
 
 [[package]]
@@ -993,19 +993,19 @@ referencing = ">=0.31.0"
 
 [[package]]
 name = "lacuscore"
-version = "1.8.4"
+version = "1.8.5"
 description = "Core of Lacus, usable as a module"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "lacuscore-1.8.4-py3-none-any.whl", hash = "sha256:9687029b095a2a3969c5691655c5620dd6ec1f62fc64df2d75b55e1e54b2b769"},
-    {file = "lacuscore-1.8.4.tar.gz", hash = "sha256:95e1ff028a2dfd52746f9f01237a12faf32a6a474dc13097f29d446d7011fe25"},
+    {file = "lacuscore-1.8.5-py3-none-any.whl", hash = "sha256:0b11681eb7a2afbdf8439eb9b73245eba7148ab2a20c879dfdc0fb4298879b9b"},
+    {file = "lacuscore-1.8.5.tar.gz", hash = "sha256:eefd08f050ed99a1888d3e110904a9af0cd8140f2ded1e86689ac1b4d8f4b257"},
 ]
 
 [package.dependencies]
 defang = ">=0.5.3,<0.6.0"
-dnspython = ">=2.5.0,<3.0.0"
-playwrightcapture = {version = ">=1.23.2,<2.0.0", extras = ["recaptcha"]}
+dnspython = ">=2.6.0,<3.0.0"
+playwrightcapture = {version = ">=1.23.3,<2.0.0", extras = ["recaptcha"]}
 redis = {version = ">=5.0.1,<6.0.0", extras = ["hiredis"]}
 requests = ">=2.31.0,<3.0.0"
 ua-parser = ">=0.18.0,<0.19.0"
@@ -1384,13 +1384,13 @@ test = ["pytest"]
 
 [[package]]
 name = "playwrightcapture"
-version = "1.23.2"
+version = "1.23.3"
 description = "A simple library to capture websites using playwright"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "playwrightcapture-1.23.2-py3-none-any.whl", hash = "sha256:dfa013f05b48a4b6de29f7d45a9a8f3730d640d4fd7c2bd584576a3651368879"},
-    {file = "playwrightcapture-1.23.2.tar.gz", hash = "sha256:faeee68b4ae47b461a4f044a9d1d08725195e0675a6e77b7f2fc4f123876ceb5"},
+    {file = "playwrightcapture-1.23.3-py3-none-any.whl", hash = "sha256:dc33b8ce9a04db4d39cb9b4665f223644fa817df71422f2a3b6756c0f8ffd66b"},
+    {file = "playwrightcapture-1.23.3.tar.gz", hash = "sha256:c3d1901195182dd7b9cb44268c004cafdf5d66c53334e84aee1d7371485ed7d6"},
 ]
 
 [package.dependencies]
@@ -2118,4 +2118,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "4f4ad4563a37b2c10b75ea28dea933e305a28ce63acceb232e20b8af59564f8c"
+content-hash = "10a780947a4b6dd255ec11e05529281cb6edd1906db966e2c8cba961d70e7bd0"
