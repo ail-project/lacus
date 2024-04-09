@@ -20,7 +20,7 @@ stop_capture_manager = "bin.stop_capture_manager:main"
 python = "^3.8"
 redis = {version = "^5.0.3", extras = ["hiredis"]}
 flask-restx = "^1.3.0"
-werkzeug = "^3.0.1"
+werkzeug = "^3.0.2"
 gunicorn = "^21.2.0"
 lacuscore = "^1.9.1"
 rich = "^13.7.1"
@@ -36,7 +36,7 @@ ipython = [
     {version = "^8.19.0", python = ">=3.10"}
 ]
 mypy = "^1.9.0"
-types-redis = "^4.6.0.20240311"
+types-redis = "^4.6.0.20240409"
 types-psutil = "^5.9.5.20240316"
 
 [build-system]
