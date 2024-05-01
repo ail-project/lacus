@@ -93,3 +93,17 @@ redis cache/cache.sock> zrem lacus:ongoing ef7f653d-4cfd-4e7b-9b91-58c9c2658868
 (integer) 1
 redis cache/cache.sock>
 ```
+
+# Useful environment variables
+
+There are env varibles you can pass to help making better captures, or avoir captures to fail when they shouldn't:
+
+* `PW_TEST_SCREENSHOT_NO_FONTS_READY` avoids captures to get stuck on screenshot when the fonts don't load (https://github.com/microsoft/playwright/issues/28995)
+* `PLAYWRIGHT_CHROMIUM_USE_HEADLESS_NEW` improves stealth for chromium by using the new headless mode (a little bit slower): https://github.com/Lookyloo/PlaywrightCapture/issues/55
+
+To use them, you can run the capture manager this way:
+
+```bash
+
+PLAYWRIGHT_CHROMIUM_USE_HEADLESS_NEW=1 PW_TEST_SCREENSHOT_NO_FONTS_READY=1 capture_manager
+```
