@@ -1465,21 +1465,22 @@ test = ["pytest"]
 
 [[package]]
 name = "playwrightcapture"
-version = "1.24.6"
+version = "1.24.7"
 description = "A simple library to capture websites using playwright"
 optional = false
 python-versions = "<4.0,>=3.8"
 files = [
-    {file = "playwrightcapture-1.24.6-py3-none-any.whl", hash = "sha256:0dbc7ec9fb85cab691fca3c296ec6b229b6061e6ac28afe2e33b34f70a73ad94"},
-    {file = "playwrightcapture-1.24.6.tar.gz", hash = "sha256:3f13d73276b38eb18ecfda3adf91a4b7c2102ae69d660b80c16f989d9f003cd9"},
+    {file = "playwrightcapture-1.24.7-py3-none-any.whl", hash = "sha256:2df526ffad87bfc43f7838b72ded191244bee0cf676f03f78e0de176e0788cb7"},
+    {file = "playwrightcapture-1.24.7.tar.gz", hash = "sha256:a49a8d4fc5cd4683766cdc04adf0bd6252911ff6ac81e28b0f2eecb1ff43a5a4"},
 ]
 
 [package.dependencies]
+async-timeout = {version = ">=4.0.3,<5.0.0", markers = "python_version < \"3.11\""}
 beautifulsoup4 = {version = ">=4.12.3,<5.0.0", extras = ["charset-normalizer", "lxml"]}
 dateparser = ">=1.2.0,<2.0.0"
 playwright = ">=1.43.0,<2.0.0"
 playwright-stealth = ">=1.0.6,<2.0.0"
-puremagic = ">=1.21,<2.0"
+puremagic = ">=1.22,<2.0"
 pydub = {version = ">=0.25.1,<0.26.0", optional = true, markers = "extra == \"recaptcha\""}
 pytz = {version = ">=2024.1,<2025.0", markers = "python_version < \"3.9\""}
 requests = {version = ">=2.31.0,<3.0.0", extras = ["socks"], optional = true, markers = "extra == \"recaptcha\""}
