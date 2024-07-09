@@ -24,7 +24,7 @@ werkzeug = "^3.0.3"
 gunicorn = "^22.0.0"
 lacuscore = "^1.10.0"
 rich = "^13.7.1"
-psutil = "^5.9.8"
+psutil = "^6.0.0"
 
 [tool.poetry.group.dev]
 optional = true
