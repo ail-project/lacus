@@ -1910,13 +1910,13 @@ test = ["pytest"]
 
 [[package]]
 name = "playwrightcapture"
-version = "1.25.2"
+version = "1.25.3"
 description = "A simple library to capture websites using playwright"
 optional = false
 python-versions = "<4.0,>=3.8"
 files = [
-    {file = "playwrightcapture-1.25.2-py3-none-any.whl", hash = "sha256:abea13ef221dad75532eb53af04f311ed31d05aae403f7a7360d13f5d4ae807f"},
-    {file = "playwrightcapture-1.25.2.tar.gz", hash = "sha256:67710dbf026244a4c414034d04349f3159d1218173ab052d786f2c07fd30719e"},
+    {file = "playwrightcapture-1.25.3-py3-none-any.whl", hash = "sha256:ad9e618c4a84564cdbdd264b2282692ab42af967c29e85994ca003b6082e7ffc"},
+    {file = "playwrightcapture-1.25.3.tar.gz", hash = "sha256:2e51af5d0d75369d5801f2358669e10ef06f2123cf9cae82b8e497e936aad331"},
 ]
 
 [package.dependencies]
@@ -1927,7 +1927,7 @@ beautifulsoup4 = {version = ">=4.12.3,<5.0.0", extras = ["charset-normalizer", "
 dateparser = ">=1.2.0,<2.0.0"
 playwright = ">=1.45.0,<2.0.0"
 playwright-stealth = ">=1.0.6,<2.0.0"
-puremagic = ">=1.25,<2.0"
+puremagic = ">=1.26,<2.0"
 pydub = {version = ">=0.25.1,<0.26.0", optional = true, markers = "extra == \"recaptcha\""}
 pytz = {version = ">=2024.1,<2025.0", markers = "python_version < \"3.9\""}
 setuptools = ">=70.3.0,<71.0.0"
@@ -2008,13 +2008,13 @@ tests = ["pytest"]
 
 [[package]]
 name = "puremagic"
-version = "1.25"
+version = "1.26"
 description = "Pure python implementation of magic file detection"
 optional = false
 python-versions = "*"
 files = [
-    {file = "puremagic-1.25-py3-none-any.whl", hash = "sha256:b8f8731263505f19949002bb4b5506fe19b57d98582f3218fccb4bdd0124fd2d"},
-    {file = "puremagic-1.25.tar.gz", hash = "sha256:671c801158376c5f4a43c805edf7ef87d59337e243b03a8ce23d151a7a0e9c4d"},
+    {file = "puremagic-1.26-py3-none-any.whl", hash = "sha256:2fb5ebffeae21a1f94b0db6fde20e1dcd0b7705d915eb02ae4a0f990f1e88209"},
+    {file = "puremagic-1.26.tar.gz", hash = "sha256:ea875d3fdd6a29134bdd035cdfeca177fed575b6bdd68acd86f83ca284edc027"},
 ]
 
 [[package]]
