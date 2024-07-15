@@ -737,13 +737,13 @@ wmi = ["wmi (>=1.5.1)"]
 
 [[package]]
 name = "exceptiongroup"
-version = "1.2.1"
+version = "1.2.2"
 description = "Backport of PEP 654 (exception groups)"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "exceptiongroup-1.2.1-py3-none-any.whl", hash = "sha256:5258b9ed329c5bbdd31a309f53cbfb0b155341807f6ff7606a1e801a891b29ad"},
-    {file = "exceptiongroup-1.2.1.tar.gz", hash = "sha256:a4785e48b045528f5bfe627b6ad554ff32def154f42372786903b7abcfe1aa16"},
+    {file = "exceptiongroup-1.2.2-py3-none-any.whl", hash = "sha256:3111b9d131c238bec2f8f516e123e14ba243563fb135d3fe885990585aa7795b"},
+    {file = "exceptiongroup-1.2.2.tar.gz", hash = "sha256:47c2edf7c6738fafb49fd34290706d1a1a2f4d1c6df275526b62cbb4aa5393cc"},
 ]
 
 [package.extras]
@@ -1355,20 +1355,20 @@ referencing = ">=0.31.0"
 
 [[package]]
 name = "lacuscore"
-version = "1.10.0"
+version = "1.10.1"
 description = "Core of Lacus, usable as a module"
 optional = false
 python-versions = "<4.0,>=3.8"
 files = [
-    {file = "lacuscore-1.10.0-py3-none-any.whl", hash = "sha256:03f3d0c4ebca8af0b4b53ddfb882bcf67cc269c3a977313606e5ee9921a5a160"},
-    {file = "lacuscore-1.10.0.tar.gz", hash = "sha256:073212c5f17f213561ce545a3afd970bc6d78a0749860652c2cda8538ce265d4"},
+    {file = "lacuscore-1.10.1-py3-none-any.whl", hash = "sha256:c60e67ebdc04e56ce82fc1e137d7363de4079328eb3dc22f705ed84b42889f11"},
+    {file = "lacuscore-1.10.1.tar.gz", hash = "sha256:4f63fd7ace5ff43b2fa97c9e47402063a8eb337bf18bf8a792768ac0f0542011"},
 ]
 
 [package.dependencies]
 async-timeout = {version = ">=4.0.3,<5.0.0", markers = "python_version < \"3.11\""}
 defang = ">=0.5.3,<0.6.0"
 dnspython = ">=2.6.1,<3.0.0"
-playwrightcapture = {version = ">=1.25.0,<2.0.0", extras = ["recaptcha"]}
+playwrightcapture = {version = ">=1.25.5,<2.0.0", extras = ["recaptcha"]}
 redis = {version = ">=5.0.7,<6.0.0", extras = ["hiredis"]}
 requests = ">=2.32.3,<3.0.0"
 ua-parser = ">=0.18.0,<0.19.0"
@@ -1910,13 +1910,13 @@ test = ["pytest"]
 
 [[package]]
 name = "playwrightcapture"
-version = "1.25.4"
+version = "1.25.5"
 description = "A simple library to capture websites using playwright"
 optional = false
 python-versions = "<4.0,>=3.8"
 files = [
-    {file = "playwrightcapture-1.25.4-py3-none-any.whl", hash = "sha256:6e5444b7756a3fc70a2072bb740563f5ce8673cea7811662e11fb87751f2a726"},
-    {file = "playwrightcapture-1.25.4.tar.gz", hash = "sha256:dfe897075dc74dc5b6a585c4789ed0028c01af87ff62f46c0794345a6871df32"},
+    {file = "playwrightcapture-1.25.5-py3-none-any.whl", hash = "sha256:fd515b7f8d886fd22ca16f576fff9908d5901a108ae763bc731cf6b4aec98444"},
+    {file = "playwrightcapture-1.25.5.tar.gz", hash = "sha256:0a24663f7334d4c60cc84d20091f66238d8727ac0a02bc05849f3e5850e7f971"},
 ]
 
 [package.dependencies]
@@ -2847,4 +2847,4 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "a7f8147e76687be6209861d34906ac6809f243aca9c9c8c61754d3ee8ec553d5"
+content-hash = "f8b5cdecffcf2006b0d045d550e7307b67d10177a9b9212b7bb6ef8cb8cd1c49"
