@@ -13,7 +13,7 @@ from typing import Dict, Optional, Union, Any, List, Tuple
 from flask import Flask, request
 from flask_restx import Api, Resource, fields  # type: ignore[import-untyped]
 
-from lacuscore import CaptureStatus, CaptureResponse
+from lacuscore import CaptureStatus, CaptureResponse, CaptureSettingsError
 
 from lacus.default import get_config
 from lacus.lacus import Lacus
@@ -34,6 +34,15 @@ api = Api(app, title='Lacus API',
           version=version('lacus'))
 
 lacus: Lacus = Lacus()
+
+
+@api.errorhandler(CaptureSettingsError)  # type: ignore[misc]
+def handle_pydandic_validation_exception(error: CaptureSettingsError) -> tuple[dict[str, Any], int]:
+    '''Return the validation error message and 400 status code'''
+    if error.pydantic_validation_errors:
+        return {'message': 'Unable to validate capture settings.',
+                'details': error.pydantic_validation_errors.errors()}, 400
+    return {'message': str(error)}, 400
 
 
 @api.route('/redis_up')
