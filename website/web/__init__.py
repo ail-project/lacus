@@ -23,6 +23,8 @@ from .proxied import ReverseProxied
 
 logging.config.dictConfig(get_config('logging'))
 
+logger = logging.getLogger(__name__)
+
 app: Flask = Flask(__name__)
 
 app.wsgi_app = ReverseProxied(app.wsgi_app)  # type: ignore[method-assign]
@@ -40,8 +42,10 @@ lacus: Lacus = Lacus()
 def handle_pydandic_validation_exception(error: CaptureSettingsError) -> tuple[dict[str, Any], int]:
     '''Return the validation error message and 400 status code'''
     if error.pydantic_validation_errors:
+        logger.warning(f'Unable to validate capture settings: {error.pydantic_validation_errors}')
         return {'message': 'Unable to validate capture settings.',
                 'details': error.pydantic_validation_errors.errors()}, 400
+    logger.warning(f'Unable to validate capture settings: {error}')
     return {'message': str(error)}, 400
 
 
