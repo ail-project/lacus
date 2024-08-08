@@ -10,19 +10,54 @@ You need poetry installed, see the [install guide](https://python-poetry.org/doc
 
 ## Prerequisites
 
-You need to have redis cloned and installed in the same directory you clone this template in:
-this repoitory and `redis` must be in the same directory, and **not** `redis` cloned in the
-this directory. See [this guide](https://www.lookyloo.eu/docs/main/install-lookyloo.html#_install_redis).
+> Lacus supports valkey or redis, but valkey is prefered now due to the change of license. So we will use valkey below, but as of now, redis also works.
+
+### Installing valkey
+
+System dependencies:
+
+```bash
+sudo apt-get update
+sudo apt install build-essential
+# To run the tests 
+sudo apt install tcl
+```
+
+You need to have valkey cloned and installed in the same directory you clone the lacus repository in:
+`lacus` and `valkey` must be in the same directory, and **not** `valkey` cloned in the `lacus` directory.
+
+```bash
+git clone https://github.com/valkey-io/valkey.git
+```
+
+Compile valkey:
+
+```bash
+cd valkey
+git checkout 7.2
+make
+# Optionally, you can run the tests:
+make test
+cd ..
+```
 
 ## Installation
 
-Clone this repository:
+Clone this repository if you haven't done it already:
 
 ```bash
 git clone https://github.com/ail-project/lacus.git
 ```
 
-From the directory you just cloned, run:
+The directory tree must look like that:
+
+```
+.
+├── valkey  => cloned valkey
+└── lacus => cloned lacus
+```
+
+From the `lacus` directory, run:
 
 ```bash
 poetry install
@@ -84,14 +119,14 @@ If you have recurring messages like the ones below you can remove the uuid from 
 ```
 
 
-While redis is running connect to it via its socket and zrem then entry.
+While valkey is running connect to it via its socket and zrem then entry.
 
 ```
 ail@ail-tokyo:~$ cd lacus/
-ail@ail-tokyo:~/lacus$ ../redis/src/redis-cli -s cache/cache.sock
-redis cache/cache.sock> zrem lacus:ongoing ef7f653d-4cfd-4e7b-9b91-58c9c2658868
+ail@ail-tokyo:~/lacus$ ../valkey/src/valkey-cli -s cache/cache.sock
+valkey cache/cache.sock> zrem lacus:ongoing ef7f653d-4cfd-4e7b-9b91-58c9c2658868
 (integer) 1
-redis cache/cache.sock>
+valkey cache/cache.sock>
 ```
 
 # Useful environment variables
