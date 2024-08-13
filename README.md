@@ -19,7 +19,7 @@ System dependencies:
 ```bash
 sudo apt-get update
 sudo apt install build-essential
-# To run the tests 
+# To run the tests
 sudo apt install tcl
 ```
 
