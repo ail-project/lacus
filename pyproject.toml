@@ -24,7 +24,7 @@ flask-restx = "^1.3.0"
 werkzeug = "^3.0.4"
 gunicorn = {version = "^23.0.0", extras = ["setproctitle"]}
 lacuscore = "^1.11.0"
-rich = "^13.8.1"
+rich = "^13.9.2"
 psutil = "^6.0.0"
 
 [tool.poetry.group.dev]
