@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "lacus"
-version = "1.11.0"
+version = "1.11.1"
 description = " A capturing system using playwright, as a web service."
 authors = ["Raphaël Vinot <raphael.vinot@circl.lu>"]
 license = "BSD-3-Clause"
