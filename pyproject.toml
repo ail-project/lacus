@@ -45,7 +45,7 @@ ipython = [
 ]
 mypy = "^1.13.0"
 types-redis = "^4.6.0.20241004"
-types-psutil = "^6.1.0.20241022"
+types-psutil = "^6.1.0.20241102"
 
 [build-system]
 requires = ["poetry-core"]
