@@ -6,11 +6,9 @@ import asyncio
 import logging
 import logging.config
 import signal
-import sys
 
 from asyncio import Task
 from datetime import datetime, timedelta
-from typing import Optional, Set
 
 
 from lacus.default import AbstractManager, get_config
@@ -21,10 +19,10 @@ logging.config.dictConfig(get_config('logging'))
 
 class CaptureManager(AbstractManager):
 
-    def __init__(self, loglevel: Optional[int]=None) -> None:
+    def __init__(self, loglevel: int | None=None) -> None:
         super().__init__(loglevel)
         self.script_name = 'capture_manager'
-        self.captures: Set[Task] = set()  # type: ignore[type-arg]
+        self.captures: set[Task] = set()  # type: ignore[type-arg]
         self.lacus = Lacus()
 
     async def clear_dead_captures(self) -> None:
@@ -37,10 +35,7 @@ class CaptureManager(AbstractManager):
             elif start_time < oldest_start_time:
                 self.logger.warning(f'{expected_uuid} has been running for too long. Started at {start_time}.')
                 capture = ongoing[expected_uuid]
-                if sys.version_info >= (3, 9):
-                    capture.cancel(f'Capture as been running for more than {max_capture_time}s.')
-                else:
-                    capture.cancel()
+                capture.cancel(f'Capture as been running for more than {max_capture_time}s.')
                 try:
                     await capture
                 except asyncio.CancelledError:

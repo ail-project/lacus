@@ -8,7 +8,7 @@ import logging.config
 
 from collections import defaultdict
 from importlib.metadata import version
-from typing import Dict, Optional, Union, Any, List, Tuple
+from typing import Any
 
 from flask import Flask, request
 from flask_restx import Api, Resource, fields  # type: ignore[import-untyped]
@@ -110,7 +110,7 @@ class Enqueue(Resource):  # type: ignore[misc]
     @api.doc(body=submit_fields_post)  # type: ignore[misc]
     @api.produces(['text/text'])  # type: ignore[misc]
     def post(self) -> str:
-        to_query: Dict[str, Any] = request.get_json(force=True)
+        to_query: dict[str, Any] = request.get_json(force=True)
         perma_uuid = lacus.core.enqueue(
             url=to_query.get('url'),
             document_name=to_query.get('document_name'),
@@ -176,7 +176,7 @@ stats_model = api.model('StatsModel', {
 class DailyStats(Resource):  # type: ignore[misc]
 
     @api.marshal_with(stats_model, skip_none=True)  # type: ignore[misc]
-    def get(self, date: Optional[str]=None) -> Dict[str, Any]:
+    def get(self, date: str | None=None) -> dict[str, Any]:
         if 'date' in request.args:
             date = request.args['date']
         if not date:
@@ -199,7 +199,7 @@ stats_details_model = api.model('StatsDetailsModel', {
 class DailyStatsDetails(Resource):  # type: ignore[misc]
 
     @api.marshal_with(stats_details_model, skip_none=True)  # type: ignore[misc]
-    def get(self, date: Optional[str]=None) -> Dict[str, Any]:
+    def get(self, date: str | None=None) -> dict[str, Any]:
         if 'date' in request.args:
             date = request.args['date']
         if not date:
@@ -211,7 +211,7 @@ class DailyStatsDetails(Resource):  # type: ignore[misc]
 @api.doc(description='Get a few infos about Redis usage.')
 class DBSatus(Resource):  # type: ignore[misc]
 
-    def get(self) -> Dict[str, Any]:
+    def get(self) -> dict[str, Any]:
         return lacus.redis_status()
 
 
@@ -221,14 +221,14 @@ class DBSatus(Resource):  # type: ignore[misc]
          params={'with_settings': 'If set, returns the settings.'})
 class OngoingCaptures(Resource):  # type: ignore[misc]
 
-    def get(self, with_settings: Optional[int]=None) -> Union[List[Tuple[str, str]], Dict[str, Any]]:
+    def get(self, with_settings: int | None=None) -> list[tuple[str, str]] | dict[str, Any]:
         ongoing = lacus.monitoring.get_ongoing_captures()
         _ongoing = [(uuid, d.isoformat()) for uuid, d in ongoing]
         if 'with_settings' in request.args:
             with_settings = True
         if not with_settings:
             return _ongoing
-        to_return: Dict[str, Dict[str, Union[Dict[str, Any], str]]] = defaultdict(dict)
+        to_return: dict[str, dict[str, dict[str, Any] | str]] = defaultdict(dict)
         for uuid, capture_time in _ongoing:
             to_return[uuid]['settings'] = lacus.monitoring.get_capture_settings(uuid)
             to_return[uuid]['capture_time'] = capture_time
@@ -241,13 +241,13 @@ class OngoingCaptures(Resource):  # type: ignore[misc]
          params={'with_settings': 'If set, returns the settings.'})
 class EnqueuedCaptures(Resource):  # type: ignore[misc]
 
-    def get(self, with_settings: Optional[int]=None) -> Union[List[Tuple[str, float]], Dict[str, Any]]:
+    def get(self, with_settings: int | None=None) -> list[tuple[str, float]] | dict[str, Any]:
         enqueued = lacus.monitoring.get_enqueued_captures()
         if 'with_settings' in request.args:
             with_settings = True
         if not with_settings:
             return enqueued
-        to_return: Dict[str, Dict[str, Union[Dict[str, Any], str, float]]] = defaultdict(dict)
+        to_return: dict[str, dict[str, dict[str, Any] | str | float]] = defaultdict(dict)
         for uuid, priority in enqueued:
             to_return[uuid]['settings'] = lacus.monitoring.get_capture_settings(uuid)
             to_return[uuid]['priority'] = priority
@@ -258,7 +258,7 @@ class EnqueuedCaptures(Resource):  # type: ignore[misc]
 @api.doc(description='Get the status of the Lacus instance.')
 class LacusStatus(Resource):  # type: ignore[misc]
 
-    def get(self) -> Dict[str, Any]:
+    def get(self) -> dict[str, Any]:
         return lacus.status()
 
 

@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 
+from __future__ import annotations
+
 import copy
 import logging
 
 from datetime import datetime
-from typing import Dict, Any
+from typing import Any
 
 from redis import Redis, ConnectionPool
 from redis.connection import UnixDomainSocketConnection
@@ -57,7 +59,7 @@ class Lacus():
     def check_redis_up(self) -> bool:
         return self.redis.ping()
 
-    def redis_status(self) -> Dict[str, Any]:
+    def redis_status(self) -> dict[str, Any]:
         redis_info = self.redis.info()
         return {'total_keys': redis_info['db0']['keys'] if 'db0' in redis_info else 0,
                 'current_memory_use': redis_info['used_memory_rss_human'],
@@ -73,8 +75,8 @@ class Lacus():
         enqueued_captures = len(self.monitoring.get_enqueued_captures())
         return number_ongoing_captures + enqueued_captures >= max_concurrent_captures
 
-    def status(self) -> Dict[str, Any]:
-        to_return: Dict[str, Any] = {}
+    def status(self) -> dict[str, Any]:
+        to_return: dict[str, Any] = {}
         to_return['max_concurrent_captures'] = get_config('generic', 'concurrent_captures')
         to_return['max_capture_time'] = get_config('generic', 'max_capture_time')
         ongoing_captures = self.monitoring.get_ongoing_captures()
