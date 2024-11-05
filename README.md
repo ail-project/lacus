@@ -107,7 +107,9 @@ where you will find the API and can start playing with it.
 
 # Maintenance
 
-If you have recurring messages like the ones below you can remove the uuid from the queue as follows.
+## Annoying repetitive log entries
+
+If you have recurring messages like the ones below you can remove the uuid from the queue as follows. Note that it is probabli simply due to an unclean stop of lacus and they will be removed automatically after a while
 
 ```
 2023-11-17 08:00:59,936 LacusCore WARNING:[ef7f653d-4cfd-4e7b-9b91-58c9c2658868] Attempted to clear capture that is still being processed.
@@ -118,7 +120,6 @@ If you have recurring messages like the ones below you can remove the uuid from 
 ...
 ```
 
-
 While valkey is running connect to it via its socket and zrem then entry.
 
 ```
@@ -127,6 +128,16 @@ ail@ail-tokyo:~/lacus$ ../valkey/src/valkey-cli -s cache/cache.sock
 valkey cache/cache.sock> zrem lacus:ongoing ef7f653d-4cfd-4e7b-9b91-58c9c2658868
 (integer) 1
 valkey cache/cache.sock>
+```
+
+## Error mentioning missing system dependencies 
+
+On an initial install, we tell you to run `playwright install-deps`. After updating an existing lacus instance, you may have to do that again if new ones are required by playwright.
+
+It that's the case, run the following command from the lacus directory:
+
+``` bash
+poetry run playwright install-deps
 ```
 
 # Useful environment variables
