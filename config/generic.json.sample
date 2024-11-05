@@ -5,6 +5,7 @@
     "systemd_service_name": "lacus",
     "concurrent_captures": 2,
     "max_capture_time": 3600,
+    "max_retries": 3,
     "only_global_lookups": true,
     "tor_proxy": {
       "server": "socks5://127.0.0.1:9050"
@@ -23,6 +24,7 @@
         "concurrent_captures": "How many captures can happen at the same (expect ~2Gb of ram/capture)",
         "only_global_lookups": "Set it to True if your instance is publicly available so users aren't able to scan your internal network",
         "max_capture_time": "The very maximal time we allow a capture to keep going. Should only be triggered by captures that cause playwright to never quit, or captures with way too many children.",
+        "max_retries": "The very maximal amount of times lacus will retry a failing capture.",
         "tor_proxy": "URL to connect to a SOCKS 5 proxy for tor",
         "global_proxy": "Proxy configuration to use for *all* the requests (except .onions)"
     }
