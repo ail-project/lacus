@@ -72,6 +72,7 @@ geolocation_model = api.model('GeolocalisationModel', {
     'latitude': fields.Float(example=41.902916)
 })
 
+max_retries = get_config('generic', 'max_retries')
 
 submit_fields_post = api.model('SubmitFieldsPost', {
     'url': fields.Url(description="The URL to capture", example=''),
@@ -96,6 +97,7 @@ submit_fields_post = api.model('SubmitFieldsPost', {
     'referer': fields.String(description="Referer to pass to the capture", example='https://circl.lu'),
     'with_favicon': fields.Boolean(description="Attempts to get favicons related to the landing page of the capture", example=False),
     'allow_tracking': fields.Boolean(description="Attempt to let the website violate your privacy", example=False),
+    'max_retries': fields.Integer(description=f"The maximum anount of retries for this capture (any value higher than {max_retries} will be ignored).", example=max_retries),
     'force': fields.Boolean(description="Force a capture, even if the same one was already done recently", example=False),
     'recapture_interval': fields.Integer(description="The minimal interval to re-trigger a capture, unless force is True", example=300),
     'priority': fields.Integer(description="Priority of the capture, the highest, the better", example=-5),
@@ -131,6 +133,7 @@ class Enqueue(Resource):  # type: ignore[misc]
             referer=to_query.get('referer'),
             with_favicon=to_query.get('with_favicon', False),
             allow_tracking=to_query.get('allow_tracking', False),
+            max_retries=to_query.get('max_retries'),
             rendered_hostname_only=to_query.get('rendered_hostname_only', True),
             force=to_query.get('force', False),
             recapture_interval=to_query.get('recapture_interval', 300),
