@@ -267,13 +267,13 @@ lxml = ["lxml"]
 
 [[package]]
 name = "blinker"
-version = "1.8.2"
+version = "1.9.0"
 description = "Fast, simple object-to-object and broadcast signaling"
 optional = false
-python-versions = ">=3.8"
+python-versions = ">=3.9"
 files = [
-    {file = "blinker-1.8.2-py3-none-any.whl", hash = "sha256:1779309f71bf239144b9399d06ae925637cf6634cf6bd131104184531bf67c01"},
-    {file = "blinker-1.8.2.tar.gz", hash = "sha256:8f77b09d3bf7c795e969e9486f39c2c5e9c39d4ee07424be2bc594ece9642d83"},
+    {file = "blinker-1.9.0-py3-none-any.whl", hash = "sha256:ba0efaa9080b619ff2f3459d1d500c57bddea4a6b424b60a91141db6fd2f08bc"},
+    {file = "blinker-1.9.0.tar.gz", hash = "sha256:b4ce2265a7abece45e7cc896e98dbebe6cead56bcf805a3d23136d145f5445bf"},
 ]
 
 [[package]]
@@ -1367,13 +1367,13 @@ referencing = ">=0.31.0"
 
 [[package]]
 name = "lacuscore"
-version = "1.12.0"
+version = "1.12.2"
 description = "Core of Lacus, usable as a module"
 optional = false
 python-versions = "<4.0,>=3.9"
 files = [
-    {file = "lacuscore-1.12.0-py3-none-any.whl", hash = "sha256:6e4c064de85ba39e185d2ef4ef8a2752f3f5483862031c23dad7911d0dd40a8d"},
-    {file = "lacuscore-1.12.0.tar.gz", hash = "sha256:14d091a160b2828d0935d1413c91ad55ec0d7ab3b2f51038598a05855c8a3fcf"},
+    {file = "lacuscore-1.12.2-py3-none-any.whl", hash = "sha256:1164afefcab039a12f49ce4b148c73dca42d457b75cd40b6b32fdf998dcf9839"},
+    {file = "lacuscore-1.12.2.tar.gz", hash = "sha256:005807d880c44ce5de41c8a4acfd7351421847538e28a6dc340ffb27d4aca467"},
 ]
 
 [package.dependencies]
@@ -1381,7 +1381,7 @@ async-timeout = {version = ">=4.0.3,<5.0.0", markers = "python_version < \"3.11\
 defang = ">=0.5.3,<0.6.0"
 dnspython = {version = ">=2.7.0,<3.0.0", markers = "python_version >= \"3.9\""}
 eval-type-backport = {version = ">=0.2.0,<0.3.0", markers = "python_version < \"3.10\""}
-playwrightcapture = {version = ">=1.27.0,<2.0.0", extras = ["recaptcha"]}
+playwrightcapture = {version = ">=1.27.1,<2.0.0", extras = ["recaptcha"]}
 pydantic = ">=2.9.2,<3.0.0"
 redis = {version = ">=5.2.0,<6.0.0", extras = ["hiredis"]}
 requests = ">=2.32.3,<3.0.0"
@@ -1833,13 +1833,13 @@ files = [
 
 [[package]]
 name = "packaging"
-version = "24.1"
+version = "24.2"
 description = "Core utilities for Python packages"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "packaging-24.1-py3-none-any.whl", hash = "sha256:5b8f2217dbdbd2f7f384c41c628544e6d52f2d0f53c6d0c3ea61aa5d1d7ff124"},
-    {file = "packaging-24.1.tar.gz", hash = "sha256:026ed72c8ed3fcce5bf8950572258698927fd1dbda10a5e981cdf0ac37f4f002"},
+    {file = "packaging-24.2-py3-none-any.whl", hash = "sha256:09abb1bccd265c01f4a3aa3f7a7db064b36514d2cba19a2f694fe6150451a759"},
+    {file = "packaging-24.2.tar.gz", hash = "sha256:c228a6dc5e932d346bc5739379109d49e8853dd8223571c7c5b55260edc0b97f"},
 ]
 
 [[package]]
@@ -1910,13 +1910,12 @@ test = ["pytest"]
 
 [[package]]
 name = "playwrightcapture"
-version = "1.27.0"
+version = "1.27.1"
 description = "A simple library to capture websites using playwright"
 optional = false
 python-versions = "<4.0,>=3.9"
 files = [
-    {file = "playwrightcapture-1.27.0-py3-none-any.whl", hash = "sha256:2fee5fa4251cf3eb0e5d790ae5b35fde5949bbc4f61de9175ccfc539d6dc7a03"},
-    {file = "playwrightcapture-1.27.0.tar.gz", hash = "sha256:266f0ec227d3a70e074d4125853ee1685a40605cb3f15217c4cf4d2713583d56"},
+    {file = "playwrightcapture-1.27.1-py3-none-any.whl", hash = "sha256:f892b3032bec8d5dafead2fc53b595e5bf04bd4a2afc2f8c35e9ec0243b9fc8e"},
 ]
 
 [package.dependencies]
@@ -3048,13 +3047,13 @@ files = [
 
 [[package]]
 name = "werkzeug"
-version = "3.1.2"
+version = "3.1.3"
 description = "The comprehensive WSGI web application library."
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "werkzeug-3.1.2-py3-none-any.whl", hash = "sha256:4f7d1a5de312c810a8a2c6f0b47e9f6a7cffb7c8322def35e4d4d9841ff85597"},
-    {file = "werkzeug-3.1.2.tar.gz", hash = "sha256:f471a4cd167233077e9d2a8190c3471c5bc520c636a9e3c1e9300c33bced03bc"},
+    {file = "werkzeug-3.1.3-py3-none-any.whl", hash = "sha256:54b78bf3716d19a65be4fceccc0d1d7b89e608834989dfae50ea87564639213e"},
+    {file = "werkzeug-3.1.3.tar.gz", hash = "sha256:60723ce945c19328679790e3282cc758aa4a6040e4bb330f53d30fa546d44746"},
 ]
 
 [package.dependencies]
@@ -3181,4 +3180,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "e532a2986d1a15c5a3fb8b28fa14139e7c0c2a935bf393b8f23a8a2e222aa7e3"
+content-hash = "18274cff4557be4e946a9a6b447f5c4c3e5ac1bcfb1b4e6b93107687a0e8310b"
