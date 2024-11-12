@@ -34,7 +34,7 @@ Compile valkey:
 
 ```bash
 cd valkey
-git checkout 7.2
+git checkout 8.0
 make
 # Optionally, you can run the tests:
 make test
