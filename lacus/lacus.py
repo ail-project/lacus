@@ -37,6 +37,7 @@ class Lacus():
                               only_global_lookups=get_config('generic', 'only_global_lookups'),
                               loglevel=get_config('generic', 'loglevel'),
                               max_capture_time=get_config('generic', 'max_capture_time'),
+                              expire_results=get_config('generic', 'expire_results'),
                               max_retries=get_config('generic', 'max_retries')
                               )
 

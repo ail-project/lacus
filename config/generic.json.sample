@@ -5,6 +5,7 @@
     "systemd_service_name": "lacus",
     "concurrent_captures": 2,
     "max_capture_time": 3600,
+    "expire_results": 36000,
     "max_retries": 3,
     "only_global_lookups": true,
     "tor_proxy": {
