@@ -68,6 +68,8 @@ Install the system dependencies required by playwright (will call sudo):
 ```bash
 poetry shell
 playwright install-deps
+# for pydub:
+apt install ffmpeg libavcodec-extra
 ```
 
 Initialize the `.env` file:
