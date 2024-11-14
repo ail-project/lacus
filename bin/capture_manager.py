@@ -35,11 +35,18 @@ class CaptureManager(AbstractManager):
             elif start_time < oldest_start_time:
                 self.logger.warning(f'{expected_uuid} has been running for too long. Started at {start_time}.')
                 capture = ongoing[expected_uuid]
-                capture.cancel(f'Capture as been running for more than {max_capture_time}s.')
-                try:
-                    await capture
-                except asyncio.CancelledError:
-                    self.logger.warning(f'{expected_uuid} is canceled now.')
+                max_cancel = 5
+                while not capture.done() and max_cancel > 0:
+                    capture.cancel(f'Capture as been running for more than {max_capture_time}s.')
+                    try:
+                        await capture
+                    except asyncio.CancelledError:
+                        self.logger.warning(f'{expected_uuid} is canceled now.')
+                    finally:
+                        max_cancel -= 1
+                        if not capture.done():
+                            self.logger.error(f'{expected_uuid} is not done after canceling, trying {max_cancel} more times.')
+                            await asyncio.sleep(1)
 
     async def _to_run_forever_async(self) -> None:
 
