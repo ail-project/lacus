@@ -27,16 +27,12 @@ lacuscore = "^1.12.3"
 rich = "^13.9.4"
 psutil = "^6.1.0"
 
-# Temp entry to allow markupsafe 3+ until we get rid of python3.8
-
-markupsafe = {version = "^3.0.2", python = ">=3.9"}
-
 [tool.poetry.group.dev]
 optional = true
 
 [tool.poetry.group.dev.dependencies]
 ipython = [
-    {version = "^8.18.0", python = ">=3.9"},
+    {version = "^8.18.0", python = "<3.10"},
     {version = "^8.19.0", python = ">=3.10"}
 ]
 mypy = "^1.13.0"
