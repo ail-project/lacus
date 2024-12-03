@@ -1,3 +1,5 @@
+![Lacus Logo](logos/1_horizontal/png/LACUS_horizontal-color.png?raw=true "Logo")
+
 # Lacus
 
 A capturing system using playwright, as a web service.
