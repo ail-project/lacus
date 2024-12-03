@@ -5,12 +5,13 @@ from __future__ import annotations
 import datetime
 import logging
 import logging.config
+import os
 
 from collections import defaultdict
 from importlib.metadata import version
 from typing import Any
 
-from flask import Flask, request
+from flask import Flask, request, send_from_directory
 from flask_restx import Api, Resource, fields  # type: ignore[import-untyped]
 
 from lacuscore import CaptureStatus, CaptureResponse, CaptureSettingsError
@@ -36,6 +37,12 @@ api = Api(app, title='Lacus API',
           version=version('lacus'))
 
 lacus: Lacus = Lacus()
+
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 
 @api.errorhandler(CaptureSettingsError)  # type: ignore[misc]
