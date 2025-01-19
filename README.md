@@ -8,7 +8,7 @@ A capturing system using playwright, as a web service.
 
 ## System dependencies
 
-You need poetry installed, see the [install guide](https://python-poetry.org/docs/). You also need the [poetry shell plugin](https://github.com/python-poetry/poetry-plugin-shell), which you can install [this way](https://github.com/python-poetry/poetry-plugin-shell?tab=readme-ov-file#installation). 
+You need poetry installed, see the [install guide](https://python-poetry.org/docs/). The [poetry shell plugin](https://github.com/python-poetry/poetry-plugin-shell) is not strictly required, but will make your life easier. You can install it [this way](https://github.com/python-poetry/poetry-plugin-shell?tab=readme-ov-file#installation). 
 
 ## Prerequisites
 
@@ -68,10 +68,9 @@ poetry install
 Install the system dependencies required by playwright (will call sudo):
 
 ```bash
-poetry shell
-playwright install-deps
+poetry run playwright install-deps
 # for pydub:
-apt install ffmpeg libavcodec-extra
+sudo apt install ffmpeg libavcodec-extra
 ```
 
 Initialize the `.env` file:
