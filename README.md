@@ -8,7 +8,7 @@ A capturing system using playwright, as a web service.
 
 ## System dependencies
 
-You need poetry installed, see the [install guide](https://python-poetry.org/docs/).
+You need poetry installed, see the [install guide](https://python-poetry.org/docs/). You also need the [poetry shell plugin](https://github.com/python-poetry/poetry-plugin-shell), which you can install [this way](https://github.com/python-poetry/poetry-plugin-shell?tab=readme-ov-file#installation). 
 
 ## Prerequisites
 
