@@ -267,20 +267,21 @@ files = [
 
 [[package]]
 name = "beautifulsoup4"
-version = "4.12.3"
+version = "4.13.1"
 description = "Screen-scraping library"
 optional = false
-python-versions = ">=3.6.0"
+python-versions = ">=3.7.0"
 groups = ["main"]
 files = [
-    {file = "beautifulsoup4-4.12.3-py3-none-any.whl", hash = "sha256:b80878c9f40111313e55da8ba20bdba06d8fa3969fc68304167741bbf9e082ed"},
-    {file = "beautifulsoup4-4.12.3.tar.gz", hash = "sha256:74e3d1928edc070d21748185c46e3fb33490f22f52a3addee9aee0f4f7781051"},
+    {file = "beautifulsoup4-4.13.1-py3-none-any.whl", hash = "sha256:72465267014897bb10ca749bb632bde6c2d20f3254afd5458544bd74e6c2e6d8"},
+    {file = "beautifulsoup4-4.13.1.tar.gz", hash = "sha256:741c8b6903a1e4ae8ba32b9c9ae7510dab7a197fdbadcf9fcdeb0891ef5ec66a"},
 ]
 
 [package.dependencies]
 charset-normalizer = {version = "*", optional = true, markers = "extra == \"charset-normalizer\""}
 lxml = {version = "*", optional = true, markers = "extra == \"lxml\""}
 soupsieve = ">1.2"
+typing-extensions = ">=4.0.0"
 
 [package.extras]
 cchardet = ["cchardet"]
@@ -480,14 +481,14 @@ cffi = ">=1.0.0"
 
 [[package]]
 name = "certifi"
-version = "2024.12.14"
+version = "2025.1.31"
 description = "Python package for providing Mozilla's CA Bundle."
 optional = false
 python-versions = ">=3.6"
 groups = ["main"]
 files = [
-    {file = "certifi-2024.12.14-py3-none-any.whl", hash = "sha256:1275f7a45be9464efc1173084eaa30f866fe2e47d389406136d332ed4967ec56"},
-    {file = "certifi-2024.12.14.tar.gz", hash = "sha256:b650d30f370c2b724812bee08008be0c4163b163ddaec3f2546c1caf65f191db"},
+    {file = "certifi-2025.1.31-py3-none-any.whl", hash = "sha256:ca78db4565a652026a4db2bcdf68f2fb589ea80d0be70e03929ed730746b84fe"},
+    {file = "certifi-2025.1.31.tar.gz", hash = "sha256:3d5da6925056f6f18f119200434a4780a94263f10d1c21d032a6f6b2baa20651"},
 ]
 
 [[package]]
@@ -1334,14 +1335,14 @@ referencing = ">=0.31.0"
 
 [[package]]
 name = "lacuscore"
-version = "1.12.8"
+version = "1.12.9"
 description = "Core of Lacus, usable as a module"
 optional = false
 python-versions = "<4.0,>=3.9"
 groups = ["main"]
 files = [
-    {file = "lacuscore-1.12.8-py3-none-any.whl", hash = "sha256:2b6ebcb88fce2af6d16b4097a1ab49165096449c38a082b37bbae6ff52fafedc"},
-    {file = "lacuscore-1.12.8.tar.gz", hash = "sha256:1ca958a471866de859ef0398073a5ae99a9b2530c40125bbe9abcf55b2d133c5"},
+    {file = "lacuscore-1.12.9-py3-none-any.whl", hash = "sha256:c627dc0e3be48fc9ccaf51b8d4a6e48513d798a53051a406557e574396c3e5ed"},
+    {file = "lacuscore-1.12.9.tar.gz", hash = "sha256:216be39cfd6005a33f1d5a7877df307c90df6fd15576f10387764846f93cb42f"},
 ]
 
 [package.dependencies]
@@ -1349,11 +1350,11 @@ async-timeout = {version = ">=5.0.1", markers = "python_version < \"3.11\""}
 defang = ">=0.5.3"
 dnspython = ">=2.7.0"
 eval-type-backport = {version = ">=0.2.2", markers = "python_version < \"3.10\""}
-playwrightcapture = {version = ">=1.27.6", extras = ["recaptcha"]}
+playwrightcapture = {version = ">=1.27.7", extras = ["recaptcha"]}
 pydantic = ">=2.10.6"
 redis = {version = ">=5.2.1", extras = ["hiredis"]}
 requests = ">=2.32.3"
-ua-parser = {version = ">=1.0.0", extras = ["regex"]}
+ua-parser = {version = ">=1.0.1", extras = ["regex"]}
 
 [package.extras]
 docs = ["Sphinx (>=8.1.3)"]
@@ -1812,24 +1813,24 @@ files = [
 
 [[package]]
 name = "playwright"
-version = "1.49.1"
+version = "1.50.0"
 description = "A high-level API to automate web browsers"
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "playwright-1.49.1-py3-none-macosx_10_13_x86_64.whl", hash = "sha256:1041ffb45a0d0bc44d698d3a5aa3ac4b67c9bd03540da43a0b70616ad52592b8"},
-    {file = "playwright-1.49.1-py3-none-macosx_11_0_arm64.whl", hash = "sha256:9f38ed3d0c1f4e0a6d1c92e73dd9a61f8855133249d6f0cec28648d38a7137be"},
-    {file = "playwright-1.49.1-py3-none-macosx_11_0_universal2.whl", hash = "sha256:3be48c6d26dc819ca0a26567c1ae36a980a0303dcd4249feb6f59e115aaddfb8"},
-    {file = "playwright-1.49.1-py3-none-manylinux1_x86_64.whl", hash = "sha256:753ca90ee31b4b03d165cfd36e477309ebf2b4381953f2a982ff612d85b147d2"},
-    {file = "playwright-1.49.1-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:cd9bc8dab37aa25198a01f555f0a2e2c3813fe200fef018ac34dfe86b34994b9"},
-    {file = "playwright-1.49.1-py3-none-win32.whl", hash = "sha256:43b304be67f096058e587dac453ece550eff87b8fbed28de30f4f022cc1745bb"},
-    {file = "playwright-1.49.1-py3-none-win_amd64.whl", hash = "sha256:47b23cb346283278f5b4d1e1990bcb6d6302f80c0aa0ca93dd0601a1400191df"},
+    {file = "playwright-1.50.0-py3-none-macosx_10_13_x86_64.whl", hash = "sha256:f36d754a6c5bd9bf7f14e8f57a2aea6fd08f39ca4c8476481b9c83e299531148"},
+    {file = "playwright-1.50.0-py3-none-macosx_11_0_arm64.whl", hash = "sha256:40f274384591dfd27f2b014596250b2250c843ed1f7f4ef5d2960ecb91b4961e"},
+    {file = "playwright-1.50.0-py3-none-macosx_11_0_universal2.whl", hash = "sha256:9922ef9bcd316995f01e220acffd2d37a463b4ad10fd73e388add03841dfa230"},
+    {file = "playwright-1.50.0-py3-none-manylinux1_x86_64.whl", hash = "sha256:8fc628c492d12b13d1f347137b2ac6c04f98197ff0985ef0403a9a9ee0d39131"},
+    {file = "playwright-1.50.0-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:ffcff35f72db2689a79007aee78f1b0621a22e6e3d6c1f58aaa9ac805bf4497c"},
+    {file = "playwright-1.50.0-py3-none-win32.whl", hash = "sha256:3b906f4d351260016a8c5cc1e003bb341651ae682f62213b50168ed581c7558a"},
+    {file = "playwright-1.50.0-py3-none-win_amd64.whl", hash = "sha256:1859423da82de631704d5e3d88602d755462b0906824c1debe140979397d2e8d"},
 ]
 
 [package.dependencies]
-greenlet = "3.1.1"
-pyee = "12.0.0"
+greenlet = ">=3.1.1,<4.0.0"
+pyee = ">=12,<13"
 
 [[package]]
 name = "playwright-stealth"
@@ -1851,30 +1852,30 @@ test = ["pytest"]
 
 [[package]]
 name = "playwrightcapture"
-version = "1.27.6"
+version = "1.27.7"
 description = "A simple library to capture websites using playwright"
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "playwrightcapture-1.27.6-py3-none-any.whl", hash = "sha256:3774e6c33c713800d57ea7c8aec6a993a8181134692fd90f98753e63db0baf7c"},
-    {file = "playwrightcapture-1.27.6.tar.gz", hash = "sha256:cc0cc43b2cc4de1313011bca96bda867203eb5efababaf9a27308eed52153f82"},
+    {file = "playwrightcapture-1.27.7-py3-none-any.whl", hash = "sha256:54eda1365495eadb8845445a236613e1f711a664837346918536037a212531e1"},
+    {file = "playwrightcapture-1.27.7.tar.gz", hash = "sha256:4cc19e5f55e6ee9c23bf7b55ee72064bda34192d34accb29d3220ab29f183dfa"},
 ]
 
 [package.dependencies]
 aiohttp = {version = ">=3.11.11", extras = ["speedups"]}
 aiohttp-socks = ">=0.10.1"
 async-timeout = {version = ">=5.0.1", markers = "python_version < \"3.11\""}
-beautifulsoup4 = {version = ">=4.12.3", extras = ["charset-normalizer", "lxml"]}
+beautifulsoup4 = {version = ">=4.13.1", extras = ["charset-normalizer", "lxml"]}
 dateparser = ">=1.2.0"
-playwright = ">=1.49.1"
+playwright = ">=1.50.0"
 playwright-stealth = ">=1.0.6"
 puremagic = ">=1.28"
 pydub = {version = ">=0.25.1", optional = true, markers = "extra == \"recaptcha\""}
 setuptools = ">=75.8.0"
 SpeechRecognition = {version = ">=3.14.1", optional = true, markers = "extra == \"recaptcha\""}
 tzdata = ">=2025.1"
-w3lib = ">=2.2.1"
+w3lib = ">=2.3.1"
 
 [package.extras]
 recaptcha = ["SpeechRecognition (>=3.14.1)", "pydub (>=0.25.1)"]
@@ -2263,14 +2264,14 @@ files = [
 
 [[package]]
 name = "pyee"
-version = "12.0.0"
+version = "12.1.1"
 description = "A rough port of Node.js's EventEmitter to Python with a few tricks of its own"
 optional = false
 python-versions = ">=3.8"
 groups = ["main"]
 files = [
-    {file = "pyee-12.0.0-py3-none-any.whl", hash = "sha256:7b14b74320600049ccc7d0e0b1becd3b4bd0a03c745758225e31a59f4095c990"},
-    {file = "pyee-12.0.0.tar.gz", hash = "sha256:c480603f4aa2927d4766eb41fa82793fe60a82cbfdb8d688e0d08c55a534e145"},
+    {file = "pyee-12.1.1-py3-none-any.whl", hash = "sha256:18a19c650556bb6b32b406d7f017c8f513aceed1ef7ca618fb65de7bd2d347ef"},
+    {file = "pyee-12.1.1.tar.gz", hash = "sha256:bbc33c09e2ff827f74191e3e5bbc6be7da02f627b7ec30d86f5ce1a6fb2424a3"},
 ]
 
 [package.dependencies]
@@ -2311,14 +2312,14 @@ six = ">=1.5"
 
 [[package]]
 name = "python-socks"
-version = "2.6.1"
+version = "2.7.1"
 description = "Proxy (SOCKS4, SOCKS5, HTTP CONNECT) client for Python"
 optional = false
 python-versions = ">=3.8.0"
 groups = ["main"]
 files = [
-    {file = "python_socks-2.6.1-py3-none-any.whl", hash = "sha256:7fe9324c1834bb9cdce46ddb6721cf42a05a00da5f1fb87f8507ac0c6f305e1d"},
-    {file = "python_socks-2.6.1.tar.gz", hash = "sha256:9743929aab6ffe0bab640ecfbbee7130af92408ad86e4aa2984789f742f3ec9e"},
+    {file = "python_socks-2.7.1-py3-none-any.whl", hash = "sha256:2603c6454eeaeb82b464ad705be188989e8cf1a4a16f0af3c921d6dd71a49cec"},
+    {file = "python_socks-2.7.1.tar.gz", hash = "sha256:f1a0bb603830fe81e332442eada96757b8f8dec02bd22d1d6f5c99a79704c550"},
 ]
 
 [package.dependencies]
@@ -2332,14 +2333,14 @@ trio = ["trio (>=0.24)"]
 
 [[package]]
 name = "pytz"
-version = "2024.2"
+version = "2025.1"
 description = "World timezone definitions, modern and historical"
 optional = false
 python-versions = "*"
 groups = ["main"]
 files = [
-    {file = "pytz-2024.2-py2.py3-none-any.whl", hash = "sha256:31c7c1817eb7fae7ca4b8c7ee50c72f93aa2dd863de768e1ef4245d426aa0725"},
-    {file = "pytz-2024.2.tar.gz", hash = "sha256:2aa355083c50a0f93fa581709deac0c9ad65cca8a9e9beac660adcbd493c798a"},
+    {file = "pytz-2025.1-py2.py3-none-any.whl", hash = "sha256:89dd22dca55b46eac6eda23b2d72721bf1bdfef212645d81513ef5d03038de57"},
+    {file = "pytz-2025.1.tar.gz", hash = "sha256:c2db42be2a2518b28e65f9207c4d05e6ff547d1efa4086469ef855e4ab70178e"},
 ]
 
 [[package]]
@@ -2997,14 +2998,14 @@ devenv = ["check-manifest", "pytest (>=4.3)", "pytest-cov", "pytest-mock (>=3.3)
 
 [[package]]
 name = "ua-parser"
-version = "1.0.0"
+version = "1.0.1"
 description = "Python port of Browserscope's user agent parser"
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "ua_parser-1.0.0-py3-none-any.whl", hash = "sha256:5b31133606a781f56692caa11a9671a9f330c22604b3c4957a7ba18c152212d0"},
-    {file = "ua_parser-1.0.0.tar.gz", hash = "sha256:a9740f53f4fbb72b7a03d304cae32a2785cafc55e8207efb74877bba17c35324"},
+    {file = "ua_parser-1.0.1-py3-none-any.whl", hash = "sha256:b059f2cb0935addea7e551251cbbf42e9a8872f86134163bc1a4f79e0945ffea"},
+    {file = "ua_parser-1.0.1.tar.gz", hash = "sha256:f9d92bf19d4329019cef91707aecc23c6d65143ad7e29a233f0580fb0d15547d"},
 ]
 
 [package.dependencies]
@@ -3074,14 +3075,14 @@ zstd = ["zstandard (>=0.18.0)"]
 
 [[package]]
 name = "w3lib"
-version = "2.2.1"
+version = "2.3.1"
 description = "Library of web-related functions"
 optional = false
-python-versions = ">=3.8"
+python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "w3lib-2.2.1-py3-none-any.whl", hash = "sha256:e56d81c6a6bf507d7039e0c95745ab80abd24b465eb0f248af81e3eaa46eb510"},
-    {file = "w3lib-2.2.1.tar.gz", hash = "sha256:756ff2d94c64e41c8d7c0c59fea12a5d0bc55e33a531c7988b4a163deb9b07dd"},
+    {file = "w3lib-2.3.1-py3-none-any.whl", hash = "sha256:9ccd2ae10c8c41c7279cd8ad4fe65f834be894fe7bfdd7304b991fd69325847b"},
+    {file = "w3lib-2.3.1.tar.gz", hash = "sha256:5c8ac02a3027576174c2b61eb9a2170ba1b197cae767080771b6f1febda249a4"},
 ]
 
 [[package]]
@@ -3223,4 +3224,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.9"
-content-hash = "1903c89652c5bd763e353781bd18e6561ce70563246aa803112e437ba6e06ba5"
+content-hash = "6769e739b6b50bc5e12cf8bdc593462589128dd57b345b4f808610547012d8be"
