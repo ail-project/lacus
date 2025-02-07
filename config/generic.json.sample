@@ -17,6 +17,7 @@
       "username": "",
       "password": ""
     },
+    "allow_headed": false,
     "_notes": {
         "loglevel": "Can be one of the value listed here: https://docs.python.org/3/library/logging.html#levels",
         "website_listen_ip": "IP Flask will listen on. Defaults to 0.0.0.0, meaning all interfaces.",
@@ -28,6 +29,7 @@
         "expire_results": "The capture results are stored in redis. The time after which they're expired (in seconds). Set it to a lower value (but not too low) if you have a lot of captures and not a lot of memory",
         "max_retries": "The very maximal amount of times lacus will retry a failing capture.",
         "tor_proxy": "URL to connect to a SOCKS 5 proxy for tor",
-        "global_proxy": "Proxy configuration to use for *all* the requests (except .onions)"
+        "global_proxy": "Proxy configuration to use for *all* the requests (except .onions)",
+        "allow_headed": "Allow users to use the headed version of the browser. It requires a graphical environment."
     }
 }

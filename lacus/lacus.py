@@ -33,12 +33,15 @@ class Lacus():
             decode_responses=True,
             health_check_interval=10)
 
+        self.headed_allowed = get_config('generic', 'allow_headed')
+
         self.core = LacusCore(self.redis, tor_proxy=get_config('generic', 'tor_proxy'),
                               only_global_lookups=get_config('generic', 'only_global_lookups'),
                               loglevel=get_config('generic', 'loglevel'),
                               max_capture_time=get_config('generic', 'max_capture_time'),
                               expire_results=get_config('generic', 'expire_results'),
-                              max_retries=get_config('generic', 'max_retries')
+                              max_retries=get_config('generic', 'max_retries'),
+                              headed_allowed=self.headed_allowed,
                               )
 
         self.monitoring = LacusCoreMonitoring(self.redis_decode)
