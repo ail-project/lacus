@@ -5,7 +5,7 @@ description = " A capturing system using playwright, as a web service."
 authors = [{name="Raphaël Vinot", email="raphael.vinot@circl.lu"}]
 license = "BSD-3-Clause"
 readme = "README.md"
-requires-python = "^3.9"
+requires-python = "^3.9.2"
 
 dependencies = [
     "redis[hiredis] (>=5.2.1)",
@@ -14,7 +14,7 @@ dependencies = [
     "gunicorn[setproctitle] (>=23.0.0)",
     "lacuscore (>=1.12.10)",
     "rich (>=13.9.4)",
-    "psutil (>=6.1.1)"
+    "psutil (>=7.0.0)"
 ]
 
 [project.urls]
