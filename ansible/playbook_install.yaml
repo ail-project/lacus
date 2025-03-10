@@ -1,0 +1,107 @@
+- name: Check reachable
+  hosts: myhosts
+  tasks:
+   - name: Ping my hosts
+     ansible.builtin.ping:
+
+- name: Install system dependencies
+  hosts: myhosts
+  become: true
+  become_method: sudo
+  tasks:
+    - name: Install general dependencies
+      ansible.builtin.apt:
+        pkg:
+          - build-essential
+          - git
+          - python3-venv
+          - pipx
+          - acl
+          - ffmpeg
+          - libavcodec-extra
+
+- name: Install Playwright system dependency (needs sudo)
+  hosts: myhosts
+  tasks:
+    - name: Update PATH for pipx / poetry
+      ansible.builtin.command: pipx ensurepath
+
+    - name: Install Playwright
+      community.general.pipx:
+        name: playwright
+
+    - name: Install system deps
+      ansible.builtin.command: "{{ ansible_env.HOME }}/.local/bin/playwright install-deps"
+
+- name: Create Users
+  hosts: myhosts
+  become: true
+  become_method: sudo
+  tasks:
+    - name: Create a user 'lacus' with a home directory
+      ansible.builtin.user:
+        name: lacus
+        create_home: true
+        shell: /bin/bash
+
+- name: Install Lacus
+  hosts: myhosts
+  become: true
+  become_method: sudo
+  become_user: lacus
+  vars:
+    allow_world_readable_tmpfiles: true
+  tasks:
+
+    - name: Update PATH for pipx / poetry
+      ansible.builtin.command: pipx ensurepath
+
+    - name: Install poetry
+      community.general.pipx:
+        name: poetry
+
+    - name: Install poetry shell
+      ansible.builtin.command: pipx inject poetry poetry-plugin-shell
+
+    - name: Upgrade poetry
+      community.general.pipx:
+        name: poetry
+        state: upgrade
+        include_injected: true
+
+    - name: Clone Valkey
+      ansible.builtin.git:
+        repo: https://github.com/valkey-io/valkey.git
+        dest: "{{ ansible_env.HOME }}/valkey"
+        version: 8.0
+
+    - name: Build Valkey
+      ansible.builtin.command: make -j2
+      args:
+        chdir: "{{ ansible_env.HOME }}/valkey"
+
+
+    - name: Clone Lacus
+      ansible.builtin.git:
+        repo: https://github.com/ail-project/lacus.git
+        dest: "{{ ansible_env.HOME }}/lacus"
+
+    - name: Install Lacus
+      ansible.builtin.command: "poetry install"
+      environment:
+        PATH: "{{ ansible_env.PATH }}:{{ ansible_env.HOME }}/.local/bin"
+      args:
+        chdir: "{{ ansible_env.HOME }}/lacus"
+
+    - name: Init .env file
+      ansible.builtin.copy:
+        content: "LACUS_HOME='/home/lacus/lacus'"
+        dest: "{{ ansible_env.HOME }}/lacus/.env"
+
+    - name: Update lacus
+      ansible.builtin.command: "poetry run update --init"
+      environment:
+        PATH: "{{ ansible_env.PATH }}:{{ ansible_env.HOME }}/.local/bin"
+      args:
+        chdir: "{{ ansible_env.HOME }}/lacus"
+
