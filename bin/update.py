@@ -93,26 +93,29 @@ def main() -> None:
     keep_going(args.yes or args.init)
     run_command(f'poetry run {(Path("tools") / "validate_config_files.py").as_posix()} --update')
 
-    print('* Restarting')
-    keep_going(args.yes)
-    if platform.system() == 'Windows':
-        print('Restarting with poetry...')
-        run_command('poetry run stop', expect_fail=True)
-        run_command('poetry run start', capture_output=False)
-        print('Started.')
-    else:
-        service = get_config('generic', 'systemd_service_name')
-        p = subprocess.run(["systemctl", "is-active", "--quiet", service])
-        try:
-            p.check_returncode()
-            print('Restarting with systemd...')
-            run_command(f'sudo service {service} restart')
-            print('done.')
-        except subprocess.CalledProcessError:
+    if not args.init:
+        # Init must finish without user interaction.
+
+        print('* Restarting')
+        keep_going(args.yes)
+        if platform.system() == 'Windows':
             print('Restarting with poetry...')
             run_command('poetry run stop', expect_fail=True)
             run_command('poetry run start', capture_output=False)
             print('Started.')
+        else:
+            service = get_config('generic', 'systemd_service_name')
+            p = subprocess.run(["systemctl", "is-active", "--quiet", service])
+            try:
+                p.check_returncode()
+                print('Restarting with systemd...')
+                run_command(f'sudo service {service} restart')
+                print('done.')
+            except subprocess.CalledProcessError:
+                print('Restarting with poetry...')
+                run_command('poetry run stop', expect_fail=True)
+                run_command('poetry run start', capture_output=False)
+                print('Started.')
 
 
 if __name__ == '__main__':
