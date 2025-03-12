@@ -44,12 +44,19 @@ jobs:
         popd
         popd
 
-    - name: Install with poetry
+    - name: Install with poetry (default config)
       run: |
         echo LACUS_HOME=`pwd` > .env
         poetry install
-        poetry run playwright install
         poetry run playwright install-deps
+        poetry run playwright install
+        poetry run start
+        sleep 30
+        poetry run stop
+
+    - name: Run update with init switch
+      run: |
+        poetry run update --init
         poetry run start
 
     - name: Clone PyLacus
@@ -66,7 +73,7 @@ jobs:
         popd
         poetry run stop
 
-    - name: Test update script
+    - name: Test update script with restart
       run: |
         poetry run update --yes
         sleep 30
