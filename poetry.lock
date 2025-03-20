@@ -1348,14 +1348,14 @@ referencing = ">=0.31.0"
 
 [[package]]
 name = "lacuscore"
-version = "1.13.2"
+version = "1.13.3"
 description = "Core of Lacus, usable as a module"
 optional = false
 python-versions = "<4.0,>=3.9.2"
 groups = ["main"]
 files = [
-    {file = "lacuscore-1.13.2-py3-none-any.whl", hash = "sha256:26206efddc5057e7885c6fb6437b6136f0b1ac7718ae1ff74250d813cbe4701c"},
-    {file = "lacuscore-1.13.2.tar.gz", hash = "sha256:fb340a3739d36918c5b4e9e87168fb265567f1753cff880ede8ec72083995ad8"},
+    {file = "lacuscore-1.13.3-py3-none-any.whl", hash = "sha256:3864ba2626a2b1ac31230fcfa6ef59adb08ed450f0729c96f382fb9d91d8c76c"},
+    {file = "lacuscore-1.13.3.tar.gz", hash = "sha256:2a443d6fb41333a77217570d5b652dd5f7d4e967f66138ebd610666381a42e14"},
 ]
 
 [package.dependencies]
@@ -1363,7 +1363,7 @@ async-timeout = {version = ">=5.0.1", markers = "python_version < \"3.11\""}
 defang = ">=0.5.3"
 dnspython = ">=2.7.0"
 eval-type-backport = {version = ">=0.2.2", markers = "python_version < \"3.10\""}
-playwrightcapture = {version = ">=1.28.1", extras = ["recaptcha"]}
+playwrightcapture = {version = ">=1.28.2", extras = ["recaptcha"]}
 pydantic = ">=2.10.6"
 redis = {version = ">=5.2.1", extras = ["hiredis"]}
 requests = ">=2.32.3"
@@ -1860,14 +1860,14 @@ test = ["pytest"]
 
 [[package]]
 name = "playwrightcapture"
-version = "1.28.1"
+version = "1.28.2"
 description = "A simple library to capture websites using playwright"
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "playwrightcapture-1.28.1-py3-none-any.whl", hash = "sha256:068302e8959348c97ffd04bd6f0d918f0e8cc9434fa2ac409b3f2d4ae98d6226"},
-    {file = "playwrightcapture-1.28.1.tar.gz", hash = "sha256:5dddf0516ffce8d7c2abfbe4530ee8fe878ac9adad10ec0e7d4ed59196a77a75"},
+    {file = "playwrightcapture-1.28.2-py3-none-any.whl", hash = "sha256:15ef6761bc6edd5a45defdc38651456c6ba6ead3e41191882dbe7fbf33b3fcdc"},
+    {file = "playwrightcapture-1.28.2.tar.gz", hash = "sha256:31ef7d6d195a2a20fbdbe28400d75ffb3b632d58d70d2e9db7482a536c03f762"},
 ]
 
 [package.dependencies]
@@ -1882,6 +1882,7 @@ puremagic = ">=1.28"
 pydub = {version = ">=0.25.1", optional = true, markers = "extra == \"recaptcha\""}
 setuptools = ">=77.0.1"
 SpeechRecognition = {version = ">=3.14.1", optional = true, markers = "extra == \"recaptcha\""}
+typing-extensions = {version = ">=4.12.2,<5.0.0", markers = "python_version < \"3.12\""}
 tzdata = ">=2025.1"
 w3lib = ">=2.3.1"
 
@@ -3244,4 +3245,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.9.2"
-content-hash = "8f0e338e7d332b6ed8bff2e7aca67c61db9a0498c141a296d4db057e326b1283"
+content-hash = "ed0a08b96898b6ac0ba203291166217d1e3a1bce9d658c9ccacbc6f9df895b2f"

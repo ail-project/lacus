@@ -119,7 +119,4 @@ def main() -> None:
 
 
 if __name__ == '__main__':
-    if sys.version_info < (3, 12):
-        print('it is currently broken on python < 3.12.')
-        sys.exit(1)
     main()
