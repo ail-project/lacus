@@ -1348,14 +1348,14 @@ referencing = ">=0.31.0"
 
 [[package]]
 name = "lacuscore"
-version = "1.13.1"
+version = "1.13.2"
 description = "Core of Lacus, usable as a module"
 optional = false
 python-versions = "<4.0,>=3.9.2"
 groups = ["main"]
 files = [
-    {file = "lacuscore-1.13.1-py3-none-any.whl", hash = "sha256:c054ef098530bd023634c573384a6b9ca63d8c36a74501f582afd61308ac79c0"},
-    {file = "lacuscore-1.13.1.tar.gz", hash = "sha256:ab0770a68c95171f60fa6be5f27033da60a62f857529c37cf9a727d486bde0f8"},
+    {file = "lacuscore-1.13.2-py3-none-any.whl", hash = "sha256:26206efddc5057e7885c6fb6437b6136f0b1ac7718ae1ff74250d813cbe4701c"},
+    {file = "lacuscore-1.13.2.tar.gz", hash = "sha256:fb340a3739d36918c5b4e9e87168fb265567f1753cff880ede8ec72083995ad8"},
 ]
 
 [package.dependencies]
@@ -1367,6 +1367,7 @@ playwrightcapture = {version = ">=1.28.1", extras = ["recaptcha"]}
 pydantic = ">=2.10.6"
 redis = {version = ">=5.2.1", extras = ["hiredis"]}
 requests = ">=2.32.3"
+typing-extensions = {version = ">=4.12.2,<5.0.0", markers = "python_version < \"3.12\""}
 ua-parser = {version = ">=1.0.1", extras = ["regex"]}
 
 [package.extras]
@@ -3243,4 +3244,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.9.2"
-content-hash = "a40b96d68a09cd994f93d53c26860bb5dfa12a08069467dce5a283eb5d5d8301"
+content-hash = "8f0e338e7d332b6ed8bff2e7aca67c61db9a0498c141a296d4db057e326b1283"
