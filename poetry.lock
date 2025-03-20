@@ -1348,14 +1348,14 @@ referencing = ">=0.31.0"
 
 [[package]]
 name = "lacuscore"
-version = "1.13.3"
+version = "1.13.4"
 description = "Core of Lacus, usable as a module"
 optional = false
 python-versions = "<4.0,>=3.9.2"
 groups = ["main"]
 files = [
-    {file = "lacuscore-1.13.3-py3-none-any.whl", hash = "sha256:3864ba2626a2b1ac31230fcfa6ef59adb08ed450f0729c96f382fb9d91d8c76c"},
-    {file = "lacuscore-1.13.3.tar.gz", hash = "sha256:2a443d6fb41333a77217570d5b652dd5f7d4e967f66138ebd610666381a42e14"},
+    {file = "lacuscore-1.13.4-py3-none-any.whl", hash = "sha256:617bd672d5c5a7dcd1de9ab5c937eaa609879a35cf1e670a47ef53e71e46ce15"},
+    {file = "lacuscore-1.13.4.tar.gz", hash = "sha256:e5355e341b6bf877373201e058d79c598e027b200fd994cfc32b2bd454990785"},
 ]
 
 [package.dependencies]
@@ -3245,4 +3245,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.9.2"
-content-hash = "ed0a08b96898b6ac0ba203291166217d1e3a1bce9d658c9ccacbc6f9df895b2f"
+content-hash = "c1d71b714aef3a9498691b39a83e060f6e0d134a19a04566a8e34a58912f985a"
