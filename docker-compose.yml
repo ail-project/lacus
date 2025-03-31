@@ -1,0 +1,46 @@
+services:
+  redis:
+    image: redis:7.4.2
+    ports:
+      - '6379:6379'
+    command: redis-server --unixsocket /cache/cache.sock
+    volumes:
+      - ./data:/data:rw,z
+      - ./cache:/cache:rw,z
+  
+  redis-insight: # optional only to watch inside redis
+    image: redis/redisinsight:latest
+    depends_on:
+      - redis
+    ports:
+      - "5540:5540"
+
+  lacus_website:
+    build: .
+    command: poetry run start_website
+    depends_on:
+      - redis
+    volumes:
+      - ./cache:/build/lacus/cache:rw,z
+      - ./config/docker.generic.json.sample:/build/lacus/config/generic.json:rw,z
+    ports:
+      - 7100:7100
+
+  lacus_capture:
+    build: .
+    command: poetry run capture_manager
+    depends_on:
+      - redis
+    volumes:
+      - ./cache:/build/lacus/cache:rw,z
+      - ./config/docker.generic.json.sample:/build/lacus/config/generic.json:rw,z
+
+  tor_proxy:
+    image: thetorproject/obfs4-bridge
+    command: tor -f /etc/tor/torrc
+    ports:
+      - 9050:9050
+    volumes:
+      - ./config/torrc:/etc/tor/torrc:rw,z
+
+
