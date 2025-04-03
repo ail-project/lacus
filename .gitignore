@@ -111,6 +111,7 @@ secret_key
 
 cache.pid
 dump.rdb
+data
 
 # Local config files
 config/*.json

@@ -4,6 +4,15 @@
 
 A capturing system using playwright, as a web service.
 
+# Install guide with Docker or Podman
+To run lacus using docker or podman you need docker installed or podman and podman-compose:
+
+```
+podman-compose build # or docker compose build
+podman-compose up # or docker compose up
+# go to http://localhost:7100/
+```
+
 # Install guide
 
 ## System dependencies
