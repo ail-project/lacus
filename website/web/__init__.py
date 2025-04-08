@@ -50,10 +50,10 @@ def handle_pydandic_validation_exception(error: CaptureSettingsError) -> tuple[d
     '''Return the validation error message and 400 status code'''
     if error.pydantic_validation_errors:
         logger.warning(f'Unable to validate capture settings: {error.pydantic_validation_errors}')
-        return {'message': 'Unable to validate capture settings.',
+        return {'error': 'Unable to validate capture settings.',
                 'details': error.pydantic_validation_errors.errors()}, 400
     logger.warning(f'Unable to validate capture settings: {error}')
-    return {'message': str(error)}, 400
+    return {'error': str(error)}, 400
 
 
 @api.route('/redis_up')
