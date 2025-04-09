@@ -1,6 +1,6 @@
 [project]
 name = "lacus"
-version = "1.13.0"
+version = "1.13.1"
 description = " A capturing system using playwright, as a web service."
 authors = [{name="Raphaël Vinot", email="raphael.vinot@circl.lu"}]
 license = "BSD-3-Clause"
