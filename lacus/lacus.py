@@ -94,10 +94,10 @@ class Lacus():
         """
         Get a proxy from the configuration.
         """
-        proxy = get_config('proxies', name)
-        if not proxy:
-            return {}
-        return proxy
+        proxy = get_config('proxies')
+        if name in proxy:
+            return proxy[name]
+        return {}
 
     def get_proxies(self) -> dict[str, Any]:
         """
