@@ -89,3 +89,18 @@ class Lacus():
         enqueued_captures = self.monitoring.get_enqueued_captures()
         to_return['enqueued_captures'] = len(enqueued_captures)
         return to_return
+
+    def get_proxy_settings(self, name: str) -> dict[str, Any]:
+        """
+        Get a proxy from the configuration.
+        """
+        proxy = get_config('proxies', name)
+        if not proxy:
+            return {}
+        return proxy
+
+    def get_proxies(self) -> dict[str, Any]:
+        """
+        Get the pre-configured proxies from the configuration.
+        """
+        return get_config('proxies')

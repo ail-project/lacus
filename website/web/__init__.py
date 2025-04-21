@@ -91,6 +91,7 @@ submit_fields_post = api.model('SubmitFieldsPost', {
     'device_name': fields.String(description="Use the pre-configured settings for this device. Get a list from /json/devices.", example='Nexus 6'),
     'user_agent': fields.String(description="User agent to use for the capture", example='Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/116.0'),
     'proxy': fields.Url(description="Proxy to use for the capture. Format: [scheme]://[username]:[password]@[hostname]:[port]", example=''),
+    'socks5_dns_resolver': fields.String(description="DNS server to use when resolving IPs through a Socks5 proxy only", example='1.1.1.1'),
     'general_timeout_in_sec': fields.Integer(description="General timeout for the capture. It will be killed regardless the status after that time.", example=300),
     'cookies': fields.String(description="JSON export of a list of cookies as exported from an other capture", example=''),
     'storage': fields.String(description="JSON export of a storage state as exported from an other capture", example=''),
@@ -121,6 +122,11 @@ class Enqueue(Resource):  # type: ignore[misc]
     @api.produces(['text/text'])  # type: ignore[misc]
     def post(self) -> str:
         to_query: dict[str, Any] = request.get_json(force=True)
+        if proxy := to_query.get('proxy'):
+            if proxy_settings := lacus.get_proxy_settings(proxy):
+                to_query['proxy'] = proxy_settings['proxy_url']
+                if dns_resolver := proxy_settings.get('dns_resolver'):
+                    to_query['socks5_dns_resolver'] = dns_resolver
         perma_uuid = lacus.core.enqueue(
             url=to_query.get('url'),
             document_name=to_query.get('document_name'),
@@ -130,6 +136,7 @@ class Enqueue(Resource):  # type: ignore[misc]
             device_name=to_query.get('device_name'),
             user_agent=to_query.get('user_agent'),
             proxy=lacus.global_proxy if lacus.global_proxy else to_query.get('proxy'),
+            socks5_dns_resolver=to_query.get('socks5_dns_resolver'),
             general_timeout_in_sec=to_query.get('general_timeout_in_sec'),
             cookies=to_query.get('cookies'),
             storage=to_query.get('storage'),
@@ -273,6 +280,24 @@ class LacusStatus(Resource):  # type: ignore[misc]
 
     def get(self) -> dict[str, Any]:
         return lacus.status()
+
+
+@api.route('/proxies')
+@api.doc(description='Get the list of pre-configured proxies.')
+class Proxies(Resource):  # type: ignore[misc]
+
+    def get(self) -> dict[str, Any]:
+        proxies = lacus.get_proxies()
+        if not proxies:
+            return {}
+        to_return = {}
+        # Only return description and details.
+        for proxy_name, proxy_settings in proxies.items():
+            to_return[proxy_name] = {
+                'description': proxy_settings['description'],
+                'meta': proxy_settings['meta']
+            }
+        return to_return
 
 
 @api.route('/is_busy')
