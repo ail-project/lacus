@@ -1,0 +1,9 @@
+{
+    "Tor": {
+        "proxy_url": "socks5://127.0.0.1:9050",
+        "description": "Trigger the capture via the tor network.",
+        "meta": {
+            "provider": "Tor Project"
+        }
+    }
+}
