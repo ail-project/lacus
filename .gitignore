@@ -115,4 +115,5 @@ data
 
 # Local config files
 config/*.json
+config/*.conf
 config/*.json.bkp

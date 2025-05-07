@@ -14,7 +14,8 @@ dependencies = [
     "gunicorn[setproctitle] (>=23.0.0)",
     "lacuscore (>=1.14.1)",
     "rich (>=14.0.0)",
-    "psutil (>=7.0.0)"
+    "psutil (>=7.0.0)",
+    "watchdog (>=6.0.0,<7.0.0)"
 ]
 
 [project.urls]
@@ -29,6 +30,7 @@ run_backend = "bin.run_backend:main"
 start_website = "bin.start_website:main"
 capture_manager = "bin.capture_manager:main"
 stop_capture_manager = "bin.stop_capture_manager:main"
+wireproxy_manager = "bin.wireproxy_manager:main"
 scripts_controller = "bin.scripts_controller:main"
 
 [tool.poetry.group.dev.dependencies]

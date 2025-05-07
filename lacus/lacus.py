@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import copy
+import json
 import logging
 
 from datetime import datetime
@@ -13,7 +14,7 @@ from redis.connection import UnixDomainSocketConnection
 
 from lacuscore import LacusCore, LacusCoreMonitoring
 
-from .default import get_config, get_socket_path
+from .default import get_config, get_socket_path, get_homedir
 
 
 class Lacus():
@@ -94,7 +95,7 @@ class Lacus():
         """
         Get a proxy from the configuration.
         """
-        proxy = get_config('proxies')
+        proxy = self.get_proxies()
         if name in proxy:
             return proxy[name]
         return {}
@@ -103,4 +104,5 @@ class Lacus():
         """
         Get the pre-configured proxies from the configuration.
         """
-        return get_config('proxies')
+        with (get_homedir() / 'config' / 'proxies.json').open('r') as f:
+            return json.load(f)
