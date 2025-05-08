@@ -7,8 +7,7 @@ import json
 import logging
 import logging.config
 import socket
-
-import requests
+import urllib.request
 
 from dataclasses import dataclass
 from logging import Logger
@@ -44,10 +43,11 @@ class WireProxy:
 
     def is_healthy(self) -> bool:
         try:
-            r = requests.get(f'http://{self.health_endpoint}/readyz', timeout=2)
-            r.raise_for_status()
-            self.failed_healthcheck = 0
-        except requests.exceptions.RequestException:
+            with urllib.request.urlopen(f'http://{self.health_endpoint}/readyz') as response:
+                if response.status == 200:
+                    self.failed_healthcheck = 0
+                    return True
+        except urllib.error.HTTPError:
             self.failed_healthcheck += 1
             return False
         return True
