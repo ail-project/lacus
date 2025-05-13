@@ -53,6 +53,10 @@ class Lacus():
                 self.global_proxy = copy.copy(global_proxy)
                 self.global_proxy.pop('enable')
 
+        self._proxies_path = get_homedir() / 'config' / 'proxies.json'
+        self._proxies: dict[str, Any] = {}
+        self._proxies_last_change: float = 0
+
     @property
     def redis(self) -> Redis:  # type: ignore[type-arg]
         return Redis(connection_pool=self.redis_pool)
@@ -104,5 +108,18 @@ class Lacus():
         """
         Get the pre-configured proxies from the configuration.
         """
-        with (get_homedir() / 'config' / 'proxies.json').open('r') as f:
-            return json.load(f)
+        if not self._proxies_path.exists():
+            self.logger.info('No proxies configured.')
+            return {}
+        if self._proxies_path.stat().st_mtime != self._proxies_last_change:
+            self._proxies_last_change = self._proxies_path.stat().st_mtime
+            try:
+                with self._proxies_path.open('r') as f:
+                    self._proxies = json.load(f)
+            except json.JSONDecodeError:
+                self.logger.warning('Proxies file is not valid JSON.')
+                self._proxies = {}
+            except Exception as e:
+                self.logger.warning(f'Error loading proxies file: {e}')
+                self._proxies = {}
+        return self._proxies
