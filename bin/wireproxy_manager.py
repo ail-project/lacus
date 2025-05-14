@@ -45,12 +45,19 @@ class WireProxy:
 
     def is_healthy(self) -> bool:
         try:
-            with urllib.request.urlopen(f'http://{self.health_endpoint}/readyz') as response:
+            with urllib.request.urlopen(f'http://{self.health_endpoint}/readyz', timeout=5) as response:
                 if response.status == 200:
                     self.failed_healthcheck = 0
                     return True
         except urllib.error.HTTPError:
             self.failed_healthcheck += 1
+            return False
+        except urllib.error.URLError:
+            self.failed_healthcheck += 1
+            return False
+        except Exception as e:
+            self.failed_healthcheck += 1
+            print(f"Unexpected error: {e}")
             return False
         return True
 
