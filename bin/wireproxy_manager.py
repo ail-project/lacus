@@ -7,10 +7,11 @@ import json
 import logging
 import logging.config
 import socket
+import time
 import urllib.request
 
 from collections import defaultdict
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from logging import Logger
 from pathlib import Path
 from subprocess import Popen, PIPE
@@ -28,20 +29,45 @@ logging.config.dictConfig(get_config('logging'))
 
 @dataclass
 class WireProxy:
-
     name: str
-    process: Popen[bytes]
+
+    wireproxy: Path
     config_file: Path
     health_endpoint: str
+
+    loglevel: int = logging.INFO
+    logger: Logger = field(init=False)
+    process: Popen[bytes] = field(init=False)
     failed_healthcheck: int = 0
+
+    def __post_init__(self) -> None:
+        self.logger = logging.getLogger(f'{self.__class__.__name__}:{self.name}')
+        self.logger.setLevel(self.loglevel)
+        self.process = self._start()
+        if not self.is_running():
+            raise ConfigError("Unable to start wireproxy.")
+
+    def _start(self) -> Popen[bytes]:
+        return Popen([self.wireproxy, '--config', self.config_file, '--info', self.health_endpoint], stdout=PIPE, stderr=PIPE)
+
+    def stop(self) -> None:
+        self.process.terminate()
+        try:
+            self.process.wait(5)
+        except TimeoutError:
+            # If the process doesn't terminate, kill it.
+            self.logger.info("Unable to terminate, killing it.")
+            if self.process.poll() is None:
+                self.process.kill()
+
+    def restart(self) -> None:
+        self.stop()
+        self.process = self._start()
 
     def is_running(self) -> bool:
         if self.process.poll() is None:
             return True
         return False
-
-    def stop(self) -> None:
-        self.process.terminate()
 
     def is_healthy(self) -> bool:
         try:
@@ -49,15 +75,24 @@ class WireProxy:
                 if response.status == 200:
                     self.failed_healthcheck = 0
                     return True
-        except urllib.error.HTTPError:
+        except urllib.error.HTTPError as e:
+            self.logger.info(f"Healthcheck failed: {e.reason}.")
             self.failed_healthcheck += 1
             return False
-        except urllib.error.URLError:
+        except urllib.error.URLError as e:
+            self.logger.info(f"Healthcheck endpoint unreachable: {e.reason}.")
             self.failed_healthcheck += 1
+            return False
+        except TimeoutError:
+            # If the endpoint times out, the proxy is in a bad state and we need to restart it.
+            self.logger.warning("Healthcheck endpoint timed out, restarting.")
+            self.failed_healthcheck += 1
+            self.restart()
             return False
         except Exception as e:
             self.failed_healthcheck += 1
-            print(f"Unexpected error: {e}")
+            self.logger.error(f"Unexpected error (restarting): {e}")
+            self.restart()
             return False
         return True
 
@@ -95,7 +130,7 @@ class WireProxyFSManager(PatternMatchingEventHandler):
     def _port_in_use(self, port: int) -> bool:
         """Check if the port in currently in use on the machine."""
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            s.settimeout(1)
+            s.settimeout(3)
             return s.connect_ex(('127.0.0.1', port)) == 0
 
     def _init_configs(self) -> None:
@@ -282,12 +317,9 @@ class WireProxyFSManager(PatternMatchingEventHandler):
                 break
         else:
             raise Exception(f"[Health] No free port found in range {self.min_port}-{self.max_port}")
-        health_endpoint = f'{address}:{port}'
-        process = Popen([self.wireproxy, '--config', config_file, '--info', health_endpoint], stdout=PIPE, stderr=PIPE)
 
-        self.wireproxies[config_file.stem] = WireProxy(name=name, process=process,
-                                                       config_file=config_file,
-                                                       health_endpoint=health_endpoint)
+        self.wireproxies[config_file.stem] = WireProxy(name=name, wireproxy=self.wireproxy,
+                                                       config_file=config_file, health_endpoint=f'{address}:{port}')
 
     def launch_all_wireproxies(self) -> None:
         """Launch wireproxies on each of the config files in the directory."""
@@ -364,6 +396,9 @@ class WireProxyManager(AbstractManager):
         self.observer = Observer()
         self.observer.schedule(self.wpm, str(self.configs_dir), recursive=False)
         self.observer.start()
+
+        # Just to make sure the proxies have time to start
+        time.sleep(5)
 
     def _to_run_forever(self) -> None:
         # Monitor the status of the proxies
