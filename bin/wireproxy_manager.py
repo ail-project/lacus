@@ -56,18 +56,17 @@ class WireProxy:
             self.process.wait(5)
         except TimeoutError:
             # If the process doesn't terminate, kill it.
-            self.logger.info("Unable to terminate, killing it.")
+            self.logger.info("Unable to terminate, kill.")
             if self.process.poll() is None:
                 self.process.kill()
 
     def restart(self) -> None:
         self.stop()
         self.process = self._start()
+        time.sleep(3)
 
     def is_running(self) -> bool:
-        if self.process.poll() is None:
-            return True
-        return False
+        return self.process.poll() is None
 
     def is_healthy(self) -> bool:
         try:
@@ -76,7 +75,7 @@ class WireProxy:
                     self.failed_healthcheck = 0
                     return True
         except urllib.error.HTTPError as e:
-            self.logger.info(f"Healthcheck failed: {e.reason}.")
+            self.logger.debug(f"Healthcheck failed: {e.reason}.")
             self.failed_healthcheck += 1
             return False
         except urllib.error.URLError as e:
@@ -238,12 +237,23 @@ class WireProxyFSManager(PatternMatchingEventHandler):
                 self.launch_wireproxy(filepath.stem)
             except ConfigError as e:
                 self.logger.warning(f"Unable to create the new proxy: {e}")
+            except KeyError:
+                # Race condition, the file we opened was incomplete/empty
+                time.sleep(3)
+                if filepath.exists():
+                    # Retrigger a modification event
+                    filepath.touch(exist_ok=True)
 
     def on_modified(self, event: DirModifiedEvent | FileModifiedEvent) -> None:
         """ A file was modified. Only for proxies.json, any change directly made in a wireproxy config file is reverted.
         Steps: update wireproxy config file -> restart wireproxy
         """
         filepath = Path(str(event.src_path))
+        if filepath.exists():
+            # Race condition, ignore it
+            self.logger.info(f'File {filepath} missing, ignoring modified event.')
+            return
+
         if isinstance(event, FileModifiedEvent) and filepath.suffix == '.conf':
             # Modifying the wireproxy config file isn't allowed, but if it happens, we revert it.
             try:
@@ -254,6 +264,12 @@ class WireProxyFSManager(PatternMatchingEventHandler):
                     self.launch_wireproxy(filepath.stem)
             except ConfigError as e:
                 self.logger.warning(f"Unable to reapply config: {e}")
+            except KeyError:
+                # Race condition, the file we opened was incomplete/empty
+                time.sleep(3)
+                if filepath.exists():
+                    # Retrigger a modification event
+                    filepath.touch(exist_ok=True)
         elif isinstance(event, FileModifiedEvent) and filepath.name == 'proxies.json':
             with self.proxies_config_path.open('rb') as f:
                 proxies = json.loads(f.read())
@@ -414,6 +430,7 @@ class WireProxyManager(AbstractManager):
                     self.logger.warning(f'{config_file.stem} has been restarted too many times, archiving.')
                     config_file.rename(get_homedir() / 'config' / 'archived_wireproxies' / config_file.name)
                     self.logger.info(f"Wireproxy {config_file.name} archived.")
+                    self.restart_counter.pop(config_file.stem, None)
                 else:
                     self.wpm.sync_wireguard_proxies(config_file)
                     self.wpm.launch_wireproxy(config_file.stem)
