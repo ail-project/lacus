@@ -22,7 +22,7 @@ class CaptureManager(AbstractManager):
     def __init__(self, loglevel: int | None=None) -> None:
         super().__init__(loglevel)
         self.script_name = 'capture_manager'
-        self.captures: set[Task] = set()  # type: ignore[type-arg]
+        self.captures: set[Task[None]] = set()
         self.lacus = Lacus()
 
     async def clear_dead_captures(self) -> None:
@@ -50,7 +50,7 @@ class CaptureManager(AbstractManager):
 
     async def _to_run_forever_async(self) -> None:
 
-        def clear_list_callback(task: Task) -> None:  # type: ignore[type-arg]
+        def clear_list_callback(task: Task[None]) -> None:
             self.captures.discard(task)
             self.unset_running()
 
@@ -62,7 +62,7 @@ class CaptureManager(AbstractManager):
             if len(self.lacus.monitoring.get_enqueued_captures()) > 0:
                 self.logger.debug(f'Max amount of captures in parallel reached ({len(self.captures)})')
             return
-        for capture_task in self.lacus.core.consume_queue(max_new_captures):
+        async for capture_task in self.lacus.core.consume_queue(max_new_captures):
             self.captures.add(capture_task)
             self.set_running()
             capture_task.add_done_callback(clear_list_callback)
