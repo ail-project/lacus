@@ -1,39 +1,8 @@
 services:
-  valkey:
-    image: valkey/valkey:8.1
-    ports:
-      - '6379:6379'
-    command: valkey-server --unixsocket /cache/cache.sock
-    volumes:
-      - ./data:/data:rw,z
-      - ./cache:/cache:rw,z
-
-  lacus_website:
+  lacus:
     build: .
-    command: poetry run start_website
-    depends_on:
-      - valkey
-    volumes:
-      - ./cache:/build/lacus/cache:rw,z
-      - ./config/docker.generic.json.sample:/build/lacus/config/generic.json:rw,z
+    container_name: lacusdev
     ports:
-      - 7100:7100
-
-  lacus_capture:
-    build: .
-    command: poetry run capture_manager
-    depends_on:
-      - valkey
+      - "7100:7100"
     volumes:
-      - ./cache:/build/lacus/cache:rw,z
-      - ./config/docker.generic.json.sample:/build/lacus/config/generic.json:rw,z
-
-  tor_proxy:
-    image: thetorproject/obfs4-bridge
-    command: tor -f /etc/tor/torrc
-    ports:
-      - 9050:9050
-    volumes:
-      - ./config/torrc:/etc/tor/torrc:rw,z
-
-
+      - ./config:/app/lacus/config

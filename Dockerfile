@@ -1,15 +1,40 @@
-FROM python:3.11
+FROM ubuntu:24.04
 
-RUN apt-get update && apt-get -y install ffmpeg libavcodec-extra
+# Build dependencies
+RUN apt-get update && apt-get -y install build-essential curl git python3 tmux
 
-WORKDIR /build/lacus
-COPY . .
-RUN pip install --upgrade pip && pip install poetry
-RUN python3 -m pip config --user set global.timeout 150
-RUN poetry install
-RUN poetry run playwright install-deps
-RUN poetry run playwright install --with-deps
+RUN mkdir -p /app
+
+WORKDIR /app
+
+# Install Valkey
+RUN git clone https://github.com/valkey-io/valkey.git
+
+WORKDIR /app/valkey
+
+RUN git checkout 8.0 && make
+
+WORKDIR /app
+
+# Install lacus
+RUN git clone https://github.com/ail-project/lacus.git
+
+RUN curl -sSL https://install.python-poetry.org | python3 -
+ENV PATH="/root/.local/bin:${PATH}"
+
+WORKDIR /app/lacus
+
+RUN poetry install && poetry run playwright install-deps
+
 RUN echo LACUS_HOME="`pwd`" >> .env
+
 RUN poetry run update --init
 
-CMD poetry run start_website
+RUN apt-get install -y supervisor
+
+COPY ./supervisord/supervisord.conf /supervisord/supervisord.conf
+
+COPY ./entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
