@@ -1348,14 +1348,14 @@ referencing = ">=0.31.0"
 
 [[package]]
 name = "lacuscore"
-version = "1.15.2"
+version = "1.16.0"
 description = "Core of Lacus, usable as a module"
 optional = false
 python-versions = "<4.0,>=3.9.2"
 groups = ["main"]
 files = [
-    {file = "lacuscore-1.15.2-py3-none-any.whl", hash = "sha256:c73f852afd3e909e988a660924f08e34ff4eeffbf19bdd091b08b95c64575052"},
-    {file = "lacuscore-1.15.2.tar.gz", hash = "sha256:59ad00d3288fcb6014556d8fe52721d960f945080957770fca79be0aac381b97"},
+    {file = "lacuscore-1.16.0-py3-none-any.whl", hash = "sha256:f8798d5c5d480fa6d56d46e1fe1f8149a8400abfc9d839efb318f7a499198e46"},
+    {file = "lacuscore-1.16.0.tar.gz", hash = "sha256:cf0f5a99001eec27c4fe4e1e8b79b15befa2d33af2c4ce893ffaf001ba33313c"},
 ]
 
 [package.dependencies]
@@ -1363,10 +1363,10 @@ async-timeout = {version = ">=5.0.1", markers = "python_version < \"3.11\""}
 defang = ">=0.5.3"
 dnspython = ">=2.7.0"
 eval-type-backport = {version = ">=0.2.2", markers = "python_version < \"3.10\""}
-playwrightcapture = {version = ">=1.30.0", extras = ["recaptcha"]}
+playwrightcapture = {version = ">=1.31.0", extras = ["recaptcha"]}
 pydantic = ">=2.11.5"
 redis = {version = ">=5.3.0,<6.0.0", extras = ["hiredis"]}
-requests = ">=2.32.3"
+requests = ">=2.32.4"
 typing-extensions = {version = ">=4.12.2,<5.0.0", markers = "python_version < \"3.12\""}
 ua-parser = {version = ">=1.0.1", extras = ["regex"]}
 
@@ -1880,18 +1880,18 @@ test = ["pytest"]
 
 [[package]]
 name = "playwrightcapture"
-version = "1.30.0"
+version = "1.31.0"
 description = "A simple library to capture websites using playwright"
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "playwrightcapture-1.30.0-py3-none-any.whl", hash = "sha256:57d4feec787610479cd5050666e5cab9fd87accf1bb790a2e9ad4d5e57adc64b"},
-    {file = "playwrightcapture-1.30.0.tar.gz", hash = "sha256:9404a70762127b5309f591a6a45ed8d10e7d9156a84af9a9c4771f34a09427b9"},
+    {file = "playwrightcapture-1.31.0-py3-none-any.whl", hash = "sha256:388330cc4e62d8e5573b00242338c12825ff889b17fb91f088337855562877df"},
+    {file = "playwrightcapture-1.31.0.tar.gz", hash = "sha256:8c62eca708ee5f8692581091eb9f7131df68c3f55bd3ffc1718b6e82453d5076"},
 ]
 
 [package.dependencies]
-aiohttp = {version = ">=3.11.18", extras = ["speedups"]}
+aiohttp = {version = ">=3.12.12", extras = ["speedups"]}
 aiohttp-socks = ">=0.10.1"
 async-timeout = {version = ">=5.0.1", markers = "python_version < \"3.11\""}
 beautifulsoup4 = {version = ">=4.13.4", extras = ["charset-normalizer", "lxml"]}
@@ -1903,7 +1903,7 @@ puremagic = ">=1.29"
 pydub = {version = ">=0.25.1", optional = true, markers = "python_version < \"3.10\" and extra == \"recaptcha\""}
 pydub-ng = {version = ">=0.2.0", optional = true, markers = "python_version >= \"3.10\" and extra == \"recaptcha\""}
 python-socks = ">=2.7.1,<3.0.0"
-setuptools = ">=80.8.0"
+setuptools = ">=80.9.0"
 SpeechRecognition = {version = ">=3.14.3", optional = true, markers = "extra == \"recaptcha\""}
 typing-extensions = {version = ">=4.12.2,<5.0.0", markers = "python_version < \"3.12\""}
 tzdata = ">=2025.2"
@@ -3409,4 +3409,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.9.2"
-content-hash = "f8cbb4f806729fdbfa27e87cde0b318eadbc3b582f647320575147d269625aa9"
+content-hash = "ddf071b53a8ddf44d0f18e77f490e28d0c0d6bd675a00eb3a59bd6b23f8b18bb"
