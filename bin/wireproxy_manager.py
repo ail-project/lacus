@@ -11,6 +11,7 @@ import time
 import urllib.request
 
 from collections import defaultdict
+from copy import copy
 from dataclasses import dataclass, field
 from logging import Logger
 from pathlib import Path
@@ -108,7 +109,6 @@ class WireProxyFSManager(PatternMatchingEventHandler):
         super().__init__(ignore_directories=True, case_sensitive=False,
                          patterns=['*.conf', '*proxies.json'])
         self.logger = logger
-        self.logger.debug(f"WireProxyManager initialized with path_to_wireproxy: {path_to_wireproxy}, configs_dir: {configs_dir}")
         self.wireproxy = path_to_wireproxy
         self.configs_dir = configs_dir
         self.proxies_config_path = self.configs_dir / "proxies.json"
@@ -117,6 +117,7 @@ class WireProxyFSManager(PatternMatchingEventHandler):
 
         self._init_configs()
         self.launch_all_wireproxies()
+        self.logger.debug(f"WireProxyManager initialized with path_to_wireproxy: {path_to_wireproxy}, configs_dir: {configs_dir}")
 
     def _add_local_port_in_config(self, config_name: str, address: str, port: int | str) -> None:
         """Add port in the dict of local ports currently in use."""
@@ -140,7 +141,6 @@ class WireProxyFSManager(PatternMatchingEventHandler):
         else:
             with self.proxies_config_path.open('r') as f:
                 self.proxies = json.load(f)
-
         # Add the ports in the config in the used ports
         for name, p in self.proxies.items():
             if p.get('proxy_url'):
@@ -166,14 +166,15 @@ class WireProxyFSManager(PatternMatchingEventHandler):
         wg_config_changed = False
         wg_config = configparser.ConfigParser()
         wg_config.read(wiregard_config_path)
-        proxy_config = self.proxies.get(config_name)
-        if not proxy_config:
-            self.logger.debug(f'New proxy: {config_name}')
+        proxy_config = copy(self.proxies.get(config_name, {}))
+        if proxy_config:
+            proxy_config.pop('stopped', None)  # Remove the stopped flag if it exists
+        else:
+            self.logger.info(f'New proxy: {config_name}')
             # No proxy config found for this wireguard config
             proxy_config = {'description': f"Proxy for {config_name}",
                             'meta': {'provider': 'wireguard'}
                             }
-
         if proxy_config.get('proxy_url'):
             # Case 1: Proxy config exists in proxy config, force that config in the wireproxy config
             self.logger.debug(f'Setting proxy {config_name} in {config_name}.')
@@ -305,7 +306,8 @@ class WireProxyFSManager(PatternMatchingEventHandler):
 
     def remove_proxy(self, name: str) -> None:
         """Remove the proxy entry from proxies.json."""
-        if self.proxies.pop(name, None):
+        if self.proxies.get(name):
+            self.proxies[name]['stopped'] = True
             with self.proxies_config_path.open('w') as f:
                 json.dump(self.proxies, f, indent=4, sort_keys=True)
 

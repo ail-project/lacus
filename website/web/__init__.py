@@ -293,6 +293,8 @@ class Proxies(Resource):  # type: ignore[misc]
         to_return = {}
         # Only return description and details.
         for proxy_name, proxy_settings in proxies.items():
+            if proxy_settings.get('stopped'):
+                continue
             to_return[proxy_name] = {
                 'description': proxy_settings['description'],
                 'meta': proxy_settings['meta']
