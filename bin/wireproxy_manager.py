@@ -286,6 +286,7 @@ class WireProxyFSManager(PatternMatchingEventHandler):
         """ A file was deleted. If it is a wireguard config file, remove it from the proxies.json config file.
         It is it the proxies.json file, reinitialize it from the wireguard config files."""
         filepath = Path(str(event.src_path))
+        time.sleep(1)
         if filepath.exists():
             # NOTE: sometimes, modifying the file triggers a delete event
             # But both will be triggered, so the modification will be handled
