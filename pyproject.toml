@@ -34,7 +34,7 @@ wireproxy_manager = "bin.wireproxy_manager:main"
 scripts_controller = "bin.scripts_controller:main"
 
 [tool.poetry.group.dev.dependencies]
-mypy = "^1.16.0"
+mypy = "^1.16.1"
 types-redis = "^4.6.0.20241004"
 types-psutil = "^7.0.0.20250601"
 
