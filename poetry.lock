@@ -1871,14 +1871,14 @@ playwright = ">=1.0.0,<2.0.0"
 
 [[package]]
 name = "playwrightcapture"
-version = "1.31.2"
+version = "1.31.3"
 description = "A simple library to capture websites using playwright"
 optional = false
 python-versions = "<4.0,>=3.9"
 groups = ["main"]
 files = [
-    {file = "playwrightcapture-1.31.2-py3-none-any.whl", hash = "sha256:17320ba2416f515a4770536f46da57e04a9b2f03ca0153282fb75f06ff28e4ce"},
-    {file = "playwrightcapture-1.31.2.tar.gz", hash = "sha256:720e782421276265abc3aed3595c4f1b5576bfe77d7730f2d2e4a79e174b5df2"},
+    {file = "playwrightcapture-1.31.3-py3-none-any.whl", hash = "sha256:58acf1048ad915ce748915b1096897807f221a1523b7739a6c2f738c8f1dbc5f"},
+    {file = "playwrightcapture-1.31.3.tar.gz", hash = "sha256:0863916769cd51dbeec7bc376160f29e91dfd7e3e2458153748673879ddc611b"},
 ]
 
 [package.dependencies]
