@@ -1,7 +1,7 @@
 FROM ubuntu:24.04
 
 # Build dependencies
-RUN apt-get update && apt-get -y install build-essential curl git python3 tmux
+RUN apt-get update && apt-get -y install build-essential curl git python3
 
 RUN mkdir -p /app
 
@@ -33,6 +33,12 @@ RUN poetry run update --init
 RUN apt-get install -y supervisor
 
 COPY ./supervisord/supervisord.conf /supervisord/supervisord.conf
+
+# Clean up for size
+RUN apt-get remove -y build-essential git && \
+    apt-get autoremove -y && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 COPY ./entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
