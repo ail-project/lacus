@@ -64,7 +64,7 @@ class RedisUp(Resource):  # type: ignore[misc]
         return lacus.check_redis_up()
 
 
-http_creds_model = api.model('HttpCredentialtModel', {
+http_creds_model = api.model('HttpCredentialModel', {
     'username': fields.String(example='admin'),
     'password': fields.String(example='password')
 })
