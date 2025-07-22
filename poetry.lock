@@ -1349,14 +1349,14 @@ referencing = ">=0.31.0"
 
 [[package]]
 name = "lacuscore"
-version = "1.16.4"
+version = "1.16.3"
 description = "Core of Lacus, usable as a module"
 optional = false
 python-versions = "<4.0,>=3.9.2"
 groups = ["main"]
 files = [
-    {file = "lacuscore-1.16.4-py3-none-any.whl", hash = "sha256:34c54c3c3e0cfc9f71f387f37c57fab61069527f9ddeb314b7814b78f21514a8"},
-    {file = "lacuscore-1.16.4.tar.gz", hash = "sha256:f4f81c82fed50a9db56d11a291dc224d15fca5b366c3264e288cdc796d145adc"},
+    {file = "lacuscore-1.16.3-py3-none-any.whl", hash = "sha256:0d0ed60f08144da4eb952e8d7e9484a035bdc62777c12f6f73982d46117ba998"},
+    {file = "lacuscore-1.16.3.tar.gz", hash = "sha256:12dc4305a747150f0841e5364364d8976b234bfb04877c599af4153ec18f379a"},
 ]
 
 [package.dependencies]
@@ -1364,7 +1364,7 @@ async-timeout = {version = ">=5.0.1", markers = "python_version < \"3.11\""}
 defang = ">=0.5.3"
 dnspython = ">=2.7.0"
 eval-type-backport = {version = ">=0.2.2", markers = "python_version < \"3.10\""}
-playwrightcapture = {version = ">=1.31.5", extras = ["recaptcha"]}
+playwrightcapture = {version = ">=1.31.4", extras = ["recaptcha"]}
 pydantic = ">=2.11.7"
 redis = {version = ">=5.3.0,<6.0.0", extras = ["hiredis"]}
 requests = ">=2.32.4"
@@ -3399,4 +3399,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.9.2"
-content-hash = "78625832f6ca632799f08370e395d97886a9bddd3f7e92588555d63d2d705b9c"
+content-hash = "a97ef5b0d3051cdb25a8b84f394cae5d536b1ddbf506f3eaf7ef30164fd176c0"
