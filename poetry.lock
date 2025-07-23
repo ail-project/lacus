@@ -1349,14 +1349,14 @@ referencing = ">=0.31.0"
 
 [[package]]
 name = "lacuscore"
-version = "1.16.5"
+version = "1.16.6"
 description = "Core of Lacus, usable as a module"
 optional = false
 python-versions = "<4.0,>=3.9.2"
 groups = ["main"]
 files = [
-    {file = "lacuscore-1.16.5-py3-none-any.whl", hash = "sha256:8da46766f629a9f08662a93eae3638f3626899d5da72a31bf332fa7e039207e1"},
-    {file = "lacuscore-1.16.5.tar.gz", hash = "sha256:01738c1610911a577a880313eaa4927f455fe37dc20b1dd27debd29b07068bac"},
+    {file = "lacuscore-1.16.6-py3-none-any.whl", hash = "sha256:f323a0a9309925e5c477a5ba165d792b8e61224d010d5f8c310d30668a05fe47"},
+    {file = "lacuscore-1.16.6.tar.gz", hash = "sha256:faa93756a5ca566e96dbabd8552e2b83c39e938f0762f5119503a6d91be6beca"},
 ]
 
 [package.dependencies]
@@ -1364,7 +1364,7 @@ async-timeout = {version = ">=5.0.1", markers = "python_version < \"3.11\""}
 defang = ">=0.5.3"
 dnspython = ">=2.7.0"
 eval-type-backport = {version = ">=0.2.2", markers = "python_version < \"3.10\""}
-playwrightcapture = {version = ">=1.31.6", extras = ["recaptcha"]}
+playwrightcapture = {version = ">=1.31.7", extras = ["recaptcha"]}
 pydantic = ">=2.11.7"
 redis = {version = ">=5.3.0,<6.0.0", extras = ["hiredis"]}
 requests = ">=2.32.4"
@@ -1826,14 +1826,14 @@ playwright = ">=1.0.0,<2.0.0"
 
 [[package]]
 name = "playwrightcapture"
-version = "1.31.6"
+version = "1.31.7"
 description = "A simple library to capture websites using playwright"
 optional = false
 python-versions = "<4.0,>=3.9"
 groups = ["main"]
 files = [
-    {file = "playwrightcapture-1.31.6-py3-none-any.whl", hash = "sha256:c6ea02b1793d686cb7bcfb2f38679e5554adca67a8df711b6302d13311faf1a8"},
-    {file = "playwrightcapture-1.31.6.tar.gz", hash = "sha256:f09e6e67d1709045e4e96e0d6f8c90fe4a23e54a543e8d74e20f24cac4d9a8c4"},
+    {file = "playwrightcapture-1.31.7-py3-none-any.whl", hash = "sha256:b01f707a000191afcf3faa38bc737531d3ecc80b051ae7b290ec28acaa11a7f2"},
+    {file = "playwrightcapture-1.31.7.tar.gz", hash = "sha256:31c667af70fc2080f7045b6b9a8634a132e33ff8801da017934a00a62b787d8a"},
 ]
 
 [package.dependencies]
@@ -3399,4 +3399,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.9.2"
-content-hash = "4a9d1cfba7da3bfa8299574fc46d8321958348c8e9a73f3fa8ae43afdf75c026"
+content-hash = "e2a3d7db23b1ba059509d3f1457817e625c84db6cd56ae21aa4a4b3cf718b26d"
