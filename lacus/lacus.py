@@ -5,9 +5,11 @@ from __future__ import annotations
 import copy
 import json
 import logging
+import socket
 
 from datetime import datetime
 from typing import Any
+from urllib.parse import urlsplit
 
 from redis import Redis, ConnectionPool
 from redis.connection import UnixDomainSocketConnection
@@ -37,6 +39,7 @@ class Lacus():
         self.headed_allowed = get_config('generic', 'allow_headed')
 
         self.core = LacusCore(self.redis, tor_proxy=get_config('generic', 'tor_proxy'),
+                              i2p_proxy=get_config('generic', 'i2p_proxy'),
                               only_global_lookups=get_config('generic', 'only_global_lookups'),
                               loglevel=get_config('generic', 'loglevel'),
                               max_capture_time=get_config('generic', 'max_capture_time'),
@@ -104,6 +107,25 @@ class Lacus():
             return proxy[name]
         return {}
 
+    def _check_proxies_ports_open(self, proxies: dict[str, Any]) -> dict[str, Any]:
+        """
+        Just make sure all the IPs/ports of all the proxies are reachable
+        """
+        to_return = {}
+        for name, settings in proxies.items():
+            if 'proxy_url' not in settings:
+                # broken proxy settings
+                self.logger.warning(f'The proxy config for {name} has no server key: {settings}')
+                continue
+            splitted_proxy_url = urlsplit(settings['proxy_url'])
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                s.settimeout(1)
+                if s.connect_ex((splitted_proxy_url.hostname, splitted_proxy_url.port)) == 0:
+                    to_return[name] = settings
+                else:
+                    self.logger.warning(f'The proxy config for {name} is unreachable: {settings["proxy_url"]}')
+        return to_return
+
     def get_proxies(self) -> dict[str, Any]:
         """
         Get the pre-configured proxies from the configuration.
@@ -115,7 +137,7 @@ class Lacus():
             self._proxies_last_change = self._proxies_path.stat().st_mtime
             try:
                 with self._proxies_path.open('r') as f:
-                    self._proxies = json.load(f)
+                    self._proxies = self._check_proxies_ports_open(json.load(f))
             except json.JSONDecodeError:
                 self.logger.warning('Proxies file is not valid JSON.')
                 self._proxies = {}

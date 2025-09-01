@@ -1,9 +1,16 @@
 {
     "Tor": {
         "proxy_url": "socks5://127.0.0.1:9050",
-        "description": "Trigger the capture via the tor network.",
+        "description": "Trigger the capture via the tor network (automatic fallback for .onion domains)",
         "meta": {
             "provider": "Tor Project"
+        }
+    },
+    "I2P": {
+        "proxy_url": "http://127.0.0.1:4444",
+        "description": "Trigger the capture via i2p (automatic fallback for .i2p domains).",
+        "meta": {
+            "provider": "Invisible Internet Project (I2P)"
         }
     }
 }
