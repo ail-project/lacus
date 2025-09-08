@@ -153,7 +153,7 @@ class Enqueue(Resource):  # type: ignore[misc]
             referer=to_query.get('referer'),
             with_screenshot=to_query.get('with_screenshot', True),
             with_favicon=to_query.get('with_favicon', False),
-            with_trusted_timestamps=to_query.get('with_trusted_timestamps', False),
+            with_trusted_timestamps=to_query.get('with_trusted_timestamps', lacus.tt_default_enabled),
             allow_tracking=to_query.get('allow_tracking', False),
             headless=to_query.get('headless', True),
             init_script=to_query.get('init_script'),

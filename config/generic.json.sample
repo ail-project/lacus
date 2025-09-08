@@ -16,7 +16,8 @@
     },
     "trusted_timestamp_settings": {
         "url": "https://zeitstempel.dfn.de/",
-        "hashname": "sha512"
+        "hashname": "sha512",
+        "enable_default": false
     },
     "global_proxy": {
       "enable": false,

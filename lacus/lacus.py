@@ -38,6 +38,11 @@ class Lacus():
 
         self.headed_allowed = get_config('generic', 'allow_headed')
 
+        if tt_settings := get_config('generic', 'trusted_timestamp_settings'):
+            self.tt_default_enabled = tt_settings.get('enable_default', False)
+        else:
+            self.tt_default_enabled = False
+
         self.core = LacusCore(self.redis, tor_proxy=get_config('generic', 'tor_proxy'),
                               i2p_proxy=get_config('generic', 'i2p_proxy'),
                               only_global_lookups=get_config('generic', 'only_global_lookups'),
