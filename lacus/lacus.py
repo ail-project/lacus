@@ -45,6 +45,7 @@ class Lacus():
                               max_capture_time=get_config('generic', 'max_capture_time'),
                               expire_results=get_config('generic', 'expire_results'),
                               max_retries=get_config('generic', 'max_retries'),
+                              tt_settings=get_config('generic', 'trusted_timestamp_settings'),
                               headed_allowed=self.headed_allowed,
                               )
 
