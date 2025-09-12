@@ -3,13 +3,14 @@
 from __future__ import annotations
 
 import copy
-import json
 import logging
 import socket
 
 from datetime import datetime
 from typing import Any
 from urllib.parse import urlsplit
+
+import orjson
 
 from redis import Redis, ConnectionPool
 from redis.connection import UnixDomainSocketConnection
@@ -142,9 +143,9 @@ class Lacus():
         if self._proxies_path.stat().st_mtime != self._proxies_last_change:
             self._proxies_last_change = self._proxies_path.stat().st_mtime
             try:
-                with self._proxies_path.open('r') as f:
-                    self._proxies = self._check_proxies_ports_open(json.load(f))
-            except json.JSONDecodeError:
+                with self._proxies_path.open('rb') as f:
+                    self._proxies = self._check_proxies_ports_open(orjson.loads(f.read()))
+            except orjson.JSONDecodeError:
                 self.logger.warning('Proxies file is not valid JSON.')
                 self._proxies = {}
             except Exception as e:

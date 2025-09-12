@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
-import json
 import logging
 import argparse
+
+import orjson
 
 from lacus.default import get_homedir
 
@@ -10,7 +11,7 @@ from lacus.default import get_homedir
 def validate_generic_config_file() -> bool:
     sample_config = get_homedir() / 'config' / 'generic.json.sample'
     with sample_config.open() as f:
-        generic_config_sample = json.load(f)
+        generic_config_sample = orjson.loads(f.read())
     # Check documentation
     for key in generic_config_sample.keys():
         if key == '_notes':
@@ -21,11 +22,12 @@ def validate_generic_config_file() -> bool:
     user_config = get_homedir() / 'config' / 'generic.json'
     if not user_config.exists():
         # The config file was never created, copy the sample.
-        with user_config.open('w') as _fw:
-            json.dump(generic_config_sample, _fw, indent=2, sort_keys=True)
+        with user_config.open('wb') as _fw:
+            _fw.write(orjson.dumps(generic_config_sample,
+                                   option=orjson.OPT_INDENT_2 | orjson.OPT_SORT_KEYS))
 
     with user_config.open() as f:
-        generic_config = json.load(f)
+        generic_config = orjson.loads(f.read())
 
     # Check all entries in the sample files are in the user file, and they have the same type
     for key in generic_config_sample.keys():
@@ -57,11 +59,11 @@ def update_user_configs() -> bool:
     for file_name in ['generic']:
         with (get_homedir() / 'config' / f'{file_name}.json').open() as f:
             try:
-                generic_config = json.load(f)
+                generic_config = orjson.loads(f.read())
             except Exception:
                 generic_config = {}
         with (get_homedir() / 'config' / f'{file_name}.json.sample').open() as f:
-            generic_config_sample = json.load(f)
+            generic_config_sample = orjson.loads(f.read())
 
         has_new_entry = False
         for key in generic_config_sample.keys():
@@ -79,8 +81,9 @@ def update_user_configs() -> bool:
                         generic_config[key][sub_key] = generic_config_sample[key][sub_key]
                         has_new_entry = True
         if has_new_entry:
-            with (get_homedir() / 'config' / f'{file_name}.json').open('w') as fw:
-                json.dump(generic_config, fw, indent=2, sort_keys=True)
+            with (get_homedir() / 'config' / f'{file_name}.json').open('wb') as fw:
+                fw.write(orjson.dumps(generic_config_sample,
+                                      option=orjson.OPT_INDENT_2 | orjson.OPT_SORT_KEYS))
     return has_new_entry
 
 

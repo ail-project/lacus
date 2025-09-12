@@ -2,12 +2,13 @@
 
 from __future__ import annotations
 
-import json
 import os
 import sys
 
 from datetime import datetime
 from typing import Any
+
+import orjson
 
 from lacus.default import get_socket_path, AbstractManager
 from lacus import Lacus
@@ -107,7 +108,7 @@ if __name__ == '__main__':
         console.print(s)
         settings = m.capture_settings(uuid)
         if settings:
-            s = Padding(json.dumps(settings, indent=2), (0, 4))
+            s = Padding(orjson.dumps(settings, option=orjson.OPT_INDENT_2).decode(), (0, 4))
             console.print(s)
 
     console.print(f'Enqueued captures ({lacus_status["enqueued_captures"]}):')

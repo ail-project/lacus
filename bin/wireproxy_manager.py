@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import configparser
-import json
 import logging
 import logging.config
 import socket
@@ -17,6 +16,8 @@ from logging import Logger
 from pathlib import Path
 from subprocess import Popen, PIPE
 from urllib.parse import urlparse
+
+import orjson
 
 from watchdog.events import (PatternMatchingEventHandler, DirCreatedEvent, DirDeletedEvent,
                              FileCreatedEvent, FileDeletedEvent, DirModifiedEvent, FileModifiedEvent)
@@ -139,8 +140,8 @@ class WireProxyFSManager(PatternMatchingEventHandler):
         if not self.proxies_config_path.exists():
             self.proxies = {}
         else:
-            with self.proxies_config_path.open('r') as f:
-                self.proxies = json.load(f)
+            with self.proxies_config_path.open('rb') as f:
+                self.proxies = orjson.loads(f.read())
         # Add the ports in the config in the used ports
         for name, p in self.proxies.items():
             if p.get('proxy_url'):
@@ -217,8 +218,8 @@ class WireProxyFSManager(PatternMatchingEventHandler):
         if self.proxies.get(config_name) != proxy_config:
             # It's been changed, update and save
             self.proxies[config_name] = proxy_config
-            with self.proxies_config_path.open('w') as f:
-                json.dump(self.proxies, f, indent=4, sort_keys=True)
+            with self.proxies_config_path.open('wb') as f:
+                f.write(orjson.dumps(self.proxies, option=orjson.OPT_INDENT_2 | orjson.OPT_SORT_KEYS))
         return wg_config_changed
 
     def on_created(self, event: DirCreatedEvent | FileCreatedEvent) -> None:
@@ -273,7 +274,7 @@ class WireProxyFSManager(PatternMatchingEventHandler):
                     filepath.touch(exist_ok=True)
         elif isinstance(event, FileModifiedEvent) and filepath.name == 'proxies.json':
             with self.proxies_config_path.open('rb') as f:
-                proxies = json.loads(f.read())
+                proxies = orjson.loads(f.read())
             if proxies == self.proxies:
                 # No changes with what we have in memory
                 return
@@ -297,8 +298,8 @@ class WireProxyFSManager(PatternMatchingEventHandler):
         if isinstance(event, FileDeletedEvent) and filepath.suffix == '.conf':
             self.logger.info(f'Config file deleted: {filepath}.')
             if self.proxies.pop(filepath.stem, None):
-                with self.proxies_config_path.open('w') as f:
-                    json.dump(self.proxies, f, indent=4, sort_keys=True)
+                with self.proxies_config_path.open('wb') as f:
+                    f.write(orjson.dumps(self.proxies, option=orjson.OPT_INDENT_2 | orjson.OPT_SORT_KEYS))
             self.stop_wireproxy(filepath.stem)
         elif isinstance(event, FileDeletedEvent) and filepath.name == 'proxies.json':
             self.logger.info(f'Proxies file deleted: {filepath}, reseting.')
@@ -309,8 +310,8 @@ class WireProxyFSManager(PatternMatchingEventHandler):
         """Remove the proxy entry from proxies.json."""
         if self.proxies.get(name):
             self.proxies[name]['stopped'] = True
-            with self.proxies_config_path.open('w') as f:
-                json.dump(self.proxies, f, indent=4, sort_keys=True)
+            with self.proxies_config_path.open('wb') as f:
+                f.write(orjson.dumps(self.proxies, option=orjson.OPT_INDENT_2 | orjson.OPT_SORT_KEYS))
 
     # ####  Manage proxy services #### #
 
