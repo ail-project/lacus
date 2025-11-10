@@ -176,14 +176,14 @@ speedups = ["Brotli ; platform_python_implementation == \"CPython\"", "aiodns (>
 
 [[package]]
 name = "aiohttp-socks"
-version = "0.10.1"
+version = "0.10.2"
 description = "Proxy connector for aiohttp"
 optional = false
 python-versions = ">=3.8.0"
 groups = ["main"]
 files = [
-    {file = "aiohttp_socks-0.10.1-py3-none-any.whl", hash = "sha256:6fd4d46c09f952f971a011ff446170daab8d539cf5310c0627f8423df2fb15ea"},
-    {file = "aiohttp_socks-0.10.1.tar.gz", hash = "sha256:49f2e1f8051f2885719beb1b77e312b5a27c3e4b60f0b045a388f194d995e068"},
+    {file = "aiohttp_socks-0.10.2-py3-none-any.whl", hash = "sha256:84b29d14356bcda4affa03ef267108416390e1c9029922c66be18ef4b106f980"},
+    {file = "aiohttp_socks-0.10.2.tar.gz", hash = "sha256:942d7c86e2e579418fc7a734610dd97daaf00707c7462f6ccf679b2325767930"},
 ]
 
 [package.dependencies]
@@ -2222,19 +2222,19 @@ playwright = ">=1.0.0,<2.0.0"
 
 [[package]]
 name = "playwrightcapture"
-version = "1.34.2"
+version = "1.34.3"
 description = "A simple library to capture websites using playwright"
 optional = false
 python-versions = "<4.0,>=3.10"
 groups = ["main"]
 files = [
-    {file = "playwrightcapture-1.34.2-py3-none-any.whl", hash = "sha256:a144412c2d7c25e0ece20f0559804f403a0f89e181e53a9c2101bf773ff51814"},
-    {file = "playwrightcapture-1.34.2.tar.gz", hash = "sha256:080b1d35edd239c399008457b63fa4ab8946e3c6f0c0ebfef0633f20cb300059"},
+    {file = "playwrightcapture-1.34.3-py3-none-any.whl", hash = "sha256:b662217296dd66128a0b264f820b209b0270d6cf92d1bda416a6e124a665f46f"},
+    {file = "playwrightcapture-1.34.3.tar.gz", hash = "sha256:44679866fe9140b445fda4ca3124870a66b7ee625dfe5041a40d674efe943777"},
 ]
 
 [package.dependencies]
 aiohttp = {version = ">=3.13.2", extras = ["speedups"]}
-aiohttp-socks = ">=0.10.1"
+aiohttp-socks = ">=0.10.2"
 async-timeout = {version = ">=5.0.1", markers = "python_version < \"3.11\""}
 beautifulsoup4 = {version = ">=4.14.2", extras = ["charset-normalizer", "lxml"]}
 dateparser = ">=1.2.2"
@@ -2798,14 +2798,14 @@ six = ">=1.5"
 
 [[package]]
 name = "python-socks"
-version = "2.7.2"
+version = "2.7.3"
 description = "Proxy (SOCKS4, SOCKS5, HTTP CONNECT) client for Python"
 optional = false
 python-versions = ">=3.8.0"
 groups = ["main"]
 files = [
-    {file = "python_socks-2.7.2-py3-none-any.whl", hash = "sha256:d311aefbacc0ddfaa1fa1c32096c436d4fe75b899c24d78e677e1b0623c52c48"},
-    {file = "python_socks-2.7.2.tar.gz", hash = "sha256:4c845d4700352bc7e7382f302dfc6baf0af0de34d2a6d70ba356b2539d4dbb62"},
+    {file = "python_socks-2.7.3-py3-none-any.whl", hash = "sha256:e0fda261fa8d08bbcbb7852cdf5e7f576f15d5e55559f6bc16db1bad8bad399b"},
+    {file = "python_socks-2.7.3.tar.gz", hash = "sha256:06f4ae34c5828c96f631872e102425bbf44ad841d65ce68329e8dc1af428c1f1"},
 ]
 
 [package.dependencies]
