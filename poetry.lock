@@ -1514,14 +1514,14 @@ referencing = ">=0.31.0"
 
 [[package]]
 name = "lacuscore"
-version = "1.19.3"
+version = "1.20.0"
 description = "Core of Lacus, usable as a module"
 optional = false
 python-versions = "<4.0,>=3.10"
 groups = ["main"]
 files = [
-    {file = "lacuscore-1.19.3-py3-none-any.whl", hash = "sha256:908a88437c4976c5b963556239a35b2a5326d4ad3c1c2621162ac471e8ce37af"},
-    {file = "lacuscore-1.19.3.tar.gz", hash = "sha256:759228e35dcce4e25d169b2660a66133698d9960f9d08e971e2588967edc45a5"},
+    {file = "lacuscore-1.20.0-py3-none-any.whl", hash = "sha256:d5460ca6e0f917f4c1769cb50cdd433f4b0ab16c0c5866ec37f8692c5951bae2"},
+    {file = "lacuscore-1.20.0.tar.gz", hash = "sha256:70d5dc3ae43f27e0970072ceae2e66010768e348a7925293706a57a20d8eabcc"},
 ]
 
 [package.dependencies]
@@ -1529,7 +1529,7 @@ async-timeout = {version = ">=5.0.1", markers = "python_version < \"3.11\""}
 defang = ">=0.5.3"
 dnspython = ">=2.8.0"
 orjson = ">=3.11.3,<4.0.0"
-playwrightcapture = {version = ">=1.34.2", extras = ["recaptcha"]}
+playwrightcapture = {version = ">=1.35.0", extras = ["recaptcha"]}
 pydantic = ">=2.12.4"
 redis = {version = ">=5.3.0,<6.0.0", extras = ["hiredis"]}
 requests = ">=2.32.5"
@@ -2222,14 +2222,14 @@ playwright = ">=1.0.0,<2.0.0"
 
 [[package]]
 name = "playwrightcapture"
-version = "1.34.5"
+version = "1.35.0"
 description = "A simple library to capture websites using playwright"
 optional = false
 python-versions = "<4.0,>=3.10"
 groups = ["main"]
 files = [
-    {file = "playwrightcapture-1.34.5-py3-none-any.whl", hash = "sha256:b85ed0c3557bc3723775f1955a98154327311f02a9659e6baf1ede0685fa56b6"},
-    {file = "playwrightcapture-1.34.5.tar.gz", hash = "sha256:37797ed60fb026eb8c5374debf05a1952cedd77f636765cd1fa287ba94950d43"},
+    {file = "playwrightcapture-1.35.0-py3-none-any.whl", hash = "sha256:addbdb23f3dff417e0bebfc9417fbd6d18916b5107809d8c4ad37a27f0cfeb4b"},
+    {file = "playwrightcapture-1.35.0.tar.gz", hash = "sha256:48b7f9521f00d22a33a0c32fe85a2835b7943f593cddc7f29f68f49ec13ffa7a"},
 ]
 
 [package.dependencies]
@@ -3893,4 +3893,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.10"
-content-hash = "e811610054d37d98b8550222340b75ced14904992abc1b5231b61030239a5b0a"
+content-hash = "cd4d24515041af67dbba47a7ef02b7930c302c4ad538fcba33452ad870f85af9"
