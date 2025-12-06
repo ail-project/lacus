@@ -45,7 +45,7 @@ def favicon() -> Any:
                                'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 
-@api.errorhandler(CaptureSettingsError)  # type: ignore[misc]
+@api.errorhandler(CaptureSettingsError)  # type: ignore[untyped-decorator]
 def handle_pydandic_validation_exception(error: CaptureSettingsError) -> tuple[dict[str, Any], int]:
     '''Return the validation error message and 400 status code'''
     if error.pydantic_validation_errors:
@@ -120,8 +120,8 @@ submit_fields_post = api.model('SubmitFieldsPost', {
 @api.route('/enqueue')
 class Enqueue(Resource):  # type: ignore[misc]
 
-    @api.doc(body=submit_fields_post)  # type: ignore[misc]
-    @api.produces(['text/text'])  # type: ignore[misc]
+    @api.doc(body=submit_fields_post)  # type: ignore[untyped-decorator]
+    @api.produces(['text/text'])  # type: ignore[untyped-decorator]
     def post(self) -> str:
         to_query: dict[str, Any] = request.get_json(force=True)
         if proxy := to_query.get('proxy'):
@@ -199,7 +199,7 @@ stats_model = api.model('StatsModel', {
          params={'date': 'The date in ISO format YYYY-MM-DD'})
 class DailyStats(Resource):  # type: ignore[misc]
 
-    @api.marshal_with(stats_model, skip_none=True)  # type: ignore[misc]
+    @api.marshal_with(stats_model, skip_none=True)  # type: ignore[untyped-decorator]
     def get(self, date: str | None=None) -> dict[str, Any]:
         if 'date' in request.args:
             date = request.args['date']
@@ -222,7 +222,7 @@ stats_details_model = api.model('StatsDetailsModel', {
          params={'date': 'The date in ISO format YYYY-MM-DD'})
 class DailyStatsDetails(Resource):  # type: ignore[misc]
 
-    @api.marshal_with(stats_details_model, skip_none=True)  # type: ignore[misc]
+    @api.marshal_with(stats_details_model, skip_none=True)  # type: ignore[untyped-decorator]
     def get(self, date: str | None=None) -> dict[str, Any]:
         if 'date' in request.args:
             date = request.args['date']
