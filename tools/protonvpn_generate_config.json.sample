@@ -1,0 +1,12 @@
+{
+    "script_path": "/path/to/repo/build/protonvpn-wg-config-generate",
+    "username": "email@example.com",
+    "countries": {
+        "US": "USA",
+        "FR": "France",
+        "DE": "Germany",
+        "LU": "Luxembourg",
+        "BE": "Belgium",
+        "NL": "Netherlands"
+    }
+}
