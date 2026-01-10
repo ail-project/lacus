@@ -881,6 +881,22 @@ files = [
 ]
 
 [[package]]
+name = "commented-configparser"
+version = "3.0.0"
+description = "A custom ConfigParser class that preserves comments and most formatting when writing loaded config out."
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+files = [
+    {file = "commented_configparser-3.0.0-py3-none-any.whl", hash = "sha256:3b8a9cac3e6fe0f9301ec8bc54f6d7ddb83da6e3f4d18dbd15459364f5166ab6"},
+    {file = "commented_configparser-3.0.0.tar.gz", hash = "sha256:dabdfc94f1166200ad3df3ddfc6d17a2902a554b773bc6f81101202dbf0ff457"},
+]
+
+[package.extras]
+dev = ["black", "flake8", "flake8-builtins", "flake8-pep585", "isort", "mypy"]
+test = ["coverage", "pytest", "pytest-randomly"]
+
+[[package]]
 name = "cryptography"
 version = "46.0.3"
 description = "cryptography is a package which provides cryptographic recipes and primitives to Python developers."
@@ -3991,4 +4007,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.10"
-content-hash = "aa0b93a48bc95bbc9f8dc949aaddce50168fbc60de19357fe6172610935a6746"
+content-hash = "e2c825db0108bde1c63b4e8e7bdc077d462daee7cd1a8a3bfe5103dd0a050f36"

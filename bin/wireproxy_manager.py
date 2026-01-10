@@ -2,14 +2,15 @@
 
 from __future__ import annotations
 
-import configparser
 import logging
 import logging.config
+import re
 import socket
 import time
 import urllib.request
 
 from collections import defaultdict
+from commentedconfigparser import CommentedConfigParser
 from copy import copy
 from dataclasses import dataclass, field
 from logging import Logger
@@ -151,7 +152,7 @@ class WireProxyFSManager(PatternMatchingEventHandler):
         # Add the ports in the wireguard config in the used ports
         for config_file in self.configs_dir.glob('*.conf'):
             config_name = config_file.stem
-            wg_config = configparser.ConfigParser()
+            wg_config = CommentedConfigParser()
             wg_config.read(config_file)
             if socks5_address := wg_config.get('Socks5', 'BindAddress', fallback=None):
                 address, _port = socks5_address.split(':')
@@ -165,7 +166,7 @@ class WireProxyFSManager(PatternMatchingEventHandler):
         """Synchronize the wireguard config with the proxies.json config file"""
         config_name = wiregard_config_path.stem
         wg_config_changed = False
-        wg_config = configparser.ConfigParser()
+        wg_config = CommentedConfigParser()
         wg_config.read(wiregard_config_path)
         proxy_config = copy(self.proxies.get(config_name, {}))
         if proxy_config:
@@ -214,6 +215,16 @@ class WireProxyFSManager(PatternMatchingEventHandler):
         if wg_config_changed:
             with wiregard_config_path.open('w') as f:
                 wg_config.write(f)
+
+        # if the wireguard config was created by protonvpn-wg-config-generate,
+        # the config file contains the country code and the city, att it in the meta if possible
+        with wiregard_config_path.open('r') as f:
+            wg_config_txt = f.read()
+
+        if _cc := re.findall(r".*Country: (\w+)", wg_config_txt):
+            proxy_config['meta']['country_code'] = _cc[0]
+        if _c := re.findall(r".*City: (\w+)", wg_config_txt):
+            proxy_config['meta']['city'] = _c[0]
 
         if self.proxies.get(config_name) != proxy_config:
             # It's been changed, update and save
@@ -327,7 +338,7 @@ class WireProxyFSManager(PatternMatchingEventHandler):
                 self.wireproxies.pop(name, None)
 
         config_file = self.configs_dir / f'{name}.conf'
-        wg_config = configparser.ConfigParser()
+        wg_config = CommentedConfigParser()
         wg_config.read(config_file)
 
         address, _ = wg_config.get('Socks5', 'BindAddress').split(':')

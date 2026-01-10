@@ -16,7 +16,8 @@ dependencies = [
     "rich (>=14.2.0)",
     "psutil (>=7.2.1)",
     "watchdog (>=6.0.0,<7.0.0)",
-    "orjson (>=3.11.3,<4.0.0)"
+    "orjson (>=3.11.3,<4.0.0)",
+    "commented-configparser (>=3.0.0,<4.0.0)"
 ]
 
 [project.urls]
