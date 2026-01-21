@@ -7,6 +7,7 @@ import logging
 import socket
 
 from datetime import datetime
+from functools import cached_property
 from typing import Any
 from urllib.parse import urlsplit
 
@@ -16,6 +17,7 @@ from redis import Redis, ConnectionPool
 from redis.connection import UnixDomainSocketConnection
 
 from lacuscore import LacusCore, LacusCoreMonitoring
+from playwrightcapture import get_devices, PlaywrightDevice
 
 from .default import get_config, get_socket_path, get_homedir
 
@@ -152,3 +154,7 @@ class Lacus():
                 self.logger.warning(f'Error loading proxies file: {e}')
                 self._proxies = {}
         return self._proxies
+
+    @cached_property
+    def get_playwright_devices(self) -> dict[str, dict[str, dict[str, PlaywrightDevice]]]:
+        return get_devices()

@@ -286,6 +286,14 @@ class LacusStatus(Resource):  # type: ignore[misc]
         return lacus.status()
 
 
+@api.route('/playwright_devices')
+@api.doc(description='Get the browsers settings for the devices known my the Playwright version in use.')
+class PlaywrightDevices(Resource):  # type: ignore[misc]
+
+    def get(self) -> dict[str, Any]:
+        return lacus.get_playwright_devices
+
+
 @api.route('/proxies')
 @api.doc(description='Get the list of pre-configured proxies.')
 class Proxies(Resource):  # type: ignore[misc]
