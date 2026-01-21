@@ -38,7 +38,7 @@ scripts_controller = "bin.scripts_controller:main"
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.19.1"
 types-redis = "^4.6.0.20241004"
-types-psutil = "^7.2.1.20251231"
+types-psutil = "^7.2.1.20260116"
 
 [build-system]
 requires = ["poetry-core>=2.0"]
