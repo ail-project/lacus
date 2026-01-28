@@ -126,7 +126,7 @@ class WireProxyFSManager(PatternMatchingEventHandler):
         if address in ['127.0.0.1', 'localhost']:
             p = int(port)
             if p in self.used_local_ports and self.used_local_ports[p] != config_name:
-                raise ConfigError(f"Port {p} already in use by another proxy: {self.used_local_ports[p]}.")
+                raise ConfigError(f"[{config_name}] Port {p} already in use by another proxy: {self.used_local_ports[p]}.")
             self.used_local_ports[p] = config_name
 
     def _port_in_use(self, port: int) -> bool:
@@ -447,10 +447,16 @@ class WireProxyManager(AbstractManager):
                     self.logger.info(f"Wireproxy {config_file.name} archived.")
                     self.restart_counter.pop(config_file.stem, None)
                 else:
-                    self.wpm.sync_wireguard_proxies(config_file)
-                    self.wpm.launch_wireproxy(config_file.stem)
-                    self.restart_counter[config_file.stem] += 1
-                    self.logger.info(f'{config_file.stem} was not running, restart counter: {self.restart_counter[config_file.stem]}')
+                    try:
+                        self.wpm.sync_wireguard_proxies(config_file)
+                        self.wpm.launch_wireproxy(config_file.stem)
+                        self.restart_counter[config_file.stem] += 1
+                        self.logger.info(f'{config_file.stem} was not running, restart counter: {self.restart_counter[config_file.stem]}')
+                    except ConfigError as e:
+                        self.logger.warning(f"Unable to (re)start the new proxy: {e}")
+                        self.wpm.stop_wireproxy(config_file.stem)
+                        self.restart_counter[config_file.stem] += 1
+
         self.wpm.clean_used_ports()
 
     def _wait_to_finish(self) -> None:
