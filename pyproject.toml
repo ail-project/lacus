@@ -14,7 +14,7 @@ dependencies = [
     "gunicorn[setproctitle] (>=24.1.1)",
     "lacuscore (>=1.21.1)",
     "rich (>=14.3.1)",
-    "psutil (>=7.2.1)",
+    "psutil (>=7.2.2)",
     "watchdog (>=6.0.0,<7.0.0)",
     "orjson (>=3.11.3,<4.0.0)",
     "commented-configparser (>=3.0.0,<4.0.0)"
@@ -38,7 +38,7 @@ scripts_controller = "bin.scripts_controller:main"
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.19.1"
 types-redis = "^4.6.0.20241004"
-types-psutil = "^7.2.1.20260116"
+types-psutil = "^7.2.2.20260130"
 
 [build-system]
 requires = ["poetry-core>=2.0"]
