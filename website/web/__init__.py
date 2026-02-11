@@ -113,6 +113,7 @@ submit_fields_post = api.model('SubmitFieldsPost', {
     'max_retries': fields.Integer(description=f"The maximum anount of retries for this capture (any value higher than {max_retries} will be ignored).", example=max_retries),
     'force': fields.Boolean(description="Force a capture, even if the same one was already done recently", example=False),
     'recapture_interval': fields.Integer(description="The minimal interval to re-trigger a capture, unless force is True", example=300),
+    'final_wait': fields.Integer(description="The very last wait time, after the instrumentation is done.", example=5),
     'priority': fields.Integer(description="Priority of the capture, the highest, the better", example=-5),
 })
 
@@ -161,6 +162,7 @@ class Enqueue(Resource):  # type: ignore[misc]
             rendered_hostname_only=to_query.get('rendered_hostname_only', True),
             force=to_query.get('force', False),
             recapture_interval=to_query.get('recapture_interval', 300),
+            final_wait=to_query.get('final_wait', 5),
             priority=to_query.get('priority', 0),
             uuid=to_query.get('uuid', None)
         )
