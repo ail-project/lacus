@@ -621,14 +621,14 @@ cffi = [
 
 [[package]]
 name = "certifi"
-version = "2026.1.4"
+version = "2026.2.25"
 description = "Python package for providing Mozilla's CA Bundle."
 optional = false
 python-versions = ">=3.7"
 groups = ["main"]
 files = [
-    {file = "certifi-2026.1.4-py3-none-any.whl", hash = "sha256:9943707519e4add1115f44c2bc244f782c0249876bf51b6599fee1ffbedd685c"},
-    {file = "certifi-2026.1.4.tar.gz", hash = "sha256:ac726dd470482006e014ad384921ed6438c457018f4b3d204aea4281258b2120"},
+    {file = "certifi-2026.2.25-py3-none-any.whl", hash = "sha256:027692e4402ad994f1c42e52a4997a9763c646b73e4096e4d5d6db8af1d6f0fa"},
+    {file = "certifi-2026.2.25.tar.gz", hash = "sha256:e887ab5cee78ea814d3472169153c2d12cd43b14bd03329a39a9c6e2e80bfba7"},
 ]
 
 [[package]]
@@ -1523,14 +1523,14 @@ referencing = ">=0.31.0"
 
 [[package]]
 name = "lacuscore"
-version = "1.21.2"
+version = "1.21.3"
 description = "Core of Lacus, usable as a module"
 optional = false
 python-versions = "<4.0,>=3.10"
 groups = ["main"]
 files = [
-    {file = "lacuscore-1.21.2-py3-none-any.whl", hash = "sha256:5d0ab3cb67dd90cdc439c5b061f5bba5ff1d987c07f4ee9db85642bf1238a098"},
-    {file = "lacuscore-1.21.2.tar.gz", hash = "sha256:4535e129e60749f7406c3fab509c3d2db92f98d0d24ea045f1db61b9494f2c0d"},
+    {file = "lacuscore-1.21.3-py3-none-any.whl", hash = "sha256:8edc6a91cd2d6c0917b1ad517411a068558aeaa9560db37422eb575b68d7dbc1"},
+    {file = "lacuscore-1.21.3.tar.gz", hash = "sha256:b04596e79ac12d606ad91e6bbd94cdb1e4941a3e1183e1990e336f6fd1a75929"},
 ]
 
 [package.dependencies]
@@ -1538,7 +1538,7 @@ async-timeout = {version = ">=5.0.1", markers = "python_version < \"3.11\""}
 defang = ">=0.5.3"
 dnspython = ">=2.8.0"
 orjson = ">=3.11.3,<4.0.0"
-playwrightcapture = {version = ">=1.36.7", extras = ["recaptcha"]}
+playwrightcapture = {version = ">=1.36.10", extras = ["recaptcha"]}
 pydantic = ">=2.12.5"
 redis = {version = ">=5.3.0,<6.0.0", extras = ["hiredis"]}
 requests = ">=2.32.5"
@@ -4121,4 +4121,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.10"
-content-hash = "a7a5b5776dfbe62a368ce57b6c8eb4f06deda1cb98f8a2f91727e68cb17e2ecb"
+content-hash = "dcfb216fef6890c35eb9eb4e0e080664f23abc3bc6d246e965440883fdc4ef5f"
