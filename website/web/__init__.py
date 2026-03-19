@@ -14,7 +14,8 @@ from typing import Any
 from flask import Flask, request, send_from_directory
 from flask_restx import Api, Resource, fields  # type: ignore[import-untyped]
 
-from lacuscore import CaptureStatus, CaptureResponse, CaptureSettingsError
+from lookyloo_models import CaptureSettingsError
+from lacuscore import CaptureStatus, CaptureResponse
 
 from lacus.default import get_config
 from lacus.lacus import Lacus
