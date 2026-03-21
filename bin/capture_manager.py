@@ -25,6 +25,14 @@ class CaptureManager(AbstractManager):
         self.captures: set[Task[None]] = set()
         self.lacus = Lacus()
 
+    def _clear_ongoing_on_startup(self) -> None:
+        # At process start, self.captures is empty — no task can be running.
+        # Any UUID left in lacus:ongoing is a zombie from a previous crash.
+        zombie_count = self.lacus.redis.zcard('lacus:ongoing')
+        if zombie_count:
+            self.logger.warning(f'Startup cleanup: clearing {zombie_count} zombie capture(s) from lacus:ongoing')
+            self.lacus.redis.delete('lacus:ongoing')
+
     async def clear_dead_captures(self) -> None:
         ongoing = {capture.get_name(): capture for capture in self.captures}
         max_capture_time = get_config('generic', 'max_capture_time')
@@ -82,6 +90,10 @@ def main() -> None:
     loop.add_signal_handler(signal.SIGTERM, lambda: loop.create_task(p.stop_async()))
 
     try:
+        # Flush stale captures before the event loop starts.
+        # Valkey persists across container restarts, so lacus:ongoing
+        # may contain UUIDs from a process that was killed mid-capture.
+        p._clear_ongoing_on_startup()
         loop.run_until_complete(p.run_async(sleep_in_sec=1))
     finally:
         loop.close()
