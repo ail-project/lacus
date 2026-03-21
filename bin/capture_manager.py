@@ -55,6 +55,11 @@ class CaptureManager(AbstractManager):
                         if not capture.done():
                             self.logger.error(f'{expected_uuid} is not done after canceling, trying {max_cancel} more times.')
                             await asyncio.sleep(1)
+                # All cancel attempts exhausted but the task is still stuck.
+                # Free the Redis slot so new captures aren't blocked.
+                if not capture.done():
+                    self.logger.error(f'{expected_uuid} could not be canceled after 5 attempts, force-clearing from Redis.')
+                    self.lacus.core.clear_capture(expected_uuid, 'Force-cleared: task could not be canceled.')
 
     async def _to_run_forever_async(self) -> None:
 
