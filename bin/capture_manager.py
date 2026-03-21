@@ -28,10 +28,13 @@ class CaptureManager(AbstractManager):
     def _clear_ongoing_on_startup(self) -> None:
         # At process start, self.captures is empty — no task can be running.
         # Any UUID left in lacus:ongoing is a zombie from a previous crash.
-        zombie_count = self.lacus.redis.zcard('lacus:ongoing')
-        if zombie_count:
-            self.logger.warning(f'Startup cleanup: clearing {zombie_count} zombie capture(s) from lacus:ongoing')
-            self.lacus.redis.delete('lacus:ongoing')
+        # Use clear_capture() per UUID so each gets a proper error result
+        # and capture_settings are cleaned up.
+        ongoing = self.lacus.monitoring.get_ongoing_captures()
+        if ongoing:
+            self.logger.warning(f'Startup cleanup: clearing {len(ongoing)} zombie capture(s) from lacus:ongoing')
+            for uuid, _ in ongoing:
+                self.lacus.core.clear_capture(uuid, 'Cleared on startup: previous process died.')
 
     async def clear_dead_captures(self) -> None:
         ongoing = {capture.get_name(): capture for capture in self.captures}
@@ -60,6 +63,7 @@ class CaptureManager(AbstractManager):
                 if not capture.done():
                     self.logger.error(f'{expected_uuid} could not be canceled after 5 attempts, force-clearing from Redis.')
                     self.lacus.core.clear_capture(expected_uuid, 'Force-cleared: task could not be canceled.')
+                    self.captures.discard(capture)
 
     async def _to_run_forever_async(self) -> None:
 
