@@ -1314,7 +1314,6 @@ files = [
 ]
 
 [package.dependencies]
-gunicorn_h1c = {version = ">=0.4.1", optional = true, markers = "extra == \"fast\""}
 packaging = "*"
 setproctitle = {version = "*", optional = true, markers = "extra == \"setproctitle\""}
 
@@ -1326,21 +1325,6 @@ http2 = ["h2 (>=4.1.0)"]
 setproctitle = ["setproctitle"]
 testing = ["coverage", "eventlet (>=0.40.3)", "gevent (>=24.10.1)", "h2 (>=4.1.0)", "httpx[http2]", "pytest", "pytest-asyncio", "pytest-cov", "uvloop (>=0.19.0)"]
 tornado = ["tornado (>=6.5.0)"]
-
-[[package]]
-name = "gunicorn-h1c"
-version = "0.5.1"
-description = "Fast HTTP/1.1 parser for Gunicorn using picohttpparser"
-optional = false
-python-versions = ">=3.9"
-groups = ["main"]
-files = [
-    {file = "gunicorn_h1c-0.5.1-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:d5257c5f33eb1867d4a11a4b5cce90097ffe3088a574a80e1a37161b8e6019db"},
-    {file = "gunicorn_h1c-0.5.1.tar.gz", hash = "sha256:4f27d532b037039c41f8e6148d4314145c8b71b993ba0e64ff73e7a2ed7ea04a"},
-]
-
-[package.extras]
-test = ["pytest (>=7.0)", "pytest-benchmark"]
 
 [[package]]
 name = "hiredis"
@@ -4181,4 +4165,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.15"
-content-hash = "de5892763b88bfca3cb065309e91974998495599e84db2e815c26fc386e226cd"
+content-hash = "d426172046db3ff53a5700e8f899c445d448406ffdcdbf4f1e82ff00592859a9"
