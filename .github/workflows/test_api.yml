@@ -19,19 +19,19 @@ jobs:
     name: Python ${{ matrix.python-version }}
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 
     - name: Install poetry
       run: pipx install poetry
 
     - name: Set up Python
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v6
       with:
         python-version: ${{matrix.python-version}}
         cache: 'poetry'
 
     - name: Clone Valkey
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         repository: valkey-io/valkey
         path: valkey-tmp
@@ -62,7 +62,7 @@ jobs:
         poetry run start
 
     - name: Clone PyLacus
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         repository: ail-project/PyLacus
         path: PyLacus
