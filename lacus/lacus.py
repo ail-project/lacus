@@ -40,6 +40,7 @@ class Lacus():
             health_check_interval=10)
 
         self.headed_allowed = get_config('generic', 'allow_headed')
+        self.interactive_allowed = get_config('generic', 'allow_interactive')
 
         if tt_settings := get_config('generic', 'trusted_timestamp_settings'):
             self.tt_default_enabled = tt_settings.get('enable_default', False)
@@ -55,6 +56,7 @@ class Lacus():
                               max_retries=get_config('generic', 'max_retries'),
                               tt_settings=get_config('generic', 'trusted_timestamp_settings'),
                               headed_allowed=self.headed_allowed,
+                              interactive_allowed=self.interactive_allowed,
                               )
 
         self.monitoring = LacusCoreMonitoring(self.redis_decode)
