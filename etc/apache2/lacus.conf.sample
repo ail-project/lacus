@@ -1,0 +1,22 @@
+<VirtualHost *:80>
+    ServerName lacus.example.net
+
+    ProxyPreserveHost On
+    RequestHeader set X-Forwarded-Proto "http"
+
+    # Browser-facing interactive session view traffic.
+    # WebSocket upgrade requests for /interactive/<uuid>/view/ go to Tactus.
+    RewriteEngine On
+    RewriteCond %{REQUEST_URI} ^/interactive/[^/]+/view(?:/.*)?$
+    RewriteCond %{HTTP:Upgrade} =websocket [NC]
+    RewriteCond %{HTTP:Connection} upgrade [NC]
+    RewriteRule ^/(.*)$ ws://127.0.0.1:7101/$1 [P,L]
+
+    # Normal HTTP requests for the same interactive view subtree also go to Tactus.
+    ProxyPassMatch ^/interactive/[^/]+/view(?:/.*)?$ http://127.0.0.1:7101
+    ProxyPassReverse /interactive/ http://127.0.0.1:7101/interactive/
+
+    # All other control-plane API requests go to the main Lacus application.
+    ProxyPass / http://127.0.0.1:7100/
+    ProxyPassReverse / http://127.0.0.1:7100/
+</VirtualHost>

@@ -1,0 +1,21 @@
+[Unit]
+Description=lacus tactus sidecar
+Wants=lacus.service
+After=network.target lacus.service
+
+[Service]
+User=<system user used to install the project>
+Group=<system user used to install the project>
+Type=simple
+PartOf=lacus.service
+WorkingDirectory=<path to the directory where you cloned the repository>
+Environment="PATH=<path to the directory where the poetry executable is>:/usr/bin"
+Environment="LACUS_HOME=<path to the directory where you cloned the repository>"
+ExecStart=/bin/bash -c "exec poetry run tactus"
+Restart=always
+RestartSec=5
+StandardOutput=append:/var/log/lacus_tactus_message.log
+StandardError=append:/var/log/lacus_tactus_error.log
+
+[Install]
+WantedBy=multi-user.target
