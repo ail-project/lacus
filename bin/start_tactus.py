@@ -147,7 +147,7 @@ async def _proxy_http(request: web.Request) -> web.StreamResponse:
     payload = await request.read()
 
     connector = UnixConnector(path=socket_path)
-    timeout = ClientTimeout(total=None)
+    timeout = ClientTimeout(total=300)
     response: web.StreamResponse | None = None
     async with ClientSession(connector=connector, timeout=timeout, auto_decompress=False) as session:
         try:
@@ -186,7 +186,7 @@ async def _proxy_websocket(request: web.Request) -> web.WebSocketResponse:
     await client_ws.prepare(request)
 
     connector = UnixConnector(path=socket_path)
-    timeout = ClientTimeout(total=None)
+    timeout = ClientTimeout(total=300)
     async with ClientSession(connector=connector, timeout=timeout) as session:
         try:
             async with session.ws_connect(upstream_url, headers=_filter_request_headers(request.headers), heartbeat=30.0) as upstream_ws:

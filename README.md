@@ -241,7 +241,7 @@ Enqueue an interactive capture:
 ```bash
 UUID=$(curl -s -X POST http://localhost:7100/enqueue \
   -H 'Content-Type: application/json' \
-  -d '{"url": "https://example.com", "interactive": true, "interactive_ttl": 900}')
+  -d '{"url": "https://example.com", "interactive": true, "interactive_ttl": 600}')
 echo "Session UUID: $UUID"
 ```
 
