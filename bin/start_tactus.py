@@ -12,6 +12,7 @@ import signal
 
 from aiohttp import ClientSession, ClientTimeout, UnixConnector, WSMsgType, web
 from aiohttp.client_exceptions import ClientConnectionResetError, ClientError, UnixClientConnectorError
+from multidict import CIMultiDictProxy
 
 from lacus.default import AbstractManager, get_config, get_homedir
 from lacus.lacus import Lacus
@@ -49,14 +50,14 @@ by LacusCore.
 """
 
 
-def _filter_request_headers(headers: web.BaseRequest.headers.__class__) -> dict[str, str]:
+def _filter_request_headers(headers: CIMultiDictProxy[str]) -> dict[str, str]:
     return {
         key: value for key, value in headers.items()
         if key.lower() not in HOP_BY_HOP_HEADERS and key.lower() != 'host'
     }
 
 
-def _filter_response_headers(headers: 'web.LooseHeaders') -> dict[str, str]:
+def _filter_response_headers(headers: CIMultiDictProxy[str]) -> dict[str, str]:
     return {
         key: value for key, value in headers.items()
         if key.lower() not in HOP_BY_HOP_HEADERS and key.lower() != 'content-length'

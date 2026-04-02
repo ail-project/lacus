@@ -230,6 +230,7 @@ class InteractiveSession(Resource):  # type: ignore[misc]
         meta: SessionMetadata | None = lacus.core.get_session_metadata(capture_uuid)
         if not meta:
             api.abort(404, f'No interactive session metadata for capture UUID {capture_uuid}.')
+            return {}  # unreachable; satisfies mypy after api.abort()
 
         status_int = int(meta.get('status', int(SessionStatus.UNKNOWN)))
         return {
