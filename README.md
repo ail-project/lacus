@@ -158,16 +158,14 @@ Lacus supports interactive capture sessions powered by [xpra](https://xpra.org).
 
 ## Additional system dependencies
 
-Install the X11 and GTK bits required by xpra and the browsers:
+On Ubuntu 24.04, add the xpra.org repository and install the interactive
+session dependencies:
 
 ```bash
-sudo apt install xvfb python3-gi python3-gi-cairo gir1.2-gtk-3.0
-```
-
-Install xpra from your system package manager (recommended):
-
-```bash
-sudo apt install xpra
+curl -s https://xpra.org/gpg.asc | sudo apt-key add -
+echo "deb https://xpra.org/ noble main" | sudo tee /etc/apt/sources.list.d/xpra.list
+sudo apt update
+sudo apt install xpra xvfb
 ```
 
 ## Running Tactus
