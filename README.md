@@ -152,6 +152,156 @@ It that's the case, run the following command from the lacus directory:
 poetry run playwright install-deps
 ```
 
+# Interactive sessions (xpra)
+
+Lacus supports interactive capture sessions powered by [xpra](https://xpra.org). In an interactive session the browser is displayed inside a virtual X display managed by xpra. You can connect to it via a browser-based HTML5 client, interact with the page (log in, solve CAPTCHAs, etc.), and then trigger a normal capture once the page is in the desired state.
+
+## Additional system dependencies
+
+Install the X11 and GTK bits required by xpra and the browsers:
+
+```bash
+sudo apt install xvfb python3-gi python3-gi-cairo gir1.2-gtk-3.0
+```
+
+Install xpra from your system package manager (recommended):
+
+```bash
+sudo apt install xpra
+```
+
+## Running Tactus
+
+Each interactive capture starts its own short-lived xpra server bound to a private unix socket. The Lacus API remains the control plane: it enqueues interactive captures, reports session state, and accepts the final `finish` signal. Tactus, the Lacus interactive sidecar, proxies `/interactive/<uuid>/view/` traffic to the matching xpra socket so you can view the HTML5 client in a browser.
+
+This keeps the project boundaries:
+
+- `LacusCore` owns interactive session lifecycle and xpra transport details.
+- `lacus` exposes the control-plane API.
+- Tactus handles end-user browser traffic for the HTML5 client.
+
+
+By default, Tactus listens on `127.0.0.1:7101` and serves `/interactive/<uuid>/view/`, including the nested xpra transport under `/interactive/<uuid>/view/session/`.
+
+The bundled wrapper assumes a same-origin deployment for its own UI assets and uses view-local convenience endpoints under `/interactive/<uuid>/view/` for status polling and `finish`. Those Tactus-local wrapper endpoints proxy to the Lacus API routes such as `GET /interactive/<uuid>` and `POST /interactive/<uuid>/finish`, so Flask remains the source of truth while the browser keeps a same-origin path for the panel controls.
+
+## Configuration
+
+If you want the Lacus API to return a browser-usable `view_url` in `GET /interactive/<uuid>`, set a public base URL template before starting lacus:
+
+```bash
+export LACUS_XPRA_PUBLIC_BASE_URL=http://127.0.0.1:8080/interactive/{uuid}/view/
+```
+
+For a deployment behind a third-party application or reverse proxy:
+
+```bash
+export LACUS_XPRA_PUBLIC_BASE_URL=https://thirdparty.example/interactive/{uuid}/view/
+```
+
+To enable interactive captures, set `allow_interactive` to `true` in `config/generic.json`. When this flag is set, `poetry run start` automatically launches Tactus alongside the main Lacus process.
+
+Tactus itself can be configured with:
+
+```json
+"allow_interactive": true,
+"tactus_listen_ip": "127.0.0.1",
+"tactus_listen_port": 7101
+```
+
+These keys live in `config/generic.json`.
+
+Sample reverse-proxy configurations are available in:
+
+- `/etc/nginx/lacus.conf.sample`
+- `/etc/apache2/lacus.conf.sample`
+
+These examples route only `/interactive/<uuid>/view/` to Tactus and send the rest of the API traffic to the main Lacus application. The bundled wrapper uses Tactus-local helper endpoints under `/interactive/<uuid>/view/` for its panel controls, and those helpers proxy to the canonical Lacus API routes for session metadata and `finish`.
+
+For systemd deployments, a sample Tactus unit is available in:
+
+- `/etc/systemd/system/lacus-tactus.service.sample`
+
+For supervisord deployments, a sample configuration that includes Tactus is available in:
+
+- `/supervisord/supervisord-tactus.conf.sample`
+
+The internal xpra unix sockets are not meant to be exposed directly to end-users. If you do not set `LACUS_XPRA_PUBLIC_BASE_URL`, the API will still report session state, but `view_url` may be absent.
+
+## Usage
+
+Enqueue an interactive capture:
+
+```bash
+UUID=$(curl -s -X POST http://localhost:7100/enqueue \
+  -H 'Content-Type: application/json' \
+  -d '{"url": "https://example.com", "interactive": true, "interactive_ttl": 900}')
+echo "Session UUID: $UUID"
+```
+
+Poll until the session status is `ready`. Possible status values are
+`starting`, `ready`, `capture_requested`, `stopped`, `expired`, and `error`.
+
+```bash
+curl -s http://localhost:7100/interactive/$UUID
+# {"status": "ready", "view_url": "http://127.0.0.1:8080/interactive/<uuid>/view/", ...}
+```
+
+If `view_url` is present, open it in a browser to interact with the page. When ready, trigger the capture:
+
+```bash
+curl -s -X POST http://localhost:7100/interactive/$UUID/finish
+```
+
+Retrieve the result (poll until status is not `"unknown"`):
+
+```bash
+curl -s http://localhost:7100/capture_result/$UUID
+```
+
+## Architectural note
+
+Tactus exists to make interactive sessions testable and deployable without turning the main Lacus web app into a full HTML5/WebSocket proxy. If you already have a third-party application (e.g. LookyLoo, AIL, Pandora) that fronts Lacus, that application can provide the same `/interactive/<uuid>/view/` route itself and proxy to the Lacus-managed unix socket instead of using Tactus.
+
+## Third-party proxy contract
+
+If a third-party application fronts Lacus, the clean contract is:
+
+- `GET /interactive/<uuid>` on Lacus returns session state plus an optional deployment-facing `view_url`.
+- The third-party app serves `/interactive/<uuid>/view/` to end-users.
+- The wrapper page, if used, may expose same-origin helper routes under `/interactive/<uuid>/view/`, but those helpers should proxy to the canonical Lacus API routes (`GET /interactive/<uuid>` and `POST /interactive/<uuid>/finish`) rather than reimplementing the control plane.
+- That route must proxy both HTTP and WebSocket traffic to the xpra server bound to the session's internal unix socket.
+- The raw unix socket path should stay internal to trusted infrastructure. It should not be exposed to normal end-users.
+
+The bundled `tactus` sidecar is only a reference implementation of that contract.
+
+## Example deployment
+
+One clean deployment model is:
+
+- `lacus.service` runs the main Lacus control-plane service on `127.0.0.1:7100`
+- `lacus-tactus.service` runs Tactus on `127.0.0.1:7101`
+- nginx listens on the host-facing interface and routes:
+  - `/interactive/<uuid>/view/` to `127.0.0.1:7101`
+  - everything else to `127.0.0.1:7100`
+
+In that setup, set:
+
+```bash
+export LACUS_XPRA_PUBLIC_BASE_URL=https://lacus.example.net/interactive/{uuid}/view/
+```
+
+Then enable and start both services:
+
+```bash
+sudo systemctl enable lacus.service lacus-tactus.service
+sudo systemctl start lacus.service lacus-tactus.service
+```
+
+Finally, install the nginx sample and adjust `server_name`, TLS, and any access-control rules as needed for your environment.
+
+---
+
 # Useful environment variables
 
 There are env varibles you can pass to help making better captures, or avoir captures to fail when they shouldn't:
