@@ -168,6 +168,14 @@ sudo apt update
 sudo apt install xpra xvfb
 ```
 
+> **Warning:** On desktop systems, installing xpra enables and starts a
+> system-wide xpra service and socket. These are not needed by Lacus (which
+> manages its own per-session xpra servers) and should be disabled:
+>
+> ```bash
+> sudo systemctl disable --now xpra.service xpra.socket
+> ```
+
 ## Running Tactus
 
 Each interactive capture starts its own short-lived xpra server bound to a private unix socket. The Lacus API remains the control plane: it enqueues interactive captures, reports session state, and accepts the final `finish` signal. Tactus, the Lacus interactive sidecar, proxies `/interactive/<uuid>/view/` traffic to the matching xpra socket so you can view the HTML5 client in a browser.
