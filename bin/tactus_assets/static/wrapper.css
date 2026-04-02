@@ -1,3 +1,11 @@
+@font-face {
+    font-family: 'Paytone One';
+    src: url('PaytoneOne-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
 :root {
     color-scheme: light;
     --bg: #f5fffe;
@@ -67,8 +75,9 @@ body {
 
 .eyebrow,
 .overlay-eyebrow {
+    font-family: 'Paytone One', system-ui, sans-serif;
     font-size: 0.72rem;
-    font-weight: 600;
+    font-weight: 400;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--muted);
@@ -87,8 +96,9 @@ h1,
 }
 
 h1 {
+    font-family: 'Paytone One', system-ui, sans-serif;
     font-size: 1.35rem;
-    font-weight: 600;
+    font-weight: 400;
 }
 
 .badge {
