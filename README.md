@@ -17,7 +17,7 @@ podman-compose up # or docker compose up
 
 ## System dependencies
 
-You need poetry installed, see the [install guide](https://python-poetry.org/docs/). The [poetry shell plugin](https://github.com/python-poetry/poetry-plugin-shell) is not strictly required, but will make your life easier. You can install it [this way](https://github.com/python-poetry/poetry-plugin-shell?tab=readme-ov-file#installation). 
+You need poetry installed, see the [install guide](https://python-poetry.org/docs/). The [poetry shell plugin](https://github.com/python-poetry/poetry-plugin-shell) is not strictly required, but will make your life easier. You can install it [this way](https://github.com/python-poetry/poetry-plugin-shell?tab=readme-ov-file#installation).
 
 ## Prerequisites
 
@@ -142,7 +142,7 @@ valkey cache/cache.sock> zrem lacus:ongoing ef7f653d-4cfd-4e7b-9b91-58c9c2658868
 valkey cache/cache.sock>
 ```
 
-## Error mentioning missing system dependencies 
+## Error mentioning missing system dependencies
 
 On an initial install, we tell you to run `playwright install-deps`. After updating an existing lacus instance, you may have to do that again if new ones are required by playwright.
 
@@ -173,7 +173,7 @@ sudo apt install xpra xvfb
 > manages its own per-session xpra servers) and should be disabled:
 >
 > ```bash
-> sudo systemctl disable --now xpra.service xpra.socket
+> sudo systemctl disable --now xpra-server.socket
 > ```
 
 ## Running Tactus

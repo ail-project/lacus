@@ -27,6 +27,13 @@
     },
     "allow_headed": false,
     "wireproxy_path": "/path/to/wireproxy",
+    "remote_interactive_settings": {
+        "allow_interactive": false,
+        "tactus_listen_ip": "127.0.0.1",
+        "tactus_listen_port": 7101,
+        "backend_type": "xpra",
+        "public_base_url": "http://127.0.0.1:7101"
+    },
     "_notes": {
         "loglevel": "Can be one of the value listed here: https://docs.python.org/3/library/logging.html#levels",
         "website_listen_ip": "IP Flask will listen on. Defaults to 0.0.0.0, meaning all interfaces.",
@@ -42,6 +49,7 @@
         "trusted_timestamp_settings": "Settings to connect to a TimeStamp Authority",
         "global_proxy": "Proxy configuration to use for *all* the requests (except .onions)",
         "allow_headed": "Allow users to use the headed version of the browser. It requires a graphical environment.",
+        "remote_interactive_settings": "Configure the remote interactive settings, requires xpra.",
         "wireproxy_path": "Path to the wireproxy binary. Useful if you have wireguard VPNs to expose to lacus. Get it from there: https://github.com/whyvl/wireproxy/"
     }
 }

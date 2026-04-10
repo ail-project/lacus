@@ -1,17 +1,9 @@
 #!/usr/bin/env python3
 
 from pathlib import Path
-from shutil import which
 from subprocess import Popen, run
-import sys
 
 from lacus.default import get_homedir, get_config
-
-
-def _tactus_command() -> list[str]:
-    if tactus_path := which('tactus'):
-        return [tactus_path]
-    return [sys.executable, '-m', 'bin.start_tactus']
 
 
 def main() -> None:
@@ -27,12 +19,9 @@ def main() -> None:
     print('Start Capture manager...')
     Popen(['capture_manager'])
     print('done.')
-    if get_config('generic', 'allow_interactive'):
-        print('Start tactus...')
-        Popen(_tactus_command())
-        print('done.')
-    else:
-        print('Interactive captures disabled, skipping tactus.')
+    print('Start tactus...')
+    Popen("tactus")
+    print('done.')
 
     # Is configured, start wireproxies
     if path_to_wireproxy := Path(get_config('generic', 'wireproxy_path')):

@@ -323,8 +323,20 @@ class TactusManager(AbstractManager):
     def __init__(self, loglevel: int | None=None) -> None:
         super().__init__(loglevel)
         self.script_name = 'tactus'
-        self.listen_ip = get_config('generic', 'tactus_listen_ip') or '127.0.0.1'
-        self.listen_port = int(get_config('generic', 'tactus_listen_port') or 7101)
+
+        if remote_interactive_settings := get_config('generic', 'remote_interactive_settings'):
+            if remote_interactive_settings.get('allow_interactive', False):
+                self.listen_ip = remote_interactive_settings.get('tactus_listen_ip')
+                self.listen_port = int(remote_interactive_settings.get('tactus_listen_port'))
+            else:
+                # Just stop
+                self.force_stop = True
+                return
+        else:
+            # Not configured at all
+            self.force_stop = True
+            return
+
         self.app = make_app()
         self.runner: web.AppRunner | None = None
         self.site: web.BaseSite | None = None
@@ -352,7 +364,12 @@ class TactusManager(AbstractManager):
 
 
 def main() -> None:
-    if not get_config('generic', 'allow_interactive'):
+    if remote_interactive_settings := get_config('generic', 'remote_interactive_settings'):
+        if not remote_interactive_settings.get('allow_interactive'):
+            logger.info('Interactive captures disabled, not starting tactus.')
+            return
+    else:
+        # Not configured
         logger.info('Interactive captures disabled, not starting tactus.')
         return
 

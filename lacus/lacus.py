@@ -40,7 +40,11 @@ class Lacus():
             health_check_interval=10)
 
         self.headed_allowed = get_config('generic', 'allow_headed')
-        self.interactive_allowed = get_config('generic', 'allow_interactive')
+
+        if remote_interactive_settings := get_config('generic', 'remote_interactive_settings'):
+            self.interactive_allowed = remote_interactive_settings.get('allow_interactive', False)
+            self.interactive_backend_type = remote_interactive_settings.get('backend_type')
+            self.public_base_url = remote_interactive_settings.get('public_base_url')
 
         if tt_settings := get_config('generic', 'trusted_timestamp_settings'):
             self.tt_default_enabled = tt_settings.get('enable_default', False)
@@ -57,6 +61,7 @@ class Lacus():
                               tt_settings=get_config('generic', 'trusted_timestamp_settings'),
                               headed_allowed=self.headed_allowed,
                               interactive_allowed=self.interactive_allowed,
+                              interactive_backend_type=self.interactive_backend_type
                               )
 
         self.monitoring = LacusCoreMonitoring(self.redis_decode)
@@ -87,6 +92,9 @@ class Lacus():
         return {'total_keys': redis_info['db0']['keys'] if 'db0' in redis_info else 0,
                 'current_memory_use': redis_info['used_memory_rss_human'],
                 'peak_memory_use': redis_info['used_memory_peak_human']}
+
+    def make_interactive_base_url(self, capture_uuid: str) -> str:
+        return f'{self.public_base_url}/interactive/{capture_uuid}/view/session/'
 
     @property
     def is_busy(self) -> bool:
