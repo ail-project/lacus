@@ -291,12 +291,6 @@ One clean deployment model is:
   - `/interactive/<uuid>/view/` to `127.0.0.1:7101`
   - everything else to `127.0.0.1:7100`
 
-In that setup, set:
-
-```bash
-export LACUS_XPRA_PUBLIC_BASE_URL=https://lacus.example.net/interactive/{uuid}/view/
-```
-
 Then enable and start both services:
 
 ```bash
