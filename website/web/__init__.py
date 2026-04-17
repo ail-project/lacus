@@ -252,24 +252,31 @@ class InteractiveFinish(Resource):  # type: ignore[misc]
     def post(self, capture_uuid: str) -> tuple[dict[str, Any], int]:
         if not lacus.interactive_allowed:
             return {'error': 'Interactive captures are disabled by configuration.'}, 403
-        meta: SessionMetadata | None = lacus.core.request_session_capture(capture_uuid)
-        if not meta:
+        if not lacus.core.request_finish(capture_uuid):
             return {'error': f'No interactive session metadata for capture UUID {capture_uuid}.'}, 404
 
-        status_int = int(meta.get('status', int(SessionStatus.UNKNOWN)))
-        if status_int in (int(SessionStatus.STOPPED), int(SessionStatus.EXPIRED), int(SessionStatus.ERROR)):
+        if meta := lacus.core.get_session_metadata(capture_uuid):
+            status_int = int(meta.get('status', int(SessionStatus.UNKNOWN)))
+            if status_int in (int(SessionStatus.STOPPED), int(SessionStatus.EXPIRED), int(SessionStatus.ERROR)):
+                return {
+                    'error': 'Interactive session is not active; cannot request capture.',
+                    'status': _session_status_to_str(status_int),
+                    'raw_status': status_int,
+                }, 409
+
             return {
-                'error': 'Interactive session is not active; cannot request capture.',
+                'uuid': capture_uuid,
                 'status': _session_status_to_str(status_int),
                 'raw_status': status_int,
-            }, 409
+                'finish_requested': True,
+            }, 202
 
+        status_int = int(SessionStatus.UNKNOWN)
         return {
-            'uuid': capture_uuid,
+            'error': 'Session unknown',
             'status': _session_status_to_str(status_int),
             'raw_status': status_int,
-            'finish_requested': True,
-        }, 202
+        }, 409
 
 
 stats_model = api.model('StatsModel', {
