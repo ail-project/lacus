@@ -94,7 +94,7 @@ class Lacus():
                 'peak_memory_use': redis_info['used_memory_peak_human']}
 
     def make_remote_headed_base_url(self, capture_uuid: str) -> str:
-        return f'{self.public_base_url}/interactive/{capture_uuid}/view/session/'
+        return f'{self.public_base_url}/interactive/{capture_uuid}/view'
 
     @property
     def is_busy(self) -> bool:
