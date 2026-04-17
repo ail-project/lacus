@@ -324,10 +324,10 @@ class TactusManager(AbstractManager):
         super().__init__(loglevel)
         self.script_name = 'tactus'
 
-        if remote_interactive_settings := get_config('generic', 'remote_interactive_settings'):
-            if remote_interactive_settings.get('allow_interactive', False):
-                self.listen_ip = remote_interactive_settings.get('tactus_listen_ip')
-                self.listen_port = int(remote_interactive_settings.get('tactus_listen_port'))
+        if remote_headed_settings := get_config('generic', 'remote_headed_settings'):
+            if remote_headed_settings.get('allow_remote_headed', False):
+                self.listen_ip = remote_headed_settings.get('tactus_listen_ip')
+                self.listen_port = int(remote_headed_settings.get('tactus_listen_port'))
             else:
                 # Just stop
                 self.force_stop = True
@@ -364,13 +364,13 @@ class TactusManager(AbstractManager):
 
 
 def main() -> None:
-    if remote_interactive_settings := get_config('generic', 'remote_interactive_settings'):
-        if not remote_interactive_settings.get('allow_interactive'):
-            logger.info('Interactive captures disabled, not starting tactus.')
+    if remote_headed_settings := get_config('generic', 'remote_headed_settings'):
+        if not remote_headed_settings.get('allow_remote_headed'):
+            logger.info('Remote headfull captures disabled, not starting tactus.')
             return
     else:
         # Not configured
-        logger.info('Interactive captures disabled, not starting tactus.')
+        logger.info('Remote headfull captures disabled, not starting tactus.')
         return
 
     p = TactusManager()

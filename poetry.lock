@@ -1528,21 +1528,21 @@ referencing = ">=0.31.0"
 
 [[package]]
 name = "lacuscore"
-version = "1.24.1"
+version = "1.24.2"
 description = "Core of Lacus, usable as a module"
 optional = false
 python-versions = "<3.15,>=3.10"
 groups = ["main"]
 files = [
-    {file = "lacuscore-1.24.1-py3-none-any.whl", hash = "sha256:4925ea9b3c1c5a64a0ce958bb38fd2ec71500dd3225bc28d781cd495d48746b9"},
-    {file = "lacuscore-1.24.1.tar.gz", hash = "sha256:6fc2c661570a235a392b3415b4bcafb6009bb3d4628a9bc730106e8974cca1fb"},
+    {file = "lacuscore-1.24.2-py3-none-any.whl", hash = "sha256:d8a9c34bbc1cbe923e437a3b8fc4fb6d41380dda11d45066dc807536a3177682"},
+    {file = "lacuscore-1.24.2.tar.gz", hash = "sha256:8546b7f23e990212e0b4d28cce407b4313d89ef222d84d706aa621e70c63985c"},
 ]
 
 [package.dependencies]
 async-timeout = {version = ">=5.0.1", markers = "python_version < \"3.11\""}
 dnspython = ">=2.8.0"
-lookyloo-models = ">=0.2.0"
-playwrightcapture = {version = ">=1.39.1", extras = ["recaptcha"]}
+lookyloo-models = ">=0.2.1"
+playwrightcapture = {version = ">=1.39.2", extras = ["recaptcha"]}
 pydantic = ">=2.13.2"
 redis = {version = ">=5.3.0,<6.0.0", extras = ["hiredis"]}
 typing-extensions = {version = ">=4.12.2,<5.0.0", markers = "python_version < \"3.12\""}
@@ -1653,20 +1653,20 @@ files = [
 
 [[package]]
 name = "lookyloo-models"
-version = "0.2.0"
+version = "0.2.1"
 description = "All the Pydantic models used across Lookyloo"
 optional = false
 python-versions = "<4,>=3.10"
 groups = ["main"]
 files = [
-    {file = "lookyloo_models-0.2.0-py3-none-any.whl", hash = "sha256:6d3a0af0f6ec283ea75ec208015e9e76db674bbec4b66294223ac7b30ddf6700"},
-    {file = "lookyloo_models-0.2.0.tar.gz", hash = "sha256:0d0017ed343e3cbff2a6ca36d56b7b351194a374d264c735d07971971815bc19"},
+    {file = "lookyloo_models-0.2.1-py3-none-any.whl", hash = "sha256:5386cdb310bd4f837c689d41e2b0f498b9691cd3bf63974bd6662de4c34dba25"},
+    {file = "lookyloo_models-0.2.1.tar.gz", hash = "sha256:a17aa5d2437742806385465e6feeacd6d4da3f9d0e73a3a796c1c829963371da"},
 ]
 
 [package.dependencies]
 dateparser = ">=1.4.0"
 orjson = ">=3.11.8"
-pydantic = ">=2.12.5"
+pydantic = ">=2.13"
 ua-parser = {version = ">=1.0.1", extras = ["regex"]}
 
 [[package]]
@@ -2350,14 +2350,14 @@ black = ["black (>=25.9.0)"]
 
 [[package]]
 name = "playwrightcapture"
-version = "1.39.1"
+version = "1.39.2"
 description = "A simple library to capture websites using playwright"
 optional = false
 python-versions = "<3.15,>=3.10"
 groups = ["main"]
 files = [
-    {file = "playwrightcapture-1.39.1-py3-none-any.whl", hash = "sha256:4fef2b3f3369d2ee447728f82a05762b011c0b5c58e87791a833c66148d00ec5"},
-    {file = "playwrightcapture-1.39.1.tar.gz", hash = "sha256:cbe2e073869867487e07a1073162e9662e06b407d99efa2a5bad5d90f04394f1"},
+    {file = "playwrightcapture-1.39.2-py3-none-any.whl", hash = "sha256:8f2d435cf0e8486f837a7a11892fecde5c5327a9028a55aaa3d43f7f60ccb0e3"},
+    {file = "playwrightcapture-1.39.2.tar.gz", hash = "sha256:5f54ab8d0f8a3ee4d6ef82ad9e244dd302cd7ab6ac8adc4fe5e2dbd786a40716"},
 ]
 
 [package.dependencies]
@@ -2367,7 +2367,7 @@ async-timeout = {version = ">=5.0.1", markers = "python_version < \"3.11\""}
 beautifulsoup4 = {version = ">=4.14.3", extras = ["charset-normalizer", "lxml"]}
 charset-normalizer = ">=3.4.6,<4.0.0"
 dnspython = ">=2.7.0,<3.0.0"
-lookyloo-models = ">=0.2.0"
+lookyloo-models = ">=0.2.1"
 orjson = ">=3.11.4,<4.0.0"
 playwright = ">=1.58.0"
 playwright-stealth = ">=2.0.3"
@@ -4076,4 +4076,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.15"
-content-hash = "64769a798e8211112824f57b69e775bf5cd5a2054d8298c4e08f8a0db0d287ec"
+content-hash = "134fff3d699ccdf3f0d875f3a0626115ab2d350d44f5cc8591109d21900537ef"

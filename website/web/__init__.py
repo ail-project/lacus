@@ -113,8 +113,7 @@ submit_fields_post = api.model('SubmitFieldsPost', {
     'headless': fields.Boolean(description="If false, run the browser in headed mode. Requires a graphical environment", example=True),
     'init_script': fields.String(description="A JavaScript to execute on each captured page", example="console.log('This is a test');"),
     'max_retries': fields.Integer(description=f"The maximum anount of retries for this capture (any value higher than {max_retries} will be ignored).", example=max_retries),
-    'interactive': fields.Boolean(description="If true, enqueue an interactive capture session.", example=False),
-    'interactive_ttl': fields.Integer(description="Time-to-live in seconds for an interactive session.", example=600),
+    'remote_headfull': fields.Boolean(description="If true, enqueue a headed remote capture session.", example=False),
     'force': fields.Boolean(description="Force a capture, even if the same one was already done recently", example=False),
     'recapture_interval': fields.Integer(description="The minimal interval to re-trigger a capture, unless force is True", example=300),
     'final_wait': fields.Integer(description="The very last wait time, after the instrumentation is done.", example=5),
@@ -129,8 +128,8 @@ class Enqueue(Resource):  # type: ignore[misc]
     @api.produces(['text/text'])  # type: ignore[untyped-decorator]
     def post(self) -> str:
         to_query: dict[str, Any] = request.get_json(force=True)
-        if to_query.get('interactive') and not lacus.interactive_allowed:
-            api.abort(403, 'Interactive captures are disabled by configuration.')
+        if to_query.get('remote_headfull') and not lacus.remote_headed_allowed:
+            api.abort(403, 'Remote headfull captures are disabled by configuration.')
         if proxy := to_query.get('proxy'):
             if proxy_settings := lacus.get_proxy_settings(proxy):
                 to_query['proxy'] = proxy_settings['proxy_url']
@@ -166,8 +165,7 @@ class Enqueue(Resource):  # type: ignore[misc]
             init_script=to_query.get('init_script'),
             max_retries=to_query.get('max_retries'),
             rendered_hostname_only=to_query.get('rendered_hostname_only', True),
-            interactive=to_query.get('interactive', False),
-            interactive_ttl=to_query.get('interactive_ttl', 600),
+            remote_headfull=to_query.get('remote_headfull', False),
             force=to_query.get('force', False),
             recapture_interval=to_query.get('recapture_interval', 300),
             final_wait=to_query.get('final_wait', 5),
@@ -195,14 +193,14 @@ class CaptureResult(Resource):  # type: ignore[misc]
         return lacus.core.get_capture(capture_uuid)
 
 
-interactive_status_model = api.model('SessionStatusModel', {
-    'uuid': fields.String(description='Capture UUID associated with the interactive session'),
-    'status': fields.String(description='High-level interactive session status (unknown, starting, ready, error, stopped, expired).'),
+remote_headed_status_model = api.model('SessionStatusModel', {
+    'uuid': fields.String(description='Capture UUID associated with the remote headed session'),
+    'status': fields.String(description='High-level remote headed session status (unknown, starting, ready, error, stopped, expired).'),
     'raw_status': fields.Integer(description='Numeric SessionStatus value as stored in Redis.'),
     'finish_requested': fields.Boolean(description='Whether a final capture was requested for this session.'),
     'view_url': fields.String(description='Optional public URL to open in a browser to view the session, if configured by the deployment.'),
-    'created_at': fields.Integer(description='Unix timestamp when the interactive session was created'),
-    'expires_at': fields.Integer(description='Unix timestamp when the interactive session will expire'),
+    'created_at': fields.Integer(description='Unix timestamp when the remote headed session was created'),
+    'expires_at': fields.Integer(description='Unix timestamp when the remote headed session will expire'),
 })
 
 
@@ -219,17 +217,17 @@ def _session_status_to_str(status: int) -> str:
 
 
 @api.route('/interactive/<string:capture_uuid>')
-@api.doc(description='Get the status and public view details for an interactive capture session.',
-         params={'capture_uuid': 'The UUID of the interactive capture'})
-class InteractiveSession(Resource):  # type: ignore[misc]
+@api.doc(description='Get the status and public view details for a remote headed capture session.',
+         params={'capture_uuid': 'The UUID of the remote headfull capture'})
+class RemoteHeadedSession(Resource):  # type: ignore[misc]
 
-    @api.marshal_with(interactive_status_model, skip_none=True)  # type: ignore[untyped-decorator]
+    @api.marshal_with(remote_headed_status_model, skip_none=True)  # type: ignore[untyped-decorator]
     def get(self, capture_uuid: str) -> dict[str, Any]:
-        if not lacus.interactive_allowed:
-            api.abort(403, 'Interactive captures are disabled by configuration.')
+        if not lacus.remote_headed_allowed:
+            api.abort(403, 'Remote headfull captures are disabled by configuration.')
         meta: SessionMetadata | None = lacus.core.get_session_metadata(capture_uuid)
         if not meta:
-            api.abort(404, f'No interactive session metadata for capture UUID {capture_uuid}.')
+            api.abort(404, f'No remote headead session metadata for capture UUID {capture_uuid}.')
             return {}  # unreachable; satisfies mypy after api.abort()
 
         status_int = int(meta.get('status', int(SessionStatus.UNKNOWN)))
@@ -238,28 +236,28 @@ class InteractiveSession(Resource):  # type: ignore[misc]
             'status': _session_status_to_str(status_int),
             'raw_status': status_int,
             'finish_requested': bool(meta.get('capture_requested_at')),
-            'view_url': lacus.make_interactive_base_url(capture_uuid),
+            'view_url': lacus.make_remote_headed_base_url(capture_uuid),
             'created_at': meta.get('created_at'),
             'expires_at': meta.get('expires_at'),
         }
 
 
 @api.route('/interactive/<string:capture_uuid>/finish')
-@api.doc(description='Request a final capture of the current page for an interactive session.',
-         params={'capture_uuid': 'The UUID of the interactive capture'})
-class InteractiveFinish(Resource):  # type: ignore[misc]
+@api.doc(description='Request a final capture of the current page for a remote headed session.',
+         params={'capture_uuid': 'The UUID of the remote headfull capture'})
+class RemoteHeadedFinish(Resource):  # type: ignore[misc]
 
     def post(self, capture_uuid: str) -> tuple[dict[str, Any], int]:
-        if not lacus.interactive_allowed:
-            return {'error': 'Interactive captures are disabled by configuration.'}, 403
+        if not lacus.remote_headed_allowed:
+            return {'error': 'Remote headfull captures are disabled by configuration.'}, 403
         if not lacus.core.request_finish(capture_uuid):
-            return {'error': f'No interactive session metadata for capture UUID {capture_uuid}.'}, 404
+            return {'error': f'No remote headed session metadata for capture UUID {capture_uuid}.'}, 404
 
         if meta := lacus.core.get_session_metadata(capture_uuid):
             status_int = int(meta.get('status', int(SessionStatus.UNKNOWN)))
             if status_int in (int(SessionStatus.STOPPED), int(SessionStatus.EXPIRED), int(SessionStatus.ERROR)):
                 return {
-                    'error': 'Interactive session is not active; cannot request capture.',
+                    'error': 'Remote headed session is not active; cannot request capture.',
                     'status': _session_status_to_str(status_int),
                     'raw_status': status_int,
                 }, 409
