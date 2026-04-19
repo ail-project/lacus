@@ -235,7 +235,7 @@ class RemoteHeadedSession(Resource):  # type: ignore[misc]
             'uuid': capture_uuid,
             'status': _session_status_to_str(status_int),
             'raw_status': status_int,
-            'finish_requested': bool(meta.get('capture_requested_at')),
+            'finish_requested': bool(meta.get('finish_requested')),
             'view_url': lacus.make_remote_headed_base_url(capture_uuid),
             'created_at': meta.get('created_at'),
             'expires_at': meta.get('expires_at'),

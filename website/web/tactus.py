@@ -42,8 +42,6 @@ by LacusCore.
 """
 
 
-# Questionable methods
-
 def _filter_request_headers(headers: CIMultiDictProxy[str]) -> dict[str, str]:
     return {
         key: value for key, value in headers.items()
@@ -58,9 +56,8 @@ def _filter_response_headers(headers: CIMultiDictProxy[str]) -> dict[str, str]:
     }
 
 
-# End of questionable methods
-
 def _get_upstream_target(request: web.Request) -> str:
+    '''Returns the socket path'''
     lacus: Lacus = request.app['lacus']
     capture_uuid = request.match_info['capture_uuid']
     session_metadata = lacus.core.get_session_metadata(capture_uuid)
@@ -90,6 +87,7 @@ def _get_upstream_target(request: web.Request) -> str:
 
 
 async def _proxy_api_request(request: web.Request, upstream_path: str) -> web.Response:
+    """Handles the request from the wrapper to the lacus API"""
     timeout = ClientTimeout(total=30)
     payload = await request.read()
     ip = get_config('generic', 'website_listen_ip')
@@ -119,8 +117,8 @@ async def _proxy_api_request(request: web.Request, upstream_path: str) -> web.Re
         raise web.HTTPBadGateway(text='Interactive control-plane request failed.')
 
 
-# NOTE: localhost is hardcoded there.
 def _build_upstream_url(request: web.Request) -> str:
+    """Sets the full to open in xpra html5"""
     tail = request.match_info.get('tail', '')
     path = f'/{tail}' if tail else '/'
     if request.query_string:
@@ -129,6 +127,7 @@ def _build_upstream_url(request: web.Request) -> str:
 
 
 async def _proxy_http(request: web.Request) -> web.StreamResponse:
+    """get static content from the xpra html5 to the iFrame"""
     socket_path = _get_upstream_target(request)
     upstream_url = _build_upstream_url(request)
     payload = await request.read()
@@ -141,14 +140,14 @@ async def _proxy_http(request: web.Request) -> web.StreamResponse:
             async with session.request(
                 request.method,
                 upstream_url,
-                headers=_filter_request_headers(request.headers),
+                headers=_filter_request_headers(request.headers),  # strip headers set by lacus
                 data=payload if payload else None,
                 allow_redirects=False,
             ) as upstream:
                 response = web.StreamResponse(
                     status=upstream.status,
                     reason=upstream.reason,
-                    headers=_filter_response_headers(upstream.headers),
+                    headers=_filter_response_headers(upstream.headers),  # strip headers set by xpra html
                 )
                 await response.prepare(request)
                 async for chunk in upstream.content.iter_chunked(64 * 1024):
@@ -166,8 +165,9 @@ async def _proxy_http(request: web.Request) -> web.StreamResponse:
 
 
 async def _proxy_websocket(request: web.Request) -> web.WebSocketResponse:
+    """Do the websocket back an forth in the iFrame"""
     socket_path = _get_upstream_target(request)
-    upstream_url = _build_upstream_url(request)
+    upstream_url = _build_upstream_url(request)  # the URL where Xpra html5 is sitting
 
     client_ws = web.WebSocketResponse(heartbeat=30.0)
     await client_ws.prepare(request)
@@ -238,22 +238,26 @@ async def _proxy_websocket(request: web.Request) -> web.WebSocketResponse:
 
 
 async def interactive_view_redirect(request: web.Request) -> web.Response:
+    """Just redirects from /view to -> view/"""
     capture_uuid = request.match_info['capture_uuid']
     raise web.HTTPFound(f'/interactive/{capture_uuid}/view/')
 
 
 async def interactive_view_metadata(request: web.Request) -> web.Response:
+    """Query Lacus for the matadata"""
     capture_uuid = request.match_info['capture_uuid']
     return await _proxy_api_request(request, f'/interactive/{capture_uuid}')
 
 
 async def interactive_view_finish(request: web.Request) -> web.Response:
+    """Triggers Lacus to terminate the capture"""
     capture_uuid = request.match_info['capture_uuid']
     return await _proxy_api_request(request, f'/interactive/{capture_uuid}/finish')
 
 
 @aiohttp_jinja2.template('wrapper.html')
 async def interactive_view_wrapper(request: web.Request) -> dict[str, str]:
+    """Renders the page with the iframe"""
     capture_uuid = request.match_info['capture_uuid']
     lacus: Lacus = request.app['lacus']
     if lacus.core.get_session_metadata(capture_uuid):
@@ -265,11 +269,15 @@ async def interactive_view_wrapper(request: web.Request) -> dict[str, str]:
 
 
 async def interactive_view_proxy(request: web.Request) -> web.StreamResponse:
-    """Proxy the public interactive view route to the per-session xpra socket."""
+    """Proxy the public interactive view route to the per-session xpra socket.
+    Passes everything from the wrapper to nd from the xpra view in the iframe
+    """
     connection = request.headers.get('Connection', '')
     upgrade = request.headers.get('Upgrade', '')
     if 'upgrade' in connection.lower() and upgrade.lower() == 'websocket':
+        # That's the actual interactions
         return await _proxy_websocket(request)
+    # the proxy_http is used to get the static stuff used by xpra html to render the view
     return await _proxy_http(request)
 
 
