@@ -3,19 +3,19 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Interactive Capture __CAPTURE_UUID__</title>
-    <link rel="stylesheet" href="__ASSET_BASE__/wrapper.css">
+    <title>Interactive Capture {{capture_uuid}}</title>
+    <link rel="stylesheet" href="{{ static('wrapper.css') }}">
 </head>
 <body
-    data-capture-uuid="__CAPTURE_UUID__"
-    data-session-url="__SESSION_URL__"
-    data-metadata-url="__METADATA_URL__"
-    data-finish-url="__FINISH_URL__"
+    data-capture-uuid="{{capture_uuid}}"
+    data-session-url="{{session_url}}"
+    data-metadata-url="{{url('metadata', capture_uuid=capture_uuid)}}"
+    data-finish-url="{{url('finish', capture_uuid=capture_uuid)}}"
 >
     <div class="shell">
         <section class="toolbar">
             <div class="brand">
-                <img class="brand-logo" src="__ASSET_BASE__/LACUS.png" alt="Lacus">
+              <img class="brand-logo" src="{{ static('LACUS.png') }}" alt="Lacus">
             </div>
             <div class="headline">
                 <div class="eyebrow">Interactive Session</div>
@@ -24,7 +24,7 @@
                     <div id="status-badge" class="badge" data-state="starting">Loading status</div>
                 </div>
                 <div class="meta">
-                    <span><strong>UUID</strong> <span id="capture-uuid">__CAPTURE_UUID__</span></span>
+                    <span><strong>UUID</strong> <span id="capture-uuid">{{capture_uuid}}</span></span>
                     <span><strong>Finish</strong> <span id="finish-state">not requested</span></span>
                     <span><strong>Expires</strong> <span id="expires-at">checking...</span></span>
                 </div>
@@ -35,7 +35,7 @@
             </div>
         </section>
         <section class="frame-wrap">
-            <iframe id="session-frame" title="Interactive capture session" src="__SESSION_URL__"></iframe>
+            <iframe id="session-frame" title="Interactive capture session" src="{{session_url}}"></iframe>
             <div id="session-overlay" class="session-overlay" hidden>
                 <div class="overlay-card" data-tone="neutral">
                     <div id="overlay-eyebrow" class="overlay-eyebrow">Interactive Session</div>
@@ -45,6 +45,6 @@
             </div>
         </section>
     </div>
-    <script src="__ASSET_BASE__/wrapper.js"></script>
+    <script src="{{ static('wrapper.js') }}"></script>
 </body>
 </html>

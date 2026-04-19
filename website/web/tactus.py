@@ -3,9 +3,10 @@
 from __future__ import annotations
 
 import asyncio
-import html
-from functools import lru_cache
 from pathlib import Path
+
+import aiohttp_jinja2
+import jinja2
 
 from aiohttp import ClientSession, ClientTimeout, UnixConnector, WSMsgType, web
 from aiohttp.client_exceptions import ClientConnectionResetError, ClientError, UnixClientConnectorError
@@ -13,12 +14,11 @@ from multidict import CIMultiDictProxy
 
 from lacus.default import get_config, get_homedir
 from lacus.lacus import Lacus
-from lacuscore.helpers import SessionMetadata, SessionStatus
+from lacuscore.helpers import SessionStatus
 
 
 ASSET_DIR = Path(__file__).resolve().parent / 'tactus_assets'
 STATIC_ASSET_DIR = ASSET_DIR / 'static'
-WRAPPER_TEMPLATE_PATH = ASSET_DIR / 'wrapper.html'
 STATIC_URL_PREFIX = '/interactive/assets'
 
 HOP_BY_HOP_HEADERS = {
@@ -60,14 +60,10 @@ def _filter_response_headers(headers: CIMultiDictProxy[str]) -> dict[str, str]:
 
 # End of questionable methods
 
-def _get_session_metadata(capture_uuid: str, lacus: Lacus) -> SessionMetadata | None:
-    return lacus.core.get_session_metadata(capture_uuid)
-
-
 def _get_upstream_target(request: web.Request) -> str:
     lacus: Lacus = request.app['lacus']
     capture_uuid = request.match_info['capture_uuid']
-    session_metadata = _get_session_metadata(capture_uuid, lacus)
+    session_metadata = lacus.core.get_session_metadata(capture_uuid)
     if not session_metadata:
         raise web.HTTPNotFound(text=f'No interactive session metadata for capture UUID {capture_uuid}.')
 
@@ -180,7 +176,9 @@ async def _proxy_websocket(request: web.Request) -> web.WebSocketResponse:
     timeout = ClientTimeout(total=300)
     async with ClientSession(connector=connector, timeout=timeout) as session:
         try:
-            async with session.ws_connect(upstream_url, headers=_filter_request_headers(request.headers), heartbeat=30.0) as upstream_ws:
+            async with session.ws_connect(upstream_url,
+                                          headers=_filter_request_headers(request.headers),
+                                          heartbeat=30.0) as upstream_ws:
                 async def client_to_upstream() -> None:
                     try:
                         async for msg in client_ws:
@@ -254,37 +252,16 @@ async def interactive_view_finish(request: web.Request) -> web.Response:
     return await _proxy_api_request(request, f'/interactive/{capture_uuid}/finish')
 
 
-def _render_wrapper_html(capture_uuid: str) -> str:
-    # The wrapper uses view-local convenience routes that proxy to the canonical API.
-    finish_url = f'/interactive/{capture_uuid}/view/finish'
-    metadata_url = f'/interactive/{capture_uuid}/view/metadata'
-    session_url = f'/interactive/{capture_uuid}/view/session/'
-    template = _load_wrapper_template()
-    replacements = {
-        '__CAPTURE_UUID__': html.escape(capture_uuid, quote=True),
-        '__SESSION_URL__': html.escape(session_url, quote=True),
-        '__METADATA_URL__': html.escape(metadata_url, quote=True),
-        '__FINISH_URL__': html.escape(finish_url, quote=True),
-        '__ASSET_BASE__': STATIC_URL_PREFIX,
-    }
-    for placeholder, value in replacements.items():
-        template = template.replace(placeholder, value)
-    return template
-
-
-@lru_cache(maxsize=1)
-def _load_wrapper_template() -> str:
-    return WRAPPER_TEMPLATE_PATH.read_text(encoding='utf-8')
-
-
-async def interactive_view_wrapper(request: web.Request) -> web.Response:
+@aiohttp_jinja2.template('wrapper.html')
+async def interactive_view_wrapper(request: web.Request) -> dict[str, str]:
     capture_uuid = request.match_info['capture_uuid']
     lacus: Lacus = request.app['lacus']
-    metadata = _get_session_metadata(capture_uuid, lacus)
-    if not metadata:
-        raise web.HTTPNotFound(text=f'No interactive session metadata for capture UUID {capture_uuid}.')
-
-    return web.Response(text=_render_wrapper_html(capture_uuid), content_type='text/html')
+    if lacus.core.get_session_metadata(capture_uuid):
+        return {
+            'capture_uuid': capture_uuid,
+            'session_url': f'/interactive/{capture_uuid}/view/session/',
+        }
+    raise web.HTTPNotFound(text=f'No interactive session metadata for capture UUID {capture_uuid}.')
 
 
 async def interactive_view_proxy(request: web.Request) -> web.StreamResponse:
@@ -299,11 +276,13 @@ async def interactive_view_proxy(request: web.Request) -> web.StreamResponse:
 def make_app() -> web.Application:
     get_homedir()
     app = web.Application()
+    aiohttp_jinja2.setup(app, loader=jinja2.FileSystemLoader(ASSET_DIR))
+    app[aiohttp_jinja2.static_root_key] = STATIC_URL_PREFIX
     app['lacus'] = Lacus()
     app.router.add_static(f'{STATIC_URL_PREFIX}/', STATIC_ASSET_DIR)
-    app.router.add_get('/interactive/{capture_uuid}/view', interactive_view_redirect)
-    app.router.add_get('/interactive/{capture_uuid}/view/', interactive_view_wrapper)
-    app.router.add_get('/interactive/{capture_uuid}/view/metadata', interactive_view_metadata)
-    app.router.add_post('/interactive/{capture_uuid}/view/finish', interactive_view_finish)
+    app.router.add_get('/interactive/{capture_uuid}/view', interactive_view_redirect, name='view')
+    app.router.add_get('/interactive/{capture_uuid}/view/', interactive_view_wrapper, name='wrapper')
+    app.router.add_get('/interactive/{capture_uuid}/view/metadata', interactive_view_metadata, name='metadata')
+    app.router.add_post('/interactive/{capture_uuid}/view/finish', interactive_view_finish, name='finish')
     app.router.add_route('*', '/interactive/{capture_uuid}/view/session/{tail:.*}', interactive_view_proxy)
     return app
