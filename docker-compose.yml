@@ -4,5 +4,6 @@ services:
     container_name: lacus
     ports:
       - "7100:7100"
+      - "7101:7101"
     volumes:
       - ./config:/app/lacus/config

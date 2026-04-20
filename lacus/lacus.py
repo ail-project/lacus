@@ -41,6 +41,11 @@ class Lacus():
 
         self.headed_allowed = get_config('generic', 'allow_headed')
 
+        if remote_headed_settings := get_config('generic', 'remote_headed_settings'):
+            self.remote_headed_allowed = remote_headed_settings.get('allow_remote_headed', False)
+            self.remote_headed_backend_type = remote_headed_settings.get('backend_type')
+            self.public_base_url = remote_headed_settings.get('public_base_url')
+
         if tt_settings := get_config('generic', 'trusted_timestamp_settings'):
             self.tt_default_enabled = tt_settings.get('enable_default', False)
         else:
@@ -55,6 +60,8 @@ class Lacus():
                               max_retries=get_config('generic', 'max_retries'),
                               tt_settings=get_config('generic', 'trusted_timestamp_settings'),
                               headed_allowed=self.headed_allowed,
+                              remote_headed_allowed=self.remote_headed_allowed,
+                              remote_headed_backend_type=self.remote_headed_backend_type
                               )
 
         self.monitoring = LacusCoreMonitoring(self.redis_decode)
@@ -85,6 +92,9 @@ class Lacus():
         return {'total_keys': redis_info['db0']['keys'] if 'db0' in redis_info else 0,
                 'current_memory_use': redis_info['used_memory_rss_human'],
                 'peak_memory_use': redis_info['used_memory_peak_human']}
+
+    def make_remote_headed_base_url(self, capture_uuid: str) -> str:
+        return f'{self.public_base_url}/interactive/{capture_uuid}/view'
 
     @property
     def is_busy(self) -> bool:

@@ -16,6 +16,7 @@ from flask_restx import Api, Resource, fields  # type: ignore[import-untyped]
 
 from lookyloo_models import CaptureSettingsError
 from lacuscore import CaptureStatus, CaptureResponse
+from lacuscore.helpers import SessionStatus, SessionMetadata
 
 from lacus.default import get_config
 from lacus.lacus import Lacus
@@ -112,6 +113,7 @@ submit_fields_post = api.model('SubmitFieldsPost', {
     'headless': fields.Boolean(description="If false, run the browser in headed mode. Requires a graphical environment", example=True),
     'init_script': fields.String(description="A JavaScript to execute on each captured page", example="console.log('This is a test');"),
     'max_retries': fields.Integer(description=f"The maximum anount of retries for this capture (any value higher than {max_retries} will be ignored).", example=max_retries),
+    'remote_headfull': fields.Boolean(description="If true, enqueue a headed remote capture session.", example=False),
     'force': fields.Boolean(description="Force a capture, even if the same one was already done recently", example=False),
     'recapture_interval': fields.Integer(description="The minimal interval to re-trigger a capture, unless force is True", example=300),
     'final_wait': fields.Integer(description="The very last wait time, after the instrumentation is done.", example=5),
@@ -126,6 +128,8 @@ class Enqueue(Resource):  # type: ignore[misc]
     @api.produces(['text/text'])  # type: ignore[untyped-decorator]
     def post(self) -> str:
         to_query: dict[str, Any] = request.get_json(force=True)
+        if to_query.get('remote_headfull') and not lacus.remote_headed_allowed:
+            api.abort(403, 'Remote headfull captures are disabled by configuration.')
         if proxy := to_query.get('proxy'):
             if proxy_settings := lacus.get_proxy_settings(proxy):
                 to_query['proxy'] = proxy_settings['proxy_url']
@@ -161,6 +165,7 @@ class Enqueue(Resource):  # type: ignore[misc]
             init_script=to_query.get('init_script'),
             max_retries=to_query.get('max_retries'),
             rendered_hostname_only=to_query.get('rendered_hostname_only', True),
+            remote_headfull=to_query.get('remote_headfull', False),
             force=to_query.get('force', False),
             recapture_interval=to_query.get('recapture_interval', 300),
             final_wait=to_query.get('final_wait', 5),
@@ -186,6 +191,90 @@ class CaptureResult(Resource):  # type: ignore[misc]
 
     def get(self, capture_uuid: str) -> CaptureResponse:
         return lacus.core.get_capture(capture_uuid)
+
+
+remote_headed_status_model = api.model('SessionStatusModel', {
+    'uuid': fields.String(description='Capture UUID associated with the remote headed session'),
+    'status': fields.String(description='High-level remote headed session status (unknown, starting, ready, error, stopped, expired).'),
+    'raw_status': fields.Integer(description='Numeric SessionStatus value as stored in Redis.'),
+    'finish_requested': fields.Boolean(description='Whether a final capture was requested for this session.'),
+    'view_url': fields.String(description='Optional public URL to open in a browser to view the session, if configured by the deployment.'),
+    'created_at': fields.Integer(description='Unix timestamp when the remote headed session was created'),
+    'expires_at': fields.Integer(description='Unix timestamp when the remote headed session will expire'),
+})
+
+
+def _session_status_to_str(status: int) -> str:
+    mapping = {
+        int(SessionStatus.UNKNOWN): 'unknown',
+        int(SessionStatus.STARTING): 'starting',
+        int(SessionStatus.READY): 'ready',
+        int(SessionStatus.ERROR): 'error',
+        int(SessionStatus.STOPPED): 'stopped',
+        int(SessionStatus.EXPIRED): 'expired',
+    }
+    return mapping.get(status, 'unknown')
+
+
+@api.route('/interactive/<string:capture_uuid>')
+@api.doc(description='Get the status and public view details for a remote headed capture session.',
+         params={'capture_uuid': 'The UUID of the remote headfull capture'})
+class RemoteHeadedSession(Resource):  # type: ignore[misc]
+
+    @api.marshal_with(remote_headed_status_model, skip_none=True)  # type: ignore[untyped-decorator]
+    def get(self, capture_uuid: str) -> dict[str, Any]:
+        if not lacus.remote_headed_allowed:
+            api.abort(403, 'Remote headfull captures are disabled by configuration.')
+        meta: SessionMetadata | None = lacus.core.get_session_metadata(capture_uuid)
+        if not meta:
+            api.abort(404, f'No remote headead session metadata for capture UUID {capture_uuid}.')
+            return {}  # unreachable; satisfies mypy after api.abort()
+
+        status_int = int(meta.get('status', int(SessionStatus.UNKNOWN)))
+        return {
+            'uuid': capture_uuid,
+            'status': _session_status_to_str(status_int),
+            'raw_status': status_int,
+            'finish_requested': bool(meta.get('finish_requested')),
+            'view_url': lacus.make_remote_headed_base_url(capture_uuid),
+            'created_at': meta.get('created_at'),
+            'expires_at': meta.get('expires_at'),
+        }
+
+
+@api.route('/interactive/<string:capture_uuid>/finish')
+@api.doc(description='Request a final capture of the current page for a remote headed session.',
+         params={'capture_uuid': 'The UUID of the remote headfull capture'})
+class RemoteHeadedFinish(Resource):  # type: ignore[misc]
+
+    def post(self, capture_uuid: str) -> tuple[dict[str, Any], int]:
+        if not lacus.remote_headed_allowed:
+            return {'error': 'Remote headfull captures are disabled by configuration.'}, 403
+        if not lacus.core.request_finish(capture_uuid):
+            return {'error': f'No remote headed session metadata for capture UUID {capture_uuid}.'}, 404
+
+        if meta := lacus.core.get_session_metadata(capture_uuid):
+            status_int = int(meta.get('status', int(SessionStatus.UNKNOWN)))
+            if status_int in (int(SessionStatus.STOPPED), int(SessionStatus.EXPIRED), int(SessionStatus.ERROR)):
+                return {
+                    'error': 'Remote headed session is not active; cannot request capture.',
+                    'status': _session_status_to_str(status_int),
+                    'raw_status': status_int,
+                }, 409
+
+            return {
+                'uuid': capture_uuid,
+                'status': _session_status_to_str(status_int),
+                'raw_status': status_int,
+                'finish_requested': True,
+            }, 202
+
+        status_int = int(SessionStatus.UNKNOWN)
+        return {
+            'error': 'Session unknown',
+            'status': _session_status_to_str(status_int),
+            'raw_status': status_int,
+        }, 409
 
 
 stats_model = api.model('StatsModel', {

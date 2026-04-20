@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Interactive Capture {{capture_uuid}}</title>
+    <link rel="stylesheet" href="{{ static('wrapper.css') }}">
+</head>
+<body
+    data-capture-uuid="{{capture_uuid}}"
+    data-session-url="{{session_url}}"
+    data-metadata-url="{{url('metadata', capture_uuid=capture_uuid)}}"
+    data-finish-url="{{url('finish', capture_uuid=capture_uuid)}}"
+>
+    <div class="shell">
+        <section class="toolbar">
+            <div class="brand">
+              <img class="brand-logo" src="{{ static('LACUS.png') }}" alt="Lacus">
+            </div>
+            <div class="headline">
+                <div class="eyebrow">Interactive Session</div>
+                <div class="title-row">
+                    <h1>Remote Capture Window</h1>
+                    <div id="status-badge" class="badge" data-state="starting">Loading status</div>
+                </div>
+                <div class="meta">
+                    <span><strong>UUID</strong> <span id="capture-uuid">{{capture_uuid}}</span></span>
+                    <span><strong>Finish</strong> <span id="finish-state">not requested</span></span>
+                    <span><strong>Expires</strong> <span id="expires-at">checking...</span></span>
+                </div>
+            </div>
+            <div class="actions">
+                <button id="finish-button" type="button">Finish Capture</button>
+                <div id="message" class="message"></div>
+            </div>
+        </section>
+        <section class="frame-wrap">
+            <iframe id="session-frame" title="Interactive capture session" src="{{session_url}}"></iframe>
+            <div id="session-overlay" class="session-overlay" hidden>
+                <div class="overlay-card" data-tone="neutral">
+                    <div id="overlay-eyebrow" class="overlay-eyebrow">Interactive Session</div>
+                    <h2 id="overlay-title">Finalizing capture</h2>
+                    <p id="overlay-body">The interactive browser view has been closed while Lacus finalizes the capture.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script src="{{ static('wrapper.js') }}"></script>
+</body>
+</html>

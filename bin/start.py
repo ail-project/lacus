@@ -19,6 +19,9 @@ def main() -> None:
     print('Start Capture manager...')
     Popen(['capture_manager'])
     print('done.')
+    print('Start tactus...')
+    Popen("tactus")
+    print('done.')
 
     # Is configured, start wireproxies
     if path_to_wireproxy := Path(get_config('generic', 'wireproxy_path')):

@@ -1,0 +1,23 @@
+[Unit]
+Description=lacus service
+After=network.target
+
+# If you deploy interactive sessions, enable the companion
+# lacus-tactus.service unit as well. The main Lacus service
+# remains the control plane; Tactus handles browser-facing /view/ traffic.
+
+[Service]
+User=<system user used to install the project>
+Group=<system user used to install the project>
+Type=forking
+WorkingDirectory=<path to the directory where you cloned the repository>
+Environment="PATH=<path to the directory where the poetry executable is>:/usr/bin"
+Environment="LACUS_HOME=<path to the directory where you cloned the repository>"
+ExecStart=/bin/bash -c "exec poetry run start"
+ExecStop=/bin/bash -c "exec poetry run stop"
+StandardOutput=append:/var/log/lacus_message.log
+StandardError=append:/var/log/lacus_error.log
+
+
+[Install]
+WantedBy=multi-user.target
