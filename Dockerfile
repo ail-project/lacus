@@ -2,14 +2,14 @@ FROM ubuntu:24.04
 
 # Build dependencies
 RUN apt-get update && apt-get -y install build-essential curl git python3 \
-    gnupg2 ca-certificates 
+    gnupg2 ca-certificates
 
-# Add xpra.org repo    
+# Add xpra.org repo
 RUN curl -s https://xpra.org/gpg.asc | apt-key add - \
     && echo "deb https://xpra.org/ noble main" > /etc/apt/sources.list.d/xpra.list
 
 # Install interactive session dependencies
-RUN apt-get update && apt-get -y install xpra xvfb 
+RUN apt-get update && apt-get -y install xpra xvfb
 
 RUN mkdir -p /app
 

@@ -193,29 +193,20 @@ The bundled wrapper assumes a same-origin deployment for its own UI assets and u
 
 ## Configuration
 
-If you want the Lacus API to return a browser-usable `view_url` in `GET /interactive/<uuid>`, set a public base URL template before starting lacus:
-
-```bash
-export LACUS_XPRA_PUBLIC_BASE_URL=http://127.0.0.1:8080/interactive/{uuid}/view/
-```
-
-For a deployment behind a third-party application or reverse proxy:
-
-```bash
-export LACUS_XPRA_PUBLIC_BASE_URL=https://thirdparty.example/interactive/{uuid}/view/
-```
-
-To enable interactive captures, set `allow_interactive` to `true` in `config/generic.json`. When this flag is set, `poetry run start` automatically launches Tactus alongside the main Lacus process.
-
-Tactus itself can be configured with:
+You need to configure the key `remote_headed_settings` in `config/generic.json`.
 
 ```json
-"allow_interactive": true,
-"tactus_listen_ip": "127.0.0.1",
-"tactus_listen_port": 7101
+  "remote_headed_settings": {
+      "allow_remote_headed": true,
+      "tactus_listen_ip": "127.0.0.1",
+      "tactus_listen_port": 7101,
+      "backend_type": "xpra",
+      "public_base_url": "http://127.0.0.1:7101"
+  }
 ```
+Set `allow_remote_headed` to true to enable the interactive interface, `tactus_listen_ip` and `tactus_listen_port` are the settings so lacus can connect to tactus.
 
-These keys live in `config/generic.json`.
+`public_base_url` is the base URL you'll use to open the interactive page.
 
 Sample reverse-proxy configurations are available in:
 
@@ -232,7 +223,7 @@ For supervisord deployments, a sample configuration that includes Tactus is avai
 
 - `/supervisord/supervisord-tactus.conf.sample`
 
-The internal xpra unix sockets are not meant to be exposed directly to end-users. If you do not set `LACUS_XPRA_PUBLIC_BASE_URL`, the API will still report session state, but `view_url` may be absent.
+The internal xpra unix sockets are not meant to be exposed directly to end-users.
 
 ## Usage
 
@@ -241,7 +232,7 @@ Enqueue an interactive capture:
 ```bash
 UUID=$(curl -s -X POST http://localhost:7100/enqueue \
   -H 'Content-Type: application/json' \
-  -d '{"url": "https://example.com", "interactive": true, "interactive_ttl": 600}')
+  -d '{"url": "https://example.com", "remote_headfull": true, "general_timeout_in_sec": 600}')
 echo "Session UUID: $UUID"
 ```
 
