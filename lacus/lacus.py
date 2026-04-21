@@ -45,6 +45,8 @@ class Lacus():
             self.remote_headed_allowed = remote_headed_settings.get('allow_remote_headed', False)
             self.remote_headed_backend_type = remote_headed_settings.get('backend_type')
             self.public_base_url = remote_headed_settings.get('public_base_url')
+        else:
+            self.remote_headed_allowed = False
 
         if tt_settings := get_config('generic', 'trusted_timestamp_settings'):
             self.tt_default_enabled = tt_settings.get('enable_default', False)
@@ -167,4 +169,16 @@ class Lacus():
 
     @cached_property
     def get_playwright_devices(self) -> dict[str, dict[str, dict[str, PlaywrightDevice]]]:
+        """The pre-configured devices provided by playwright"""
         return get_devices()
+
+    @cached_property
+    def get_settings(self) -> dict[str, str | bool | int]:
+        """The public settings for the instance"""
+        return {
+            "headed_allowed": self.headed_allowed,
+            "remote_headed_allowed": self.remote_headed_allowed,
+            "trusted_timestamps_default": self.tt_default_enabled,
+            "i2p_enabled": bool(get_config('generic', 'i2p_proxy')),
+            "tor_enabled": bool(get_config('generic', 'tor_proxy')),
+        }

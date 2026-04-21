@@ -386,6 +386,14 @@ class PlaywrightDevices(Resource):  # type: ignore[misc]
         return lacus.get_playwright_devices
 
 
+@api.route('/settings')
+@api.doc(description='Get the public settings of the instance.')
+class Settings(Resource):  # type: ignore[misc]
+
+    def get(self) -> dict[str, Any]:
+        return lacus.get_settings
+
+
 @api.route('/proxies')
 @api.doc(description='Get the list of pre-configured proxies.')
 class Proxies(Resource):  # type: ignore[misc]
