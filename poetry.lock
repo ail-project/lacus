@@ -879,14 +879,14 @@ files = [
 
 [[package]]
 name = "click"
-version = "8.3.2"
+version = "8.3.3"
 description = "Composable command line interface toolkit"
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "click-8.3.2-py3-none-any.whl", hash = "sha256:1924d2c27c5653561cd2cae4548d1406039cb79b858b747cfea24924bbc1616d"},
-    {file = "click-8.3.2.tar.gz", hash = "sha256:14162b8b3b3550a7d479eafa77dfd3c38d9dc8951f6f69c78913a8f9a7540fd5"},
+    {file = "click-8.3.3-py3-none-any.whl", hash = "sha256:a2bf429bb3033c89fa4936ffb35d5cb471e3719e1f3c8a7c3fff0b8314305613"},
+    {file = "click-8.3.3.tar.gz", hash = "sha256:398329ad4837b2ff7cbe1dd166a4c0f8900c3ca3a218de04466f38f6497f18a2"},
 ]
 
 [package.dependencies]
@@ -2366,14 +2366,14 @@ black = ["black (>=25.9.0)"]
 
 [[package]]
 name = "playwrightcapture"
-version = "1.39.2"
+version = "1.39.4"
 description = "A simple library to capture websites using playwright"
 optional = false
 python-versions = "<3.15,>=3.10"
 groups = ["main"]
 files = [
-    {file = "playwrightcapture-1.39.2-py3-none-any.whl", hash = "sha256:8f2d435cf0e8486f837a7a11892fecde5c5327a9028a55aaa3d43f7f60ccb0e3"},
-    {file = "playwrightcapture-1.39.2.tar.gz", hash = "sha256:5f54ab8d0f8a3ee4d6ef82ad9e244dd302cd7ab6ac8adc4fe5e2dbd786a40716"},
+    {file = "playwrightcapture-1.39.4-py3-none-any.whl", hash = "sha256:4146b71ce206a6f75374cb969ba3f302718dbbcbce282abdb6bd8190f2b9b2dd"},
+    {file = "playwrightcapture-1.39.4.tar.gz", hash = "sha256:d4f921edad9df458f550502a4cecac618180221becd6226c1d27f40960dca5a0"},
 ]
 
 [package.dependencies]
@@ -2383,7 +2383,7 @@ async-timeout = {version = ">=5.0.1", markers = "python_version < \"3.11\""}
 beautifulsoup4 = {version = ">=4.14.3", extras = ["charset-normalizer", "lxml"]}
 charset-normalizer = ">=3.4.6,<4.0.0"
 dnspython = ">=2.7.0,<3.0.0"
-lookyloo-models = ">=0.2.1"
+lookyloo-models = ">=0.2.2"
 orjson = ">=3.11.4,<4.0.0"
 playwright = ">=1.58.0"
 playwright-stealth = ">=2.0.3"
@@ -4092,4 +4092,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.15"
-content-hash = "c3dee25cda6336b4f4eaf9e7b199eb7f87e601d072b3b7dcaabec6e98e657de8"
+content-hash = "c26e9dcb4ba29e7b18854ecd5ed4519dd2293ca8b9c063510f0bfb915cb93c8a"
