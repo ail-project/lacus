@@ -5,6 +5,9 @@
 A capturing system using playwright, as a web service.
 
 # Install guide with Docker or Podman
+
+**This install method is not very well supported, use only if you know what you're doing, and are ready to debug issues you may encounter**
+
 To run lacus using docker or podman you need docker installed or podman and podman-compose:
 
 ```
@@ -121,7 +124,7 @@ where you will find the API and can start playing with it.
 
 ## Annoying repetitive log entries
 
-If you have recurring messages like the ones below you can remove the uuid from the queue as follows. Note that it is probabli simply due to an unclean stop of lacus and they will be removed automatically after a while
+If you have recurring messages like the ones below you can remove the uuid from the queue as follows. Note that it is probably due to an unclean stop of lacus and they will be removed automatically after a while
 
 ```
 2023-11-17 08:00:59,936 LacusCore WARNING:[ef7f653d-4cfd-4e7b-9b91-58c9c2658868] Attempted to clear capture that is still being processed.
@@ -144,7 +147,7 @@ valkey cache/cache.sock>
 
 ## Error mentioning missing system dependencies
 
-On an initial install, we tell you to run `playwright install-deps`. After updating an existing lacus instance, you may have to do that again if new ones are required by playwright.
+On an initial install, we tell you to run `playwright install-deps`. After updating an existing lacus instance, you may have to do that again if new ones are required by playwright. This call isn't executed automatically because it will use `sudo` and if the user requires a password, it will block the update script.
 
 It that's the case, run the following command from the lacus directory:
 
@@ -154,12 +157,11 @@ poetry run playwright install-deps
 
 # Interactive sessions (xpra)
 
-Lacus supports interactive capture sessions powered by [xpra](https://xpra.org). In an interactive session the browser is displayed inside a virtual X display managed by xpra. You can connect to it via a browser-based HTML5 client, interact with the page (log in, solve CAPTCHAs, etc.), and then trigger a normal capture once the page is in the desired state.
+Lacus supports interactive capture sessions powered by [xpra](https://xpra.org). In an interactive session the browser is displayed inside a virtual X display managed by xpra. You can connect to it via a browser-based HTML5 client, interact with the page (log in, solve CAPTCHAs, etc.), and finalize the capture once the page is in the desired state.
 
 ## Additional system dependencies
 
-On Ubuntu 24.04, add the xpra.org repository and install the interactive
-session dependencies:
+On Ubuntu 24.04, add the xpra.org repository and install the dependencies:
 
 ```bash
 curl -s https://xpra.org/gpg.asc | sudo apt-key add -
@@ -176,16 +178,15 @@ sudo apt install xpra xvfb
 > sudo systemctl disable --now xpra-server.socket
 > ```
 
-## Running Tactus
+## Implementation details
 
-Each interactive capture starts its own short-lived xpra server bound to a private unix socket. The Lacus API remains the control plane: it enqueues interactive captures, reports session state, and accepts the final `finish` signal. Tactus, the Lacus interactive sidecar, proxies `/interactive/<uuid>/view/` traffic to the matching xpra socket so you can view the HTML5 client in a browser.
+Each interactive capture starts its own short-lived xpra server bound to a private unix socket. Lacus remains the captures controller: it enqueues interactive captures, reports session state, and accepts the final `finish` signal. The Lacus interactive interface (nicknamed tactus), proxies `/interactive/<uuid>/view/` traffic to the matching xpra socket so you can view the HTML5 client in a browser, inside an iFrame.
 
 This keeps the project boundaries:
 
 - `LacusCore` owns interactive session lifecycle and xpra transport details.
-- `lacus` exposes the control-plane API.
+- `lacus` exposes the API.
 - Tactus handles end-user browser traffic for the HTML5 client.
-
 
 By default, Tactus listens on `127.0.0.1:7101` and serves `/interactive/<uuid>/view/`, including the nested xpra transport under `/interactive/<uuid>/view/session/`.
 
@@ -206,7 +207,7 @@ You need to configure the key `remote_headed_settings` in `config/generic.json`.
 ```
 Set `allow_remote_headed` to true to enable the interactive interface, `tactus_listen_ip` and `tactus_listen_port` are the settings so lacus can connect to tactus.
 
-`public_base_url` is the base URL you'll use to open the interactive page.
+`public_base_url` is the base URL you'll use to open the interactive page. It is what the user will get when they request the interactive page.
 
 Sample reverse-proxy configurations are available in:
 
@@ -227,7 +228,7 @@ The internal xpra unix sockets are not meant to be exposed directly to end-users
 
 ## Usage
 
-Enqueue an interactive capture:
+Enqueue an interactive capture (or use PyLacus):
 
 ```bash
 UUID=$(curl -s -X POST http://localhost:7100/enqueue \
@@ -256,13 +257,15 @@ Retrieve the result (poll until status is not `"unknown"`):
 curl -s http://localhost:7100/capture_result/$UUID
 ```
 
-## Architectural note
+## Third-party integration
+
+### Architectural note
 
 Tactus exists to make interactive sessions testable and deployable without turning the main Lacus web app into a full HTML5/WebSocket proxy. If you already have a third-party application (e.g. LookyLoo, AIL, Pandora) that fronts Lacus, that application can provide the same `/interactive/<uuid>/view/` route itself and proxy to the Lacus-managed unix socket instead of using Tactus.
 
-## Third-party proxy contract
+### Integration steps
 
-If a third-party application fronts Lacus, the clean contract is:
+If a third-party application fronts Lacus, this is the approach to use:
 
 - `GET /interactive/<uuid>` on Lacus returns session state plus an optional deployment-facing `view_url`.
 - The third-party app serves `/interactive/<uuid>/view/` to end-users.
@@ -270,9 +273,9 @@ If a third-party application fronts Lacus, the clean contract is:
 - That route must proxy both HTTP and WebSocket traffic to the xpra server bound to the session's internal unix socket.
 - The raw unix socket path should stay internal to trusted infrastructure. It should not be exposed to normal end-users.
 
-The bundled `tactus` sidecar is only a reference implementation of that contract.
+The bundled `tactus` sidecar is a reference implementation.
 
-## Example deployment
+### Example deployment
 
 One clean deployment model is:
 
@@ -290,19 +293,3 @@ sudo systemctl start lacus.service lacus-tactus.service
 ```
 
 Finally, install the nginx sample and adjust `server_name`, TLS, and any access-control rules as needed for your environment.
-
----
-
-# Useful environment variables
-
-There are env varibles you can pass to help making better captures, or avoir captures to fail when they shouldn't:
-
-* `PW_TEST_SCREENSHOT_NO_FONTS_READY` avoids captures to get stuck on screenshot when the fonts don't load (https://github.com/microsoft/playwright/issues/28995)
-* `PLAYWRIGHT_CHROMIUM_USE_HEADLESS_NEW` improves stealth for chromium by using the new headless mode (a little bit slower): https://github.com/Lookyloo/PlaywrightCapture/issues/55
-
-To use them, you can run the capture manager this way:
-
-```bash
-
-PLAYWRIGHT_CHROMIUM_USE_HEADLESS_NEW=1 PW_TEST_SCREENSHOT_NO_FONTS_READY=1 capture_manager
-```
