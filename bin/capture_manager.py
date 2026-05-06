@@ -10,7 +10,6 @@ import signal
 from asyncio import Task
 from datetime import datetime, timedelta
 
-
 from lacus.default import AbstractManager, get_config
 from lacus.lacus import Lacus
 
@@ -76,6 +75,7 @@ class CaptureManager(AbstractManager):
 
 
 def main() -> None:
+
     p = CaptureManager()
 
     loop = asyncio.new_event_loop()
