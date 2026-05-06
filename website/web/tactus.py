@@ -8,7 +8,7 @@ from pathlib import Path
 import aiohttp_jinja2
 import jinja2
 
-from urllib.parse import quote
+from urllib.parse import quote_plus
 
 from aiohttp import ClientSession, ClientTimeout, UnixConnector, WSMsgType, web
 from aiohttp.client_exceptions import ClientConnectionResetError, ClientError, UnixClientConnectorError
@@ -241,7 +241,7 @@ async def _proxy_websocket(request: web.Request) -> web.WebSocketResponse:
 
 async def interactive_view_redirect(request: web.Request) -> web.Response:
     """Just redirects from /view to -> view/"""
-    capture_uuid = quote(request.match_info['capture_uuid'])
+    capture_uuid = quote_plus(request.match_info['capture_uuid'])
     raise web.HTTPFound(f'/interactive/{capture_uuid}/view/')
 
 
