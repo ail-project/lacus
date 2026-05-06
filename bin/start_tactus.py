@@ -29,6 +29,7 @@ class TactusManager(AbstractManager):
     def __init__(self, loglevel: int | None=None) -> None:
         super().__init__(loglevel)
         self.script_name = 'tactus'
+        self.runner: web.AppRunner | None = None
 
         if remote_headed_settings := get_config('generic', 'remote_headed_settings'):
             if remote_headed_settings.get('allow_remote_headed', False):
@@ -44,7 +45,6 @@ class TactusManager(AbstractManager):
             return
 
         self.app = make_app()
-        self.runner: web.AppRunner | None = None
         self.site: web.BaseSite | None = None
 
     async def _to_run_forever_async(self) -> None:
