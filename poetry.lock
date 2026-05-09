@@ -2369,14 +2369,14 @@ black = ["black (>=25.9.0)"]
 
 [[package]]
 name = "playwrightcapture"
-version = "1.39.8"
+version = "1.39.9"
 description = "A simple library to capture websites using playwright"
 optional = false
 python-versions = "<3.15,>=3.10"
 groups = ["main"]
 files = [
-    {file = "playwrightcapture-1.39.8-py3-none-any.whl", hash = "sha256:d5339a90d1e05b2a11fb3f51e6dd90694966474bb3d7a7356ad10b46acfc61c8"},
-    {file = "playwrightcapture-1.39.8.tar.gz", hash = "sha256:5f6314a1d6c476a6897bcc40f7b04e257cbd910667b6d29cf05027302a634935"},
+    {file = "playwrightcapture-1.39.9-py3-none-any.whl", hash = "sha256:b86af695b4d0d443d312d551b5cd7dc17ecf3f6bb6ef9d31ebb617ad0eb779a7"},
+    {file = "playwrightcapture-1.39.9.tar.gz", hash = "sha256:cf52c43d68f106ee86f89c917fd54d15aa649e8e2bb51909e294803591e6675f"},
 ]
 
 [package.dependencies]
@@ -2386,7 +2386,7 @@ async-timeout = {version = ">=5.0.1", markers = "python_version < \"3.11\""}
 beautifulsoup4 = {version = ">=4.14.3", extras = ["charset-normalizer", "lxml"]}
 charset-normalizer = ">=3.4.6,<4.0.0"
 dnspython = ">=2.7.0,<3.0.0"
-lookyloo-models = ">=0.2.6"
+lookyloo-models = ">=0.2.7"
 orjson = ">=3.11.4,<4.0.0"
 playwright = ">=1.59.0"
 playwright-stealth = ">=2.0.3"
@@ -4235,4 +4235,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.15"
-content-hash = "ccae12ac420dee776617720709c6d9c0b37603e6bef94b99d72a14107e7ed6f2"
+content-hash = "5fe91f7377dfd2f63e25eeee8763b0e76bfe00800d37a7e24d73fde48f9f5ff2"
