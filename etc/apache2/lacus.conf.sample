@@ -14,9 +14,11 @@
 
     # Normal HTTP requests for the same interactive view subtree also go to Tactus.
     ProxyPassMatch ^/interactive/[^/]+/view(?:/.*)?$ http://127.0.0.1:7101
+    ProxyPassMatch ^/interactive/assets(?:/.*)?$ http://127.0.0.1:7101
     ProxyPassReverse /interactive/ http://127.0.0.1:7101/interactive/
 
     # All other control-plane API requests go to the main Lacus application.
+    # optional, only if you want to expose lacus too.
     ProxyPass / http://127.0.0.1:7100/
     ProxyPassReverse / http://127.0.0.1:7100/
 </VirtualHost>
