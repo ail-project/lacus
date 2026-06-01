@@ -38,9 +38,11 @@ class TactusManager(AbstractManager):
             else:
                 # Just stop
                 self.force_stop = True
+                self.logger.warning("allow_remote_headed is False")
                 return
         else:
             # Not configured at all
+            self.logger.warning("allow_remote_headed is not configured")
             self.force_stop = True
             return
 
