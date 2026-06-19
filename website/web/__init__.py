@@ -21,6 +21,8 @@ from lacuscore.helpers import SessionStatus, SessionMetadata
 from lacus.default import get_config
 from lacus.lacus import Lacus
 
+from werkzeug.routing import BaseConverter
+
 from .helpers import get_secret_key
 from .proxied import ReverseProxied
 
@@ -33,6 +35,17 @@ app: Flask = Flask(__name__)
 app.wsgi_app = ReverseProxied(app.wsgi_app)  # type: ignore[method-assign]
 
 app.config['SECRET_KEY'] = get_secret_key()
+
+
+# Make sure the UUIDs are UUIDs, but keep them as string
+class UUIDConverter(BaseConverter):
+    regex = (
+        r"[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-"
+        r"[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}"
+    )
+
+
+app.url_map.converters['uuid'] = UUIDConverter
 
 api = Api(app, title='Lacus API',
           description='API to query lacus.',
@@ -175,7 +188,7 @@ class Enqueue(Resource):  # type: ignore[misc]
         return perma_uuid
 
 
-@api.route('/capture_status/<string:capture_uuid>')
+@api.route('/capture_status/<uuid:capture_uuid>')
 @api.doc(description='Get the status of a capture.',
          params={'capture_uuid': 'The UUID of the capture'})
 class CaptureStatusQuery(Resource):  # type: ignore[misc]
@@ -184,7 +197,7 @@ class CaptureStatusQuery(Resource):  # type: ignore[misc]
         return lacus.core.get_capture_status(capture_uuid)
 
 
-@api.route('/capture_result/<string:capture_uuid>')
+@api.route('/capture_result/<uuid:capture_uuid>')
 @api.doc(description='Get the result of a capture.',
          params={'capture_uuid': 'The UUID of the capture'})
 class CaptureResult(Resource):  # type: ignore[misc]
@@ -216,7 +229,7 @@ def _session_status_to_str(status: int) -> str:
     return mapping.get(status, 'unknown')
 
 
-@api.route('/interactive/<string:capture_uuid>')
+@api.route('/interactive/<uuid:capture_uuid>')
 @api.doc(description='Get the status and public view details for a remote headed capture session.',
          params={'capture_uuid': 'The UUID of the remote headfull capture'})
 class RemoteHeadedSession(Resource):  # type: ignore[misc]
@@ -242,7 +255,7 @@ class RemoteHeadedSession(Resource):  # type: ignore[misc]
         }
 
 
-@api.route('/interactive/<string:capture_uuid>/finish')
+@api.route('/interactive/<uuid:capture_uuid>/finish')
 @api.doc(description='Request a final capture of the current page for a remote headed session.',
          params={'capture_uuid': 'The UUID of the remote headfull capture'})
 class RemoteHeadedFinish(Resource):  # type: ignore[misc]
