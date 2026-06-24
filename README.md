@@ -161,13 +161,13 @@ Lacus supports interactive capture sessions powered by [xpra](https://xpra.org).
 
 ## Additional system dependencies
 
-On Ubuntu 24.04, add the xpra.org repository and install the dependencies:
+On Ubuntu 24.04 or more recent (preferably, stick to LTS releases), add the xpra.org repository and install the dependencies:
 
 ```bash
 curl -s https://xpra.org/gpg.asc | sudo apt-key add -
-echo "deb https://xpra.org/ noble main" | sudo tee /etc/apt/sources.list.d/xpra.list
+echo "deb https://xpra.org/ `lsb_release -c -s` main" | sudo tee /etc/apt/sources.list.d/xpra.list
 sudo apt update
-sudo apt install xpra xvfb
+sudo apt install xpra xvfb xpra-html5
 ```
 
 > **Warning:** On desktop systems, installing xpra enables and starts a
