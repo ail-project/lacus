@@ -1578,21 +1578,21 @@ referencing = ">=0.31.0"
 
 [[package]]
 name = "lacuscore"
-version = "1.25.1"
+version = "1.25.2"
 description = "Core of Lacus, usable as a module"
 optional = false
 python-versions = "<3.15,>=3.10"
 groups = ["main"]
 files = [
-    {file = "lacuscore-1.25.1-py3-none-any.whl", hash = "sha256:5754664ad22569db96b5fd46aed1a7317bd3edf6e59768e87a7e1662539adee3"},
-    {file = "lacuscore-1.25.1.tar.gz", hash = "sha256:f5fdf87a53461ba67bf33ce64efb5be140d03575e4b299c66a42d61c66f254d1"},
+    {file = "lacuscore-1.25.2-py3-none-any.whl", hash = "sha256:cb05b169794d7db781c792fe0ed003faca5af8d08c6f785ea4f4971e7cbd3a9a"},
+    {file = "lacuscore-1.25.2.tar.gz", hash = "sha256:140b7d32caffd3c73d79fbdc36422b19688328a78c7f51b51f60a4040405803b"},
 ]
 
 [package.dependencies]
 async-timeout = {version = ">=5.0.1", markers = "python_version < \"3.11\""}
 dnspython = ">=2.8.0"
-lookyloo-models = ">=0.2.9"
-playwrightcapture = {version = ">=1.40.1", extras = ["recaptcha"]}
+lookyloo-models = ">=0.3.1"
+playwrightcapture = {version = ">=1.40.8", extras = ["recaptcha"]}
 pydantic = ">=2.13.4"
 redis = {version = ">=5.3.0,<6.0.0", extras = ["hiredis"]}
 typing-extensions = {version = ">=4.12.2,<5.0.0", markers = "python_version < \"3.12\""}
@@ -2447,14 +2447,14 @@ black = ["black (>=25.9.0)"]
 
 [[package]]
 name = "playwrightcapture"
-version = "1.40.7"
+version = "1.40.8"
 description = "A simple library to capture websites using playwright"
 optional = false
 python-versions = "<3.15,>=3.10"
 groups = ["main"]
 files = [
-    {file = "playwrightcapture-1.40.7-py3-none-any.whl", hash = "sha256:67ac118d5fbc6865d9a887ae38f135846cf52aadea63251197a5cab3eabb7c44"},
-    {file = "playwrightcapture-1.40.7.tar.gz", hash = "sha256:20691e6b5df2ff5de6b291d368a388ef265439071644ca7b2c25da87e355ad6d"},
+    {file = "playwrightcapture-1.40.8-py3-none-any.whl", hash = "sha256:57b06b1efbf07e65be38325071a4c88151503cc3cc16a6b601a4e039a37cafa4"},
+    {file = "playwrightcapture-1.40.8.tar.gz", hash = "sha256:e2cd157eb2e9f3844d4efb0289989edbdb637ebdd03b5f694b46dd8bedbb08b7"},
 ]
 
 [package.dependencies]
@@ -4403,4 +4403,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.15"
-content-hash = "d2ee17b392cab68ade6ce05b1234fb1aebcaefe752297a68b3b62407efa9f6de"
+content-hash = "ece0329c0407c5d85d1259632b00b289c1a4cede159e8199d0569caa7a34a33d"
