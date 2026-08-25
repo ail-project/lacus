@@ -20,6 +20,7 @@ from lacuscore import LacusCore, LacusCoreMonitoring
 from playwrightcapture import get_devices, PlaywrightDevice
 
 from .default import get_config, get_socket_path, get_homedir
+from .default.exceptions import ConfigError
 
 
 class Lacus():
@@ -71,6 +72,8 @@ class Lacus():
         self.global_proxy = {}
         if global_proxy := get_config('generic', 'global_proxy'):
             if global_proxy.get('enable'):
+                if not global_proxy.get('server'):
+                    raise ConfigError(f'Invalid config for global proxy: {global_proxy}')
                 self.global_proxy = copy.copy(global_proxy)
                 self.global_proxy.pop('enable')
 
