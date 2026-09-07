@@ -30,6 +30,9 @@
                 </div>
             </div>
             <div class="actions">
+                {%if callback_url %}
+                <a href={{callback_url}}><button id="back-button" type="button">Go back</button></a>
+                {% endif %}
                 <button id="finish-button" type="button">Finish Capture</button>
                 <div id="message" class="message"></div>
             </div>

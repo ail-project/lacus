@@ -242,7 +242,7 @@ async def _proxy_websocket(request: web.Request) -> web.WebSocketResponse:
 async def interactive_view_redirect(request: web.Request) -> web.Response:
     """Just redirects from /view to -> view/"""
     capture_uuid = quote_plus(request.match_info['capture_uuid'])
-    raise web.HTTPFound(f'/interactive/{capture_uuid}/view/')
+    raise web.HTTPFound(f'/interactive/{capture_uuid}/view/?{request.query_string}')
 
 
 async def interactive_view_metadata(request: web.Request) -> web.Response:
@@ -266,6 +266,7 @@ async def interactive_view_wrapper(request: web.Request) -> dict[str, str]:
         return {
             'capture_uuid': capture_uuid,
             'session_url': f'/interactive/{capture_uuid}/view/session/',
+            'callback_url': request.query.get('callback')
         }
     raise web.HTTPNotFound(text=f'No interactive session metadata for capture UUID {capture_uuid}.')
 
