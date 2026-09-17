@@ -266,7 +266,7 @@ async def interactive_view_wrapper(request: web.Request) -> dict[str, str]:
         return {
             'capture_uuid': capture_uuid,
             'session_url': f'/interactive/{capture_uuid}/view/session/',
-            'callback_url': request.query.get('callback')
+            'callback_url': request.query.get('callback', '')
         }
     raise web.HTTPNotFound(text=f'No interactive session metadata for capture UUID {capture_uuid}.')
 

@@ -122,13 +122,18 @@ class Lacus():
         to_return['enqueued_captures'] = len(enqueued_captures)
         return to_return
 
-    def get_proxy_settings(self, name: str) -> dict[str, Any]:
+    def get_proxy_settings(self, name: str | dict[str, str]) -> dict[str, Any]:
         """
         Get a proxy from the configuration.
         """
-        proxy = self.get_proxies()
-        if name in proxy:
-            return proxy[name]
+        if isinstance(name, dict):
+            name = name.get('server', '')
+        if not name:
+            self.logger.warning(f'No proxy name provided, cannot get the settings: {name}')
+            return {}
+        proxies = self.get_proxies()
+        if name in proxies:
+            return proxies[name]
         return {}
 
     def _check_proxies_ports_open(self, proxies: dict[str, Any]) -> dict[str, Any]:
