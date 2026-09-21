@@ -1829,20 +1829,21 @@ files = [
 
 [[package]]
 name = "lookyloo-models"
-version = "0.3.1"
+version = "0.4.3"
 description = "All the Pydantic models used across Lookyloo"
 optional = false
 python-versions = "<4,>=3.10"
 groups = ["main"]
 files = [
-    {file = "lookyloo_models-0.3.1-py3-none-any.whl", hash = "sha256:575bed63434b6941b874171eebc5a6ae630fb49e0554dae51d7f04ea8923f42c"},
-    {file = "lookyloo_models-0.3.1.tar.gz", hash = "sha256:119aa522551c588f005b638c138d589bd0ce44f01a3246c0ea91ca31e586207d"},
+    {file = "lookyloo_models-0.4.3-py3-none-any.whl", hash = "sha256:d4178641f053e703f748d29b0b6548db3d384df3ab81bb18048ab9f67e2dd709"},
+    {file = "lookyloo_models-0.4.3.tar.gz", hash = "sha256:6f5c48f3b777c51ff62713faeaa900edc191468c2f1c07de4b77346d3f289207"},
 ]
 
 [package.dependencies]
 dateparser = ">=1.4"
-orjson = ">=3.11"
+orjson = ">=3.12"
 pydantic = ">=2.13"
+pydantic-extra-types = ">=2.11.1"
 ua-parser = {version = ">=1.0", extras = ["regex"]}
 
 [[package]]
@@ -3119,6 +3120,32 @@ files = [
 
 [package.dependencies]
 typing-extensions = ">=4.14.1"
+
+[[package]]
+name = "pydantic-extra-types"
+version = "2.11.1"
+description = "Extra Pydantic types."
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+files = [
+    {file = "pydantic_extra_types-2.11.1-py3-none-any.whl", hash = "sha256:1722ea2bddae5628ace25f2aa685b69978ef533123e5638cfbddb999e0100ec1"},
+    {file = "pydantic_extra_types-2.11.1.tar.gz", hash = "sha256:46792d2307383859e923d8fcefa82108b1a141f8a9c0198982b3832ab5ef1049"},
+]
+
+[package.dependencies]
+pydantic = ">=2.5.2"
+typing-extensions = "*"
+
+[package.extras]
+all = ["cron-converter (>=1.2.2)", "pendulum (>=3.0.0,<4.0.0)", "phonenumbers (>=8,<10)", "pycountry (>=23)", "pymongo (>=4.0.0,<5.0.0)", "python-ulid (>=1,<2) ; python_version < \"3.9\"", "python-ulid (>=1,<4) ; python_version >= \"3.9\"", "pytz (>=2024.1)", "semver (>=3.0.2)", "semver (>=3.0.2,<3.1.0)", "tzdata (>=2024.1)", "uuid-utils (>=0.6.0) ; python_version < \"3.14\""]
+cron = ["cron-converter (>=1.2.2)"]
+pendulum = ["pendulum (>=3.0.0,<4.0.0)"]
+phonenumbers = ["phonenumbers (>=8,<10)"]
+pycountry = ["pycountry (>=23)"]
+python-ulid = ["python-ulid (>=1,<2) ; python_version < \"3.9\"", "python-ulid (>=1,<4) ; python_version >= \"3.9\""]
+semver = ["semver (>=3.0.2)"]
+uuid-utils = ["uuid-utils (>=0.6.0) ; python_version < \"3.14\""]
 
 [[package]]
 name = "pydub-ng"
@@ -4479,4 +4506,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.15"
-content-hash = "c17018f1d382c7c4df01aea38bde59f8d0e1f14e2dbde22a5bccda7762c025d8"
+content-hash = "3a5e5b39d3747c20c2d1dbfa91214b216cf0140d7cba2c22e56f4f10dd72f55e"
