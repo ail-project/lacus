@@ -3,12 +3,12 @@
 from __future__ import annotations
 
 import asyncio
+
 from pathlib import Path
+from uuid import UUID
 
 import aiohttp_jinja2
 import jinja2
-
-from urllib.parse import quote_plus
 
 from aiohttp import ClientSession, ClientTimeout, UnixConnector, WSMsgType, web
 from aiohttp.client_exceptions import ClientConnectionResetError, ClientError, UnixClientConnectorError
@@ -61,7 +61,7 @@ def _filter_response_headers(headers: CIMultiDictProxy[str]) -> dict[str, str]:
 def _get_upstream_target(request: web.Request) -> str:
     '''Returns the socket path'''
     lacus: Lacus = request.app['lacus']
-    capture_uuid = request.match_info['capture_uuid']
+    capture_uuid = str(UUID(request.match_info['capture_uuid']))
     session_metadata = lacus.core.get_session_metadata(capture_uuid)
     if not session_metadata:
         raise web.HTTPNotFound(text=f'No interactive session metadata for capture UUID {capture_uuid}.')
@@ -121,11 +121,21 @@ async def _proxy_api_request(request: web.Request, upstream_path: str) -> web.Re
 
 def _build_upstream_url(request: web.Request) -> str:
     """Sets the full to open in xpra html5"""
-    tail = request.match_info.get('tail', '')
-    path = f'/{tail}' if tail else '/'
-    if request.query_string:
-        path = f'{path}?{request.query_string}'
-    return f'http://localhost{path}'
+    path = '/'
+    if tail := request.match_info.get('tail', ''):
+        path += tail
+    # NOTE 2026-10-05: no need to pass the query string, it is not used
+    # if request.query_string:
+    #     path = f'{path}?{request.query_string}'
+
+    # Make sure the path is resolved and what we expect
+    p = Path(path).resolve()
+    authorized_paths = ['/', '/default-settings.txt', '/background.jpg', '/favicon.png']
+    authorized_dirs = ['/js', '/css', '/icons']
+    if str(p) in authorized_paths or any(p.is_relative_to(dir_path) for dir_path in authorized_dirs):
+        return f'http://localhost{p}'
+    else:
+        raise Exception(f'Invalid path: {p}')
 
 
 async def _proxy_http(request: web.Request) -> web.StreamResponse:
@@ -171,7 +181,7 @@ async def _proxy_websocket(request: web.Request) -> web.WebSocketResponse:
     socket_path = _get_upstream_target(request)
     upstream_url = _build_upstream_url(request)  # the URL where Xpra html5 is sitting
 
-    client_ws = web.WebSocketResponse(heartbeat=30.0)
+    client_ws = web.WebSocketResponse(heartbeat=30.0, protocols=('binary',))
     await client_ws.prepare(request)
 
     connector = UnixConnector(path=socket_path)
@@ -241,26 +251,30 @@ async def _proxy_websocket(request: web.Request) -> web.WebSocketResponse:
 
 async def interactive_view_redirect(request: web.Request) -> web.Response:
     """Just redirects from /view to -> view/"""
-    capture_uuid = quote_plus(request.match_info['capture_uuid'])
-    raise web.HTTPFound(f'/interactive/{capture_uuid}/view/?{request.query_string}')
+    capture_uuid = str(UUID(request.match_info['capture_uuid']))
+    redir_to = request.app.router['wrapper'].url_for(capture_uuid=capture_uuid)
+    if callback := request.query.get('callback', ''):
+        # making sure we don't pass arbitrary data to the wrapper.
+        redir_to = redir_to.with_query(callback=callback)
+    raise web.HTTPFound(location=redir_to)
 
 
 async def interactive_view_metadata(request: web.Request) -> web.Response:
     """Query Lacus for the matadata"""
-    capture_uuid = request.match_info['capture_uuid']
+    capture_uuid = str(UUID(request.match_info['capture_uuid']))
     return await _proxy_api_request(request, f'/interactive/{capture_uuid}')
 
 
 async def interactive_view_finish(request: web.Request) -> web.Response:
     """Triggers Lacus to terminate the capture"""
-    capture_uuid = request.match_info['capture_uuid']
+    capture_uuid = str(UUID(request.match_info['capture_uuid']))
     return await _proxy_api_request(request, f'/interactive/{capture_uuid}/finish')
 
 
 @aiohttp_jinja2.template('wrapper.html')
 async def interactive_view_wrapper(request: web.Request) -> dict[str, str]:
     """Renders the page with the iframe"""
-    capture_uuid = request.match_info['capture_uuid']
+    capture_uuid = str(UUID(request.match_info['capture_uuid']))
     lacus: Lacus = request.app['lacus']
     if lacus.core.get_session_metadata(capture_uuid):
         return {

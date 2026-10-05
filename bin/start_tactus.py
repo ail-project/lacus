@@ -26,7 +26,7 @@ by LacusCore.
 
 class TactusManager(AbstractManager):
 
-    def __init__(self, loglevel: int | None=None) -> None:
+    def __init__(self, loglevel: int | None=logging.WARNING) -> None:
         super().__init__(loglevel)
         self.script_name = 'tactus'
         self.runner: web.AppRunner | None = None
