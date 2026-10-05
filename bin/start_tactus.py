@@ -26,7 +26,7 @@ by LacusCore.
 
 class TactusManager(AbstractManager):
 
-    def __init__(self, loglevel: int | None=logging.WARNING) -> None:
+    def __init__(self, loglevel: int | None=None) -> None:
         super().__init__(loglevel)
         self.script_name = 'tactus'
         self.runner: web.AppRunner | None = None
@@ -54,7 +54,7 @@ class TactusManager(AbstractManager):
             return
 
         self.logger.info('Starting tactus on %s:%s', self.listen_ip, self.listen_port)
-        self.runner = web.AppRunner(self.app, access_log=self.logger)
+        self.runner = web.AppRunner(self.app, logger=self.logger, access_log=None)
         await self.runner.setup()
         self.site = web.TCPSite(self.runner, host=self.listen_ip, port=self.listen_port)
         await self.site.start()
