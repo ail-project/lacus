@@ -181,7 +181,7 @@ async def _proxy_websocket(request: web.Request) -> web.WebSocketResponse:
     socket_path = _get_upstream_target(request)
     upstream_url = _build_upstream_url(request)  # the URL where Xpra html5 is sitting
 
-    client_ws = web.WebSocketResponse(heartbeat=30.0, protocols=('binary',))
+    client_ws = web.WebSocketResponse(heartbeat=30.0, protocols=('binary',), compress=True, max_msg_size=0)
     await client_ws.prepare(request)
 
     connector = UnixConnector(path=socket_path)
@@ -189,6 +189,7 @@ async def _proxy_websocket(request: web.Request) -> web.WebSocketResponse:
     async with ClientSession(connector=connector, timeout=timeout) as session:
         try:
             async with session.ws_connect(upstream_url,
+                                          protocols=('binary',), compress=15, max_msg_size=0,
                                           headers=_filter_request_headers(request.headers),
                                           heartbeat=30.0) as upstream_ws:
                 async def client_to_upstream() -> None:
@@ -203,7 +204,7 @@ async def _proxy_websocket(request: web.Request) -> web.WebSocketResponse:
                             elif msg.type == WSMsgType.PONG:
                                 await upstream_ws.pong()
                             elif msg.type == WSMsgType.ERROR:
-                                print('client_ws connection closed with exception %s' % client_ws.exception())
+                                print('client_ws connection closed with error %s' % msg.data)
                                 break
                             elif msg.type in (WSMsgType.CLOSE, WSMsgType.CLOSING, WSMsgType.CLOSED, WSMsgType.ERROR):
                                 break
@@ -224,7 +225,7 @@ async def _proxy_websocket(request: web.Request) -> web.WebSocketResponse:
                             elif msg.type == WSMsgType.PONG:
                                 await client_ws.pong()
                             elif msg.type == WSMsgType.ERROR:
-                                print('upstream_ws connection closed with exception %s' % upstream_ws.exception())
+                                print('upstream_ws connection closed with error %s' % msg.data)
                                 break
                             elif msg.type in (WSMsgType.CLOSE, WSMsgType.CLOSING, WSMsgType.CLOSED, WSMsgType.ERROR):
                                 break
