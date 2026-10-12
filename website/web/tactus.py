@@ -202,6 +202,9 @@ async def _proxy_websocket(request: web.Request) -> web.WebSocketResponse:
                                 await upstream_ws.ping()
                             elif msg.type == WSMsgType.PONG:
                                 await upstream_ws.pong()
+                            elif msg.type == WSMsgType.ERROR:
+                                print('client_ws connection closed with exception %s' % client_ws.exception())
+                                break
                             elif msg.type in (WSMsgType.CLOSE, WSMsgType.CLOSING, WSMsgType.CLOSED, WSMsgType.ERROR):
                                 break
                     except (ClientConnectionResetError, ConnectionResetError):
@@ -220,6 +223,9 @@ async def _proxy_websocket(request: web.Request) -> web.WebSocketResponse:
                                 await client_ws.ping()
                             elif msg.type == WSMsgType.PONG:
                                 await client_ws.pong()
+                            elif msg.type == WSMsgType.ERROR:
+                                print('upstream_ws connection closed with exception %s' % upstream_ws.exception())
+                                break
                             elif msg.type in (WSMsgType.CLOSE, WSMsgType.CLOSING, WSMsgType.CLOSED, WSMsgType.ERROR):
                                 break
                     except (ClientConnectionResetError, ConnectionResetError):
