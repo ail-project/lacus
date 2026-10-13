@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+import logging
 
 from pathlib import Path
 from uuid import UUID
@@ -130,7 +131,9 @@ def _build_upstream_url(request: web.Request) -> str:
 
     # Make sure the path is resolved and what we expect
     p = Path(path).resolve()
-    authorized_paths = ['/', '/default-settings.txt', '/background.jpg', '/favicon.png']
+    authorized_paths = ['/', '/default-settings.txt', '/background.jpg', '/favicon.png',
+                        # when things fail.
+                        '/connect.html', '/Displays', '/DesktopMenu', '/Menu', '/Sessions', '/Info']
     authorized_dirs = ['/js', '/css', '/icons']
     if str(p) in authorized_paths or any(p.is_relative_to(dir_path) for dir_path in authorized_dirs):
         return f'http://localhost{p}'
@@ -178,6 +181,8 @@ async def _proxy_http(request: web.Request) -> web.StreamResponse:
 
 async def _proxy_websocket(request: web.Request) -> web.WebSocketResponse:
     """Do the websocket back an forth in the iFrame"""
+
+    logger = logging.getLogger('aiohttp.server')
     socket_path = _get_upstream_target(request)
     upstream_url = _build_upstream_url(request)  # the URL where Xpra html5 is sitting
 
@@ -204,7 +209,7 @@ async def _proxy_websocket(request: web.Request) -> web.WebSocketResponse:
                             elif msg.type == WSMsgType.PONG:
                                 await upstream_ws.pong()
                             elif msg.type == WSMsgType.ERROR:
-                                print('client_ws connection closed with error %s' % msg.data)
+                                logger.error('client_ws connection closed with error %s' % msg.data)
                                 break
                             elif msg.type in (WSMsgType.CLOSE, WSMsgType.CLOSING, WSMsgType.CLOSED, WSMsgType.ERROR):
                                 break
@@ -225,7 +230,7 @@ async def _proxy_websocket(request: web.Request) -> web.WebSocketResponse:
                             elif msg.type == WSMsgType.PONG:
                                 await client_ws.pong()
                             elif msg.type == WSMsgType.ERROR:
-                                print('upstream_ws connection closed with error %s' % msg.data)
+                                logger.error('upstream_ws connection closed with error %s' % msg.data)
                                 break
                             elif msg.type in (WSMsgType.CLOSE, WSMsgType.CLOSING, WSMsgType.CLOSED, WSMsgType.ERROR):
                                 break
