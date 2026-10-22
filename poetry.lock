@@ -1714,26 +1714,26 @@ referencing = ">=0.31.0"
 
 [[package]]
 name = "lacuscore"
-version = "1.27.0"
+version = "1.28.0"
 description = "Core of Lacus, usable as a module"
 optional = false
-python-versions = "<3.15,>=3.10"
+python-versions = "<3.15,>=3.11"
 groups = ["main"]
 files = [
-    {file = "lacuscore-1.27.0-py3-none-any.whl", hash = "sha256:21d449ead30a4b3ddf32ba8c1beb715eb39af12b0fee80db87bfcf194e02f7ae"},
-    {file = "lacuscore-1.27.0.tar.gz", hash = "sha256:69b0d5851e9677a7f7d9765b6b6ff2d7140d423f2e416866bbfd1355452361d9"},
+    {file = "lacuscore-1.28.0-py3-none-any.whl", hash = "sha256:6374fca6240d3a6ac57a0e6f14f495638faf150d1d3ec6503543f08b396f4bd8"},
+    {file = "lacuscore-1.28.0.tar.gz", hash = "sha256:dafed1e50a53b7756b2be399edabaf884d243356f4e47ed23c5324d42cc0ca81"},
 ]
 
 [package.dependencies]
 dnspython = {version = ">=2.9.0,<3.0.0", markers = "python_version >= \"3.11\" and python_version < \"4.0\""}
-lookyloo-models = ">=0.4.7"
-playwrightcapture = {version = ">=1.42.2", extras = ["recaptcha"]}
+lookyloo-models = ">=0.5.0"
+playwrightcapture = {version = ">=1.43.0", extras = ["recaptcha"]}
 pydantic = ">=2.14.1"
 redis = {version = ">=5.3.0,<6.0.0", extras = ["hiredis"]}
 typing-extensions = {version = ">=4.12.2,<5.0.0", markers = "python_version < \"3.12\""}
 
 [package.extras]
-docs = ["Sphinx (>=9.1.0) ; python_version >= \"3.12\""]
+docs = ["Sphinx (>=9.2.0) ; python_version >= \"3.13\""]
 
 [[package]]
 name = "librt"
@@ -1885,21 +1885,21 @@ files = [
 
 [[package]]
 name = "lookyloo-models"
-version = "0.4.7"
+version = "0.5.0"
 description = "All the Pydantic models used across Lookyloo"
 optional = false
-python-versions = "<4,>=3.10"
+python-versions = "<4,>=3.11"
 groups = ["main"]
 files = [
-    {file = "lookyloo_models-0.4.7-py3-none-any.whl", hash = "sha256:05592d02c4b08c4396c2255ad505ed3448b77e032dde7abe34f1b68123a2377f"},
-    {file = "lookyloo_models-0.4.7.tar.gz", hash = "sha256:0c59f070371accd5827f51aa43cec31c88807de0b316bb730c5af547028dc67b"},
+    {file = "lookyloo_models-0.5.0-py3-none-any.whl", hash = "sha256:f2540980268c9ffa268c9d2fbc941c5c60a30d608f9dae32df6bf52189b949bc"},
+    {file = "lookyloo_models-0.5.0.tar.gz", hash = "sha256:9302428ea66294e086536f2a1cc3f26684b6f34282aa3f7fe9c5ddc7babc48a3"},
 ]
 
 [package.dependencies]
 dateparser = ">=1.4"
-orjson = ">=3.12"
-pydantic = ">=2.13"
-pydantic-extra-types = ">=2.11.1"
+orjson = ">=3.13"
+pydantic = ">=2.14"
+pydantic-extra-types = ">=2.11"
 ua-parser = {version = ">=1.0", extras = ["regex"]}
 
 [[package]]
@@ -2688,14 +2688,14 @@ black = ["black (>=25.9.0)"]
 
 [[package]]
 name = "playwrightcapture"
-version = "1.42.4"
+version = "1.43.0"
 description = "A simple library to capture websites using playwright"
 optional = false
-python-versions = "<3.15,>=3.10"
+python-versions = "<3.15,>=3.11"
 groups = ["main"]
 files = [
-    {file = "playwrightcapture-1.42.4-py3-none-any.whl", hash = "sha256:77817fb1308468529fe2e41943a0eb951d08409d5b29371528e9ae20d7e7765a"},
-    {file = "playwrightcapture-1.42.4.tar.gz", hash = "sha256:ea8ed14ce59b49871853bc034e267afc03d3d115ac4502ce3c168326ba2589d6"},
+    {file = "playwrightcapture-1.43.0-py3-none-any.whl", hash = "sha256:d8a2027e2a2694f065f78b1cfef14e8b5c16290f681f3b904029cddc579a33b6"},
+    {file = "playwrightcapture-1.43.0.tar.gz", hash = "sha256:4c66c04b506fe82f02eee76909b8cdebe9ebc6af458f13a34aacd04575a07979"},
 ]
 
 [package.dependencies]
@@ -2703,8 +2703,8 @@ aiohttp = {version = ">=3.14.5", extras = ["speedups"]}
 aiohttp-socks = ">=0.12.0"
 beautifulsoup4 = {version = ">=4.15.0", extras = ["charset-normalizer", "lxml"]}
 charset-normalizer = ">=3.4.6,<4.0.0"
-dnspython = {version = ">=2.9.0,<3.0.0", markers = "python_version >= \"3.11\" and python_version < \"4.0\""}
-lookyloo-models = ">=0.4.7"
+dnspython = ">=2.9.0,<3.0.0"
+lookyloo-models = ">=0.5.0"
 orjson = ">=3.12,<4.0.0"
 playwright = ">=1.64.0"
 playwright-stealth = ">=2.0.3"
@@ -4617,4 +4617,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11,<3.15"
-content-hash = "3d2574b85d0e70d286e2f5b9c53ed91b16f8af1d7c432c6fa76cfe6c6373cb8a"
+content-hash = "be06d6531502e922ca6342b842528ed2f13058edcbcf35ecb92a275e99683981"
