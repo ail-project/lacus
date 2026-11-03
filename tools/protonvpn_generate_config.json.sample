@@ -1,5 +1,5 @@
 {
-    "script_path": "/path/to/repo/build/protonvpn-wg-config-generate",
+    "script_path": "/path/to/repo/build/protonvpn-wg-confgen",
     "username": "email@example.com",
     "countries": {
         "US": "USA",

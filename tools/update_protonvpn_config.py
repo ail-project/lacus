@@ -11,7 +11,7 @@ import orjson
 
 from lacus.default import get_homedir
 
-# The script requires this GO project: https://github.com/hatemosphere/protonvpn-wg-config-generate
+# The script requires this GO project: https://github.com/hatemosphere/protonvpn-wg-confgen
 
 
 def get_configs() -> None:
