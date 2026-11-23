@@ -1790,21 +1790,21 @@ referencing = ">=0.31.0"
 
 [[package]]
 name = "lacuscore"
-version = "1.28.3"
+version = "1.28.4"
 description = "Core of Lacus, usable as a module"
 optional = false
 python-versions = "<3.16,>=3.11"
 groups = ["main"]
 files = [
-    {file = "lacuscore-1.28.3-py3-none-any.whl", hash = "sha256:3e1c5736a7ca1cdc52d2621bc8d4b691bdf9f648078494f014cef80597eaa412"},
-    {file = "lacuscore-1.28.3.tar.gz", hash = "sha256:0783fd7240b9fd6a59f35a681d88c0ea1c9510ab880fa936bc9c87dc111d36ef"},
+    {file = "lacuscore-1.28.4-py3-none-any.whl", hash = "sha256:a6f244411fbf5dd69bb140ddc41408f1cc7a62f0802fc7d1a574f5254e214947"},
+    {file = "lacuscore-1.28.4.tar.gz", hash = "sha256:7ea8ad696e78b5cab475586e7e6d5db4671b7619e1271ae77314938fd6467040"},
 ]
 
 [package.dependencies]
 dnspython = ">=2.9.0,<3.0.0"
 lookyloo-models = ">=0.5.0"
-playwrightcapture = {version = ">=1.43.5", extras = ["recaptcha"]}
-pydantic = ">=2.14.3"
+playwrightcapture = {version = ">=1.43.7", extras = ["recaptcha"]}
+pydantic = ">=2.14.4"
 redis = {version = ">=5.3.0,<6.0.0", extras = ["hiredis"]}
 typing-extensions = {version = ">=4.12.2,<5.0.0", markers = "python_version < \"3.12\""}
 
@@ -2737,14 +2737,14 @@ black = ["black (>=25.9.0)"]
 
 [[package]]
 name = "playwrightcapture"
-version = "1.43.6"
+version = "1.43.7"
 description = "A simple library to capture websites using playwright"
 optional = false
 python-versions = "<3.16,>=3.11"
 groups = ["main"]
 files = [
-    {file = "playwrightcapture-1.43.6-py3-none-any.whl", hash = "sha256:d1d4261c996a3afbce5c98dc0ee34efceafe301c66b430ef4c98adc182d7d1d5"},
-    {file = "playwrightcapture-1.43.6.tar.gz", hash = "sha256:eb6781d2ab0388391bf1b14c985108ef86c2a783330e5d8734878d316bebb0ab"},
+    {file = "playwrightcapture-1.43.7-py3-none-any.whl", hash = "sha256:468b2cd55f7a26e37efb995935d10af73b89d8840f133fa87438b5d04b8cfc0e"},
+    {file = "playwrightcapture-1.43.7.tar.gz", hash = "sha256:820e15baa2e3de5a6161959707cbeb397dd397988bfd927f726b715f2bb66daf"},
 ]
 
 [package.dependencies]
@@ -2755,11 +2755,11 @@ charset-normalizer = ">=3.4.6,<4.0.0"
 dnspython = ">=2.9.0,<3.0.0"
 lookyloo-models = ">=0.5.0"
 orjson = ">=3.12,<4.0.0"
-playwright = ">=1.65.1"
+playwright = ">=1.65.2"
 playwright-stealth = ">=2.0.3"
-pure-magic-rs = ">=0.6.0"
+pure-magic-rs = ">=0.6.2"
 pydub-ng = {version = ">=0.2.0", optional = true, markers = "extra == \"recaptcha\""}
-pyfaup-rs = ">=0.4.30"
+pyfaup-rs = ">=0.4.31"
 python-socks = ">=3.0.0,<4.0.0"
 rfc3161-client = ">=1.0.4,<2.0.0"
 SpeechRecognition = {version = ">=3.17.0", optional = true, markers = "extra == \"recaptcha\""}
@@ -4202,14 +4202,14 @@ files = [
 
 [[package]]
 name = "types-cffi"
-version = "2.1.0.20260827"
+version = "2.1.0.20261122"
 description = "Typing stubs for cffi"
 optional = false
 python-versions = ">=3.10"
 groups = ["dev"]
 files = [
-    {file = "types_cffi-2.1.0.20260827-py3-none-any.whl", hash = "sha256:851b6ffa5b962c577a2330b98ac0b60c56c904d086726276946388f58a0cffaf"},
-    {file = "types_cffi-2.1.0.20260827.tar.gz", hash = "sha256:53d1604771ad4ff09a1a90d6f6980ab36bebb6c39476dcc5bbf4896fa510d736"},
+    {file = "types_cffi-2.1.0.20261122-py3-none-any.whl", hash = "sha256:db8c1354c9b3ebfc15f724a2c224883ead71573df244604be5ef333c4d5e6aca"},
+    {file = "types_cffi-2.1.0.20261122.tar.gz", hash = "sha256:6525d3c871f6346718d90204c3bef93861b1732531ea18582015a12474a625fb"},
 ]
 
 [package.dependencies]
@@ -4217,14 +4217,14 @@ types-setuptools = "*"
 
 [[package]]
 name = "types-psutil"
-version = "7.2.2.20261111"
+version = "7.2.2.20261122"
 description = "Typing stubs for psutil"
 optional = false
 python-versions = ">=3.10"
 groups = ["dev"]
 files = [
-    {file = "types_psutil-7.2.2.20261111-py3-none-any.whl", hash = "sha256:054f7b635fc908d3d27e49e8d274fbfed115a1a859f2edeae17519c0238286a1"},
-    {file = "types_psutil-7.2.2.20261111.tar.gz", hash = "sha256:d677119c44fb80cc9be41d8ac731f08bf89974bb1daa49b6688665a9d7224f42"},
+    {file = "types_psutil-7.2.2.20261122-py3-none-any.whl", hash = "sha256:ee60d47cddb6ecace68aeb5326bce47fef706a00f728df7ec27dae31d4ed8472"},
+    {file = "types_psutil-7.2.2.20261122.tar.gz", hash = "sha256:30879c88d871c99f4a632cb17826ce8ec55de2c4884ed84e4f8f293b91c6439e"},
 ]
 
 [[package]]
@@ -4261,14 +4261,14 @@ types-pyOpenSSL = "*"
 
 [[package]]
 name = "types-setuptools"
-version = "84.2.0.20261104"
+version = "84.2.0.20261122"
 description = "Typing stubs for setuptools"
 optional = false
 python-versions = ">=3.10"
 groups = ["dev"]
 files = [
-    {file = "types_setuptools-84.2.0.20261104-py3-none-any.whl", hash = "sha256:23e9bf876adca8df2285a68f76c355128b1e679b27cfec4854faf350cd7999e5"},
-    {file = "types_setuptools-84.2.0.20261104.tar.gz", hash = "sha256:1ec758bbeddf88d52f963fe663beabc2117b6aae73cf3d2902d7dd0df81bd76e"},
+    {file = "types_setuptools-84.2.0.20261122-py3-none-any.whl", hash = "sha256:b8cec8f40ad925233859f59922d6cf3df069f31530394a429604cb9521b69ea7"},
+    {file = "types_setuptools-84.2.0.20261122.tar.gz", hash = "sha256:5c513edc18ac4e5feb11204c379e15c26b849127f569e8d5284e380986cbdcc8"},
 ]
 
 [[package]]
@@ -4663,4 +4663,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11,<3.16"
-content-hash = "1a2e16229b82846ffe3d7f1e2a415049a01d9a3f340757609bd2fffb918fb474"
+content-hash = "0338c9b151cc2b36981a535d7efae2909fb10d458fa7ced794eb5401689754be"

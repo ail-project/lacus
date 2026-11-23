@@ -48,6 +48,8 @@ class Lacus():
             self.public_base_url = remote_headed_settings.get('public_base_url')
         else:
             self.remote_headed_allowed = False
+            self.remote_headed_backend_type = None
+            self.public_base_url = ''
 
         if tt_settings := get_config('generic', 'trusted_timestamp_settings'):
             self.tt_default_enabled = tt_settings.get('enable_default', False)

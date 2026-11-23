@@ -12,11 +12,11 @@ import aiohttp_jinja2
 import jinja2
 
 from aiohttp import ClientSession, ClientTimeout, UnixConnector, WSMsgType, web
-from aiohttp.client_exceptions import ClientConnectionResetError, ClientError, UnixClientConnectorError
+from aiohttp.client_exceptions import ClientConnectionResetError, ClientError, UnixClientConnectorError, WSServerHandshakeError
 from multidict import CIMultiDictProxy
 
-from lacus.default import get_config, get_homedir
-from lacus.lacus import Lacus
+from lacus.default import get_homedir
+from lacus.tactus_base import TactusBase
 from lacuscore.helpers import SessionStatus
 
 
@@ -61,25 +61,23 @@ def _filter_response_headers(headers: CIMultiDictProxy[str]) -> dict[str, str]:
 
 def _get_upstream_target(request: web.Request) -> str:
     '''Returns the socket path'''
-    lacus: Lacus = request.app['lacus']
     capture_uuid = str(UUID(request.match_info['capture_uuid']))
-    session_metadata = lacus.core.get_session_metadata(capture_uuid)
+    session_metadata = request.app['tactus_base'].get_capture_metadata(capture_uuid)
     if not session_metadata:
         raise web.HTTPNotFound(text=f'No interactive session metadata for capture UUID {capture_uuid}.')
 
-    status_int = int(session_metadata.get('status', int(SessionStatus.UNKNOWN)))
-    if session_metadata.get('request_finish') or status_int in (
+    status_int = int(session_metadata.metadata.get('status', int(SessionStatus.UNKNOWN)))
+    if session_metadata.metadata.get('request_finish') or status_int in (
         int(SessionStatus.STOPPED),
         int(SessionStatus.EXPIRED),
         int(SessionStatus.ERROR),
     ):
         raise web.HTTPNotFound(text='Interactive session view is no longer available.')
 
-    metadata = lacus.core.get_session_backend_metadata(capture_uuid)
-    if not metadata:
+    if not session_metadata.backend_metadata:
         raise web.HTTPNotFound(text=f'No interactive session metadata for capture UUID {capture_uuid}.')
 
-    socket_path = metadata.get('socket_path')
+    socket_path = session_metadata.backend_metadata.get('socket_path')
     if not socket_path:
         raise web.HTTPNotFound(text=f'No upstream socket path available for capture UUID {capture_uuid}.')
 
@@ -93,10 +91,7 @@ async def _proxy_api_request(request: web.Request, upstream_path: str) -> web.Re
     """Handles the request from the wrapper to the lacus API"""
     timeout = ClientTimeout(total=30)
     payload = await request.read()
-    ip = get_config('generic', 'website_listen_ip')
-    port = get_config('generic', 'website_listen_port')
-    upstream_url = f'http://{ip}:{port}{upstream_path}'
-
+    upstream_url = f'http://{request.app['tactus_base'].lacus_ip}:{request.app['tactus_base'].lacus_port}{upstream_path}'
     try:
         async with ClientSession(timeout=timeout) as session:
             async with session.request(
@@ -128,15 +123,14 @@ def _build_upstream_url(request: web.Request) -> str:
     # NOTE 2026-10-05: no need to pass the query string, it is not used
     # if request.query_string:
     #     path = f'{path}?{request.query_string}'
-
     # Make sure the path is resolved and what we expect
     p = Path(path).resolve()
-    authorized_paths = ['/', '/default-settings.txt', '/background.jpg', '/favicon.png',
+    authorized_paths = ['/', '/default-settings.txt', '/background.jpg', '/favicon.png', '/favicon.ico',
                         # when things fail.
-                        '/connect.html', '/Displays', '/DesktopMenu', '/Menu', '/Sessions', '/Info']
+                        '/connect.html', '/Displays', '/DesktopMenu', '/Menu', '/Sessions', '/Info', '/index.html']
     authorized_dirs = ['/js', '/css', '/icons']
     if str(p) in authorized_paths or any(p.is_relative_to(dir_path) for dir_path in authorized_dirs):
-        return f'http://localhost{p}'
+        return f'http://{request.app["tactus_base"].tactus_ip}{p}'
     else:
         raise Exception(f'Invalid path: {p}')
 
@@ -254,6 +248,10 @@ async def _proxy_websocket(request: web.Request) -> web.WebSocketResponse:
         except UnixClientConnectorError:
             await client_ws.close(message=b'Interactive session transport is unavailable.')
             return client_ws
+        except WSServerHandshakeError as e:
+            logger.error('Unble to connect to Websocket XPRA %s' % e)
+            await client_ws.close(message=b'Unable to connect to the XPRA server.')
+            return client_ws
         finally:
             if not client_ws.closed:
                 await client_ws.close()
@@ -273,12 +271,14 @@ async def interactive_view_redirect(request: web.Request) -> web.Response:
 
 async def interactive_view_metadata(request: web.Request) -> web.Response:
     """Query Lacus for the matadata"""
+    # NOTE: call back to lacus webserver
     capture_uuid = str(UUID(request.match_info['capture_uuid']))
     return await _proxy_api_request(request, f'/interactive/{capture_uuid}')
 
 
 async def interactive_view_finish(request: web.Request) -> web.Response:
     """Triggers Lacus to terminate the capture"""
+    # NOTE: call back to lacus webserver
     capture_uuid = str(UUID(request.match_info['capture_uuid']))
     return await _proxy_api_request(request, f'/interactive/{capture_uuid}/finish')
 
@@ -287,14 +287,11 @@ async def interactive_view_finish(request: web.Request) -> web.Response:
 async def interactive_view_wrapper(request: web.Request) -> dict[str, str]:
     """Renders the page with the iframe"""
     capture_uuid = str(UUID(request.match_info['capture_uuid']))
-    lacus: Lacus = request.app['lacus']
-    if lacus.core.get_session_metadata(capture_uuid):
-        return {
-            'capture_uuid': capture_uuid,
-            'session_url': f'/interactive/{capture_uuid}/view/session/',
-            'callback_url': request.query.get('callback', '')
-        }
-    raise web.HTTPNotFound(text=f'No interactive session metadata for capture UUID {capture_uuid}.')
+    return {
+        'capture_uuid': capture_uuid,
+        'session_url': f'/interactive/{capture_uuid}/view/session/',
+        'callback_url': request.query.get('callback', '')
+    }
 
 
 async def interactive_view_proxy(request: web.Request) -> web.StreamResponse:
@@ -315,7 +312,7 @@ def make_app() -> web.Application:
     app = web.Application()
     aiohttp_jinja2.setup(app, loader=jinja2.FileSystemLoader(ASSET_DIR))
     app[aiohttp_jinja2.static_root_key] = STATIC_URL_PREFIX
-    app['lacus'] = Lacus()
+    app['tactus_base'] = TactusBase()
     app.router.add_static(f'{STATIC_URL_PREFIX}/', STATIC_ASSET_DIR)
     app.router.add_get('/interactive/{capture_uuid}/view', interactive_view_redirect, name='view')
     app.router.add_get('/interactive/{capture_uuid}/view/', interactive_view_wrapper, name='wrapper')

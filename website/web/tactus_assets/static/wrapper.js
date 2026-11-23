@@ -76,6 +76,13 @@ function applyTerminalState(payload) {
             message: 'The interactive session has completed.',
             error: false,
         },
+        unknown: {
+            title: 'Unknown capture',
+            body: 'The capture UUID is unknown.',
+            tone: 'error',
+            message: 'No remote capture available on this URL.',
+            error: true,
+        },
         expired: {
             title: 'Session expired',
             body: 'The interactive browser has been closed because the session expired before a final capture was requested.',
@@ -106,7 +113,7 @@ function updateUi(payload) {
     finishState.textContent = finishRequested ? 'requested' : 'not requested';
     expiresAt.textContent = formatTs(payload.expires_at);
 
-    const terminal = ['stopped', 'expired', 'error'].includes(currentState);
+    const terminal = ['stopped', 'expired', 'error', 'unknown'].includes(currentState);
     finishButton.disabled = finishRequested || terminal;
 
     if (terminal) {
@@ -134,9 +141,15 @@ async function refreshMetadata() {
             headers: { Accept: 'application/json' },
         });
 
-        if (response.status === 404 && finishRequested) {
-            currentState = 'stopped';
-            applyTerminalState({ status: 'stopped' });
+        if (response.status === 404) {
+            if (finishRequested) {
+                currentState = 'stopped';
+                applyTerminalState({ status: 'stopped' });
+            }
+            else {
+                currentState = 'unknown';
+                applyTerminalState({ status: 'unknown' });
+            }
             return;
         }
 
