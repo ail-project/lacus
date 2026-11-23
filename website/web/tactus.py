@@ -91,7 +91,7 @@ async def _proxy_api_request(request: web.Request, upstream_path: str) -> web.Re
     """Handles the request from the wrapper to the lacus API"""
     timeout = ClientTimeout(total=30)
     payload = await request.read()
-    upstream_url = f'http://{request.app['tactus_base'].lacus_ip}:{request.app['tactus_base'].lacus_port}{upstream_path}'
+    upstream_url = f'http://{request.app["tactus_base"].lacus_ip}:{request.app["tactus_base"].lacus_port}{upstream_path}'
     try:
         async with ClientSession(timeout=timeout) as session:
             async with session.request(
