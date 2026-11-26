@@ -1,0 +1,21 @@
+# The Lacus API (gunicorn).
+
+[Unit]
+Description=Lacus website (API, gunicorn)
+PartOf=lacus.service
+Requires=lacus-backend.service
+After=lacus-backend.service network.target
+
+[Service]
+Type=simple
+User=<system user used to install the project>
+Group=<system user used to install the project>
+WorkingDirectory=<path to the directory where you cloned the repository>
+Environment="PATH=<path to the directory where the poetry executable is>:/usr/local/bin:/usr/bin:/bin"
+Environment="LACUS_HOME=<path to the directory where you cloned the repository>"
+ExecStart=<path to the directory where the poetry executable is>/poetry run start_website
+# Components exit when the backend goes away (sometimes with status 0), so
+# restart regardless; they wait for lacus-backend to be ready again.
+Restart=always
+RestartSec=10
+TimeoutStopSec=60
