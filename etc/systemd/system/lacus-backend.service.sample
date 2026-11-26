@@ -1,0 +1,43 @@
+# valkey for Lacus, run in the foreground so systemd supervises it directly.
+# cache/cache.conf is tracked in git, so host-specific settings are passed on
+# the command line here instead of editing it (keeps `git pull` clean).
+# Using redis instead of valkey: point the paths below at redis-server and
+# redis-cli in your redis clone.
+
+[Unit]
+Description=Lacus backend (valkey cache on a unix socket)
+PartOf=lacus.service
+After=local-fs.target
+
+[Service]
+Type=simple
+User=<system user used to install the project>
+Group=<system user used to install the project>
+WorkingDirectory=<path to the directory where you cloned the repository>/cache
+# --maxmemory: cap the cache so it can never take the host down. Capture
+#   results stay in it for "expire_results" seconds (config/generic.json), so
+#   it grows with your capture rate times that window. On one busy instance,
+#   results took ~3 GB per hour of expire_results.
+# --maxmemory-policy volatile-ttl: at the cap, drop the results closest to
+#   expiry first. Keys without a TTL (the capture queue) are never dropped.
+# --save 1800 1: at most one snapshot (a fork plus a full write) every 30 min,
+#   instead of the built-in default, which re-forks every 1-5 min under load.
+ExecStart=<path to the directory where you cloned valkey>/src/valkey-server ./cache.conf \
+    --daemonize no \
+    --maxmemory <cap for the cache, e.g. 8gb> \
+    --maxmemory-policy volatile-ttl \
+    --save 1800 1
+# "Started" means "answering PONG", not merely "process exists": loading a
+# large dump.rdb can take minutes, and the other units wait for this.
+ExecStartPost=/bin/sh -c 'until [ "$$(<path to the directory where you cloned valkey>/src/valkey-cli -s <path to the directory where you cloned the repository>/cache/cache.sock ping 2>/dev/null)" = PONG ]; do sleep 2; done'
+# Drop Lacus' process bookkeeping left over from an unclean stop. A leftover
+# "shutdown" flag makes every component exit as soon as it starts.
+ExecStartPost=<path to the directory where you cloned valkey>/src/valkey-cli -s <path to the directory where you cloned the repository>/cache/cache.sock -n 1 del shutdown shutdown_manual running
+TimeoutStartSec=30min
+# valkey writes a final snapshot on SIGTERM; give it time.
+TimeoutStopSec=10min
+# Crash or OOM kill -> restart. A clean SHUTDOWN (exit 0) is left alone.
+Restart=on-failure
+RestartSec=10
+# If the host does run out of memory, prefer killing a browser tab.
+OOMScoreAdjust=-500

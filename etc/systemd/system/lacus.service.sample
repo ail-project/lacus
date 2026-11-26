@@ -1,23 +1,27 @@
-[Unit]
-Description=lacus service
-After=network.target
+# Umbrella unit: `systemctl start|stop|restart lacus` acts on every Lacus
+# component. Each component is its own unit, so systemd supervises and
+# restarts it individually.
+#
+# Keep this name: `poetry run update` restarts the unit named by
+# "systemd_service_name" in config/generic.json ("lacus"), using `service`,
+# which only finds names ending in .service.
+#
+# Optional components are not listed below. Enabling one makes it part of
+# lacus.service:
+#   systemctl enable lacus-tactus.service      # interactive captures
+#   systemctl enable lacus-wireproxy.service   # if wireproxy_path is set
+#
+# Do not also use `poetry run start` / `poetry run stop` on a host managed by
+# these units: `start` launches a second copy of every component outside systemd.
 
-# If you deploy interactive sessions, enable the companion
-# lacus-tactus.service unit as well. The main Lacus service
-# remains the control plane; Tactus handles browser-facing /view/ traffic.
+[Unit]
+Description=Lacus (starts, stops and restarts all Lacus components)
+Wants=lacus-backend.service lacus-website.service lacus-capture-manager.service
 
 [Service]
-User=<system user used to install the project>
-Group=<system user used to install the project>
-Type=forking
-WorkingDirectory=<path to the directory where you cloned the repository>
-Environment="PATH=<path to the directory where the poetry executable is>:/usr/bin"
-Environment="LACUS_HOME=<path to the directory where you cloned the repository>"
-ExecStart=/bin/bash -c "exec poetry run start"
-ExecStop=/bin/bash -c "exec poetry run stop"
-StandardOutput=append:/var/log/lacus_message.log
-StandardError=append:/var/log/lacus_error.log
-
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/true
 
 [Install]
 WantedBy=multi-user.target

@@ -1,0 +1,32 @@
+# The capture manager, which runs the Playwright browsers.
+
+[Unit]
+Description=Lacus capture manager (Playwright browsers)
+PartOf=lacus.service
+Requires=lacus-backend.service
+After=lacus-backend.service network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=<system user used to install the project>
+Group=<system user used to install the project>
+WorkingDirectory=<path to the directory where you cloned the repository>
+Environment="PATH=<path to the directory where the poetry executable is>:/usr/local/bin:/usr/bin:/bin"
+Environment="LACUS_HOME=<path to the directory where you cloned the repository>"
+ExecStart=<path to the directory where the poetry executable is>/poetry run capture_manager
+# Components exit when the backend goes away (sometimes with status 0), so
+# restart regardless; they wait for lacus-backend to be ready again.
+Restart=always
+RestartSec=10
+# On stop only the manager gets SIGTERM, so it can wind down ongoing captures;
+# anything left (browsers) gets SIGKILL when the timeout expires.
+KillMode=mixed
+TimeoutStopSec=5min
+# Fence the browsers in. A single tab can grow to tens of GB on some pages;
+# with a cap the kernel kills that tab inside this unit instead of the biggest
+# process on the host (often valkey). Leave room for the valkey cap (plus as
+# much again while it snapshots) and ~4 GB for the rest of the system.
+MemoryMax=60%
+# A killed tab must not stop the whole unit (the default OOMPolicy is stop).
+OOMPolicy=continue

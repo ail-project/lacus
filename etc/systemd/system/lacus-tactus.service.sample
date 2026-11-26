@@ -1,21 +1,28 @@
+# Optional: Tactus, the proxy for interactive (xpra) captures.
+# Only useful with remote_headed_settings.allow_remote_headed set to true in
+# config/generic.json; otherwise it exits at once and Restart=always keeps
+# relaunching it. Enable it to make it part of lacus.service:
+#   systemctl enable lacus-tactus.service
+
 [Unit]
-Description=lacus tactus sidecar
-Wants=lacus.service
-After=network.target lacus.service
+Description=Lacus Tactus (proxy for interactive xpra sessions)
+PartOf=lacus.service
+Requires=lacus-backend.service
+After=lacus-backend.service lacus-capture-manager.service network.target
 
 [Service]
+Type=simple
 User=<system user used to install the project>
 Group=<system user used to install the project>
-Type=simple
-PartOf=lacus.service
 WorkingDirectory=<path to the directory where you cloned the repository>
-Environment="PATH=<path to the directory where the poetry executable is>:/usr/bin"
+Environment="PATH=<path to the directory where the poetry executable is>:/usr/local/bin:/usr/bin:/bin"
 Environment="LACUS_HOME=<path to the directory where you cloned the repository>"
-ExecStart=/bin/bash -c "exec poetry run tactus"
+ExecStart=<path to the directory where the poetry executable is>/poetry run tactus
+# Components exit when the backend goes away (sometimes with status 0), so
+# restart regardless; they wait for lacus-backend to be ready again.
 Restart=always
-RestartSec=5
-StandardOutput=append:/var/log/lacus_tactus_message.log
-StandardError=append:/var/log/lacus_tactus_error.log
+RestartSec=10
+TimeoutStopSec=30
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=lacus.service

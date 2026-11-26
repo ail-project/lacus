@@ -120,6 +120,37 @@ poetry run stop
 With the default configuration, you can access the web interface on `http://0.0.0.0:7100`,
 where you will find the API and can start playing with it.
 
+## Running as a systemd service
+
+Sample units are in `etc/systemd/system/`. Each component runs as its own unit, so systemd can restart it on its own, and `lacus.service` ties them together:
+
+| Unit | Runs |
+| --- | --- |
+| `lacus.service` | Nothing itself: it starts, stops and restarts the units below. `poetry run update` restarts this unit (`systemd_service_name` in `config/generic.json`). |
+| `lacus-backend.service` | valkey (or redis), in the foreground. The other units wait until it answers. |
+| `lacus-website.service` | The API (gunicorn). |
+| `lacus-capture-manager.service` | The capture manager and its browsers. |
+| `lacus-tactus.service` | Optional: Tactus, for interactive captures. |
+| `lacus-wireproxy.service` | Optional: the wireproxy manager, if `wireproxy_path` is set. |
+
+Copy the samples to `/etc/systemd/system/` without the `.sample` suffix and replace every `<...>` placeholder. Then:
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable lacus.service
+# Optional: enable only the ones you use; once enabled they are part of lacus.service.
+sudo systemctl enable lacus-tactus.service      # if allow_remote_headed is true
+sudo systemctl enable lacus-wireproxy.service   # if wireproxy_path is set
+sudo systemctl start lacus.service
+```
+
+Choose the two memory caps deliberately:
+
+- `--maxmemory` in `lacus-backend.service`: capture results stay in the cache for `expire_results` seconds, so the cache grows with your capture rate times that window. Without a cap it can reach tens of GB, and the kernel's OOM killer then picks it, taking all of Lacus down.
+- `MemoryMax` in `lacus-capture-manager.service` (60% of RAM by default): one browser tab can use many GB on some pages. The cap makes the kernel kill that tab rather than something else on the host.
+
+Day to day, use `systemctl status 'lacus*'`, `journalctl -u 'lacus*'` and `sudo systemctl restart lacus`. Do not use `poetry run start` or `poetry run stop` on a host managed this way: `start` launches a second copy of every component outside systemd.
+
 # Maintenance
 
 ## Annoying repetitive log entries
@@ -216,7 +247,7 @@ Sample reverse-proxy configurations are available in:
 
 These examples route only `/interactive/<uuid>/view/` to Tactus and send the rest of the API traffic to the main Lacus application. The bundled wrapper uses Tactus-local helper endpoints under `/interactive/<uuid>/view/` for its panel controls, and those helpers proxy to the canonical Lacus API routes for session metadata and `finish`.
 
-For systemd deployments, a sample Tactus unit is available in:
+For systemd deployments, enable the optional Tactus unit (see [Running as a systemd service](#running-as-a-systemd-service)):
 
 - `/etc/systemd/system/lacus-tactus.service.sample`
 
@@ -279,17 +310,17 @@ The bundled `tactus` sidecar is a reference implementation.
 
 One clean deployment model is:
 
-- `lacus.service` runs the main Lacus control-plane service on `127.0.0.1:7100`
+- `lacus.service` and its components run the main Lacus control-plane service on `127.0.0.1:7100`
 - `lacus-tactus.service` runs Tactus on `127.0.0.1:7101`
 - nginx listens on the host-facing interface and routes:
   - `/interactive/<uuid>/view/` to `127.0.0.1:7101`
   - everything else to `127.0.0.1:7100`
 
-Then enable and start both services:
+Then enable both units and start Lacus. Once enabled, Tactus is part of `lacus.service`, so starting, stopping or restarting `lacus.service` covers it too:
 
 ```bash
 sudo systemctl enable lacus.service lacus-tactus.service
-sudo systemctl start lacus.service lacus-tactus.service
+sudo systemctl start lacus.service
 ```
 
 Finally, install the nginx sample and adjust `server_name`, TLS, and any access-control rules as needed for your environment.
